@@ -10,13 +10,21 @@
     "test": "jest"
   },
   "dependencies": {
+    "@dynamic-labs/ethereum": "^4.39.0",
+    "@dynamic-labs/sdk-react-core": "^4.39.0",
+    "@dynamic-labs/wagmi-connector": "^4.39.0",
+    "@react-native/new-app-screen": "0.82.0",
+    "@tanstack/react-query": "^5.90.5",
     "react": "19.1.1",
     "react-native": "0.82.0",
-    "@react-native/new-app-screen": "0.82.0",
-    "react-native-safe-area-context": "^5.5.2"
+    "react-native-dotenv": "^3.4.11",
+    "react-native-safe-area-context": "^5.5.2",
+    "viem": "^2.38.3",
+    "wagmi": "^2.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@babel/plugin-transform-export-namespace-from": "^7.27.1",
     "@babel/preset-env": "^7.25.3",
     "@babel/runtime": "^7.25.0",
     "@react-native-community/cli": "20.0.0",
