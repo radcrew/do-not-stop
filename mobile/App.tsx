@@ -5,6 +5,9 @@
  * @format
  */
 
+// Import polyfills first
+import './src/polyfills';
+
 import React from 'react';
 import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
@@ -41,7 +44,7 @@ function App() {
 function AppContent() {
   return (
     <View style={styles.container}>
-      <TestComponent />
+      <WalletConnection />
     </View>
   );
 }

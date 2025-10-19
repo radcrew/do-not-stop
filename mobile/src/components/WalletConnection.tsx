@@ -7,7 +7,7 @@ import {
     Alert,
     ActivityIndicator,
 } from 'react-native';
-import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-native';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 const WalletConnection: React.FC = () => {

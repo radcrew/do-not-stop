@@ -1,5 +1,5 @@
 import React from 'react';
-import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-native';
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { DYNAMIC_CONFIG } from '../config/dynamic';
