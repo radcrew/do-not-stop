@@ -1,21 +1,22 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require("expo/metro-config");
+
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname);
 
 /**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
+ * Custom resolver to handle ZeroDev imports
  */
-const config = {
-    resolver: {
-        // Add support for .jsx files
-        sourceExts: ['js', 'jsx', 'json', 'ts', 'tsx'],
-        // Handle React Native specific modules
-        platforms: ['ios', 'android', 'native', 'web'],
-        // Ensure proper resolution of React Native modules
-        unstable_enableSymlinks: false,
-        unstable_enablePackageExports: false,
-    },
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  try {
+    return context.resolveRequest(context, moduleName, platform);
+  } catch (error) {
+    if (moduleName.endsWith(".js")) {
+      const tsModuleName = moduleName.replace(/\.js$/, ".ts");
+      return context.resolveRequest(context, tsModuleName, platform);
+    }
+    throw error;
+  }
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = config;

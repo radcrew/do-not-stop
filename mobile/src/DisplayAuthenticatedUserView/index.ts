@@ -1,0 +1,1 @@
+export { DisplayAuthenticatedUserView } from "./DisplayAuthenticatedUserView";
