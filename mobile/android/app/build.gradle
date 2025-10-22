@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.dynamicinfra.reactnativeexpo'
+    namespace 'com.cryptozombies.app'
     defaultConfig {
-        applicationId 'com.dynamicinfra.reactnativeexpo'
+        applicationId 'com.cryptozombies.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

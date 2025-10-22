@@ -1,6 +1,6 @@
-# Dynamic React Native + Expo Example App
+# CryptoZombies Mobile App
 
-Welcome to the Dynamic React Native + Expo Example App! This repository contains a simple application demonstrating how to integrate the Dynamic product with React Native using Expo.
+Welcome to the CryptoZombies Mobile App! This repository contains a React Native application built with Expo that integrates with the Dynamic wallet system for blockchain interactions.
 
 ## Requirements
 
@@ -21,8 +21,8 @@ Follow these steps to get the app up and running:
 2. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/dynamic-labs/react-native-expo.git
-   cd react-native-expo
+   git clone <your-repo-url>
+   cd cryptozombies-mobile
    ```
 
 3. **Install dependencies:**
@@ -75,4 +75,4 @@ npx expo install --check
 
 For more detailed information on integrating Dynamic with React Native, please refer to our official documentation: [Dynamic React Native Integration](https://docs.dynamic.xyz/react-native/introduction).
 
-Thank you for trying out our example app!
+Thank you for trying out the CryptoZombies mobile app!

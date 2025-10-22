@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "react-native-expo",
-    "slug": "react-native-expo",
-    "scheme": "reactnativeexpo",
+    "name": "CryptoZombies",
+    "slug": "cryptozombies",
+    "scheme": "cryptozombies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,14 +18,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dynamicinfra.reactnativeexpo"
+      "bundleIdentifier": "com.cryptozombies.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dynamicinfra.reactnativeexpo"
+      "package": "com.cryptozombies.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
