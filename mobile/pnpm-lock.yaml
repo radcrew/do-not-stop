@@ -56,6 +56,9 @@ importers:
       react-native:
         specifier: 0.81.4
         version: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)
+      react-native-safe-area-context:
+        specifier: ^5.6.1
+        version: 5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10))(react@19.1.0)
       react-native-web:
         specifier: ^0.21.1
         version: 0.21.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -4351,6 +4354,12 @@ packages:
       react: '*'
       react-native: '*'
 
+  react-native-safe-area-context@5.6.1:
+    resolution: {integrity: sha512-/wJE58HLEAkATzhhX1xSr+fostLsK8Q97EfpfMDKo8jlOc1QKESSX/FQrhk7HhQH/2uSaox4Y86sNaI02kteiA==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   react-native-web@0.21.2:
     resolution: {integrity: sha512-SO2t9/17zM4iEnFvlu2DA9jqNbzNhoUP+AItkoCOyFmDMOhUnBBznBDCYN92fGdfAkfQlWzPoez6+zLxFNsZEg==}
     peerDependencies:
@@ -7168,7 +7177,7 @@ snapshots:
 
   '@scure/bip32@1.7.0':
     dependencies:
-      '@noble/curves': 1.9.1
+      '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
 
@@ -10998,6 +11007,11 @@ snapshots:
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)
 
   react-native-passkey@3.1.0(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)
+
+  react-native-safe-area-context@5.6.1(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.1.17)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)
