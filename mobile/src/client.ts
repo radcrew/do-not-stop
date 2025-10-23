@@ -4,9 +4,7 @@ import { ViemExtension } from "@dynamic-labs/viem-extension";
 import { ZeroDevExtension } from "@dynamic-labs/zerodev-extension";
 import { SolanaExtension } from "@dynamic-labs/solana-extension";
 
-const environmentId =
-  (process.env.EXPO_PUBLIC_ENVIRONMENT_ID as string) ||
-  "eba2bd12-09b3-4c4d-ba16-4727c3c89a49";
+const environmentId = process.env.EXPO_PUBLIC_ENVIRONMENT_ID as string;
 
 if (!environmentId) {
   throw new Error("EXPO_PUBLIC_ENVIRONMENT_ID is required");
