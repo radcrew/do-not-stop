@@ -5,6 +5,7 @@ import {
     SafeAreaProvider,
     useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { AppKit } from '@reown/appkit-react-native';
 import ConnectButton from './components/ConnectButton';
 
 function YourAppRootComponent() {
@@ -23,13 +24,11 @@ function AppContent() {
 
     return (
         <ScrollView style={styles.container}>
-            <NewAppScreen
-                templateFileName="App.tsx"
-                safeAreaInsets={safeAreaInsets}
-            />
-
             {/* Example AppKit usage */}
             <ConnectButton />
+
+            {/* AppKit UI component for wallet connection */}
+            <AppKit />
         </ScrollView>
     );
 }
