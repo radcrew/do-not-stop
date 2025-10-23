@@ -1,78 +1,97 @@
-# CryptoZombies Mobile App
+This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-Welcome to the CryptoZombies Mobile App! This repository contains a React Native application built with Expo that integrates with the Dynamic wallet system for blockchain interactions.
+# Getting Started
 
-## Requirements
+> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-To run this example app locally, you'll need to have Node.js installed, as well as npm (Node Package Manager). Additionally, you must install Expo CLI. For detailed setup instructions, please visit the [Expo installation guide](https://docs.expo.dev/get-started/installation/).
+## Step 1: Start Metro
 
-You will also need a Dynamic account. If you don't have one yet, you can sign up for free at [Dynamic](https://dynamic.xyz/).
-With an account created, you can create a new project and obtain the environment ID, which you will need to initialize the Dynamic client in the example app.
-You will also need to enable the SMS and/or Email Login options to have a login method available in the example app.
+First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
-## Installation
+To start the Metro dev server, run the following command from the root of your React Native project:
 
-Follow these steps to get the app up and running:
+```sh
+# Using npm
+npm start
 
-1. **Set Up Your Environment**
-
-   Prepare your development environment for React Native by following the official setup guide: [React Native Environment Setup](https://reactnative.dev/docs/set-up-your-environment).
-
-2. **Clone the repository:**
-
-   ```bash
-   git clone <your-repo-url>
-   cd cryptozombies-mobile
-   ```
-
-3. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-4. **(Optional) Configure a `.env` File with Your Dynamic Environment ID:**
-
-   ```bash
-   EXPO_PUBLIC_ENVIRONMENT_ID=<dynamic project environment id>
-   ```
-
-5. **Start the application:**
-
-   iOS
-
-   ```bash
-   npm run ios
-   ```
-
-   Android
-
-   ```bash
-   npm run android
-   ```
-
-This will start the Expo CLI server, and you can open the app on your device using the Expo Go app, or in a web browser.
-
-For further development, you may find the following files relevant:
-
-- dynamic client initialization: `src/client.ts`
-- HomeView: `src/Home/Home.tsx`
-- LoginView: `src/LoginView/LoginView.tsx`
-- DisplayAuthenticatedUserView: `src/DisplayAuthenticatedUserView/DisplayAuthenticatedUserView.tsx`
-
-## Troubleshooting
-
-Having trouble running the iOS simulator?
-Check out the [iOS Troubleshooting](./docs/ios-troubleshooting.md) guide.
-
-If you're seeing any errors when trying to run the app, first make sure it isn't due to expo packages version compatibility issues by running the following command:
-
-```bash
-npx expo install --check
+# OR using Yarn
+yarn start
 ```
 
-## Documentation
+## Step 2: Build and run your app
 
-For more detailed information on integrating Dynamic with React Native, please refer to our official documentation: [Dynamic React Native Integration](https://docs.dynamic.xyz/react-native/introduction).
+With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
 
-Thank you for trying out the CryptoZombies mobile app!
+### Android
+
+```sh
+# Using npm
+npm run android
+
+# OR using Yarn
+yarn android
+```
+
+### iOS
+
+For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+
+The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+
+```sh
+bundle install
+```
+
+Then, and every time you update your native dependencies, run:
+
+```sh
+bundle exec pod install
+```
+
+For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+
+```sh
+# Using npm
+npm run ios
+
+# OR using Yarn
+yarn ios
+```
+
+If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+
+This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+
+## Step 3: Modify your app
+
+Now that you have successfully run the app, let's make changes!
+
+Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+
+When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+
+- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
+- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+
+## Congratulations! :tada:
+
+You've successfully run and modified your React Native App. :partying_face:
+
+### Now what?
+
+- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
+- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+
+# Troubleshooting
+
+If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+
+# Learn More
+
+To learn more about React Native, take a look at the following resources:
+
+- [React Native Website](https://reactnative.dev) - learn more about React Native.
+- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
+- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
+- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
+- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

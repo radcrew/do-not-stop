@@ -1,22 +1,11 @@
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require("expo/metro-config");
-
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 /**
- * Custom resolver to handle ZeroDev imports
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
+ *
+ * @type {import('@react-native/metro-config').MetroConfig}
  */
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-  try {
-    return context.resolveRequest(context, moduleName, platform);
-  } catch (error) {
-    if (moduleName.endsWith(".js")) {
-      const tsModuleName = moduleName.replace(/\.js$/, ".ts");
-      return context.resolveRequest(context, tsModuleName, platform);
-    }
-    throw error;
-  }
-};
+const config = {};
 
-module.exports = config;
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);

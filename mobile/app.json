@@ -1,43 +1,4 @@
 {
-  "expo": {
-    "name": "CryptoZombies",
-    "slug": "cryptozombies",
-    "scheme": "cryptozombies",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*",
-      "assets/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.cryptozombies.app"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.cryptozombies.app"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "165d3eb3-5b25-41a1-a3b2-8cf02e73f818"
-      }
-    },
-    "plugins": [
-      "expo-secure-store",
-      "expo-web-browser"
-    ]
-  }
+  "name": "cryptozombies",
+  "displayName": "cryptozombies"
 }
