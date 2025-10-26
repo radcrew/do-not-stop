@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
-import { API_URL } from '../config';
+import { apiClient } from '../api/client';
 
 // Get user profile
 export const useUserProfile = () => {
@@ -10,11 +10,7 @@ export const useUserProfile = () => {
   return useQuery({
     queryKey: ['user', 'profile'],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}/api/protected/profile`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const { data } = await apiClient.get('/api/protected/profile');
       return data;
     },
     enabled: !!token, // Only run if token exists

@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
 
-import { useNonce, useVerifySignature } from '../../hooks/useAuth';
+import { useNonce } from '../../hooks/useNonce';
+import { useVerifySignature } from '../../hooks/useVerifySignature';
 import { useUserProfile } from '../../hooks/useUserProfile';
 
 interface User {
