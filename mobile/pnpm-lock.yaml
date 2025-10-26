@@ -20,9 +20,6 @@ importers:
       '@react-native/gradle-plugin':
         specifier: ^0.82.1
         version: 0.82.1
-      '@react-native/new-app-screen':
-        specifier: 0.82.0
-        version: 0.82.0(@types/react@19.2.2)(react-native@0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10))(react@19.1.1)
       '@reown/appkit-react-native':
         specifier: ^2.0.1
         version: 2.0.1(3b5d6acad9c0862851313eb2246a5ccd)
@@ -1228,17 +1225,6 @@ packages:
   '@react-native/metro-config@0.82.0':
     resolution: {integrity: sha512-AkXO61cY8prBT3FY2PgPAqyB57jh3Y2uze28AXry2OR1VnwkPy7MDzkAvPmDu6dNm9IQ+kpw0lInyY/RLqCKZQ==}
     engines: {node: '>= 20.19.4'}
-
-  '@react-native/new-app-screen@0.82.0':
-    resolution: {integrity: sha512-J0ZFnlT1nDtxhTn94Zu0lbAsfbmexRK0cPFnAy0o1HfhPCdOE/HpUzhPL2lpVSWhuk/0+ZgGqIjtyaTqR0MXNQ==}
-    engines: {node: '>= 20.19.4'}
-    peerDependencies:
-      '@types/react': ^19.1.0
-      react: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@react-native/normalize-colors@0.82.0':
     resolution: {integrity: sha512-oinsK6TYEz5RnFTSk9P+hJ/N/E0pOG76O0euU0Gf3BlXArDpS8m3vrGcTjqeQvajRIaYVHIRAY9hCO6q+exyLg==}
@@ -6680,13 +6666,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  '@react-native/new-app-screen@0.82.0(@types/react@19.2.2)(react-native@0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10))(react@19.1.1)':
-    dependencies:
-      react: 19.1.1
-      react-native: 0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10)
-    optionalDependencies:
-      '@types/react': 19.2.2
 
   '@react-native/normalize-colors@0.82.0': {}
 
