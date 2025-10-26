@@ -4,8 +4,9 @@ import { SolanaAdapter } from '@reown/appkit-solana-react-native';
 import { mainnet, sepolia } from 'wagmi/chains';
 import { storage } from './StorageUtil';
 import { QueryClient } from '@tanstack/react-query';
+import { REOWN_PROJECT_ID } from '@env';
 
-const projectId = process.env.REOWN_PROJECT_ID || 'YOUR_PROJECT_ID';
+const projectId = REOWN_PROJECT_ID || 'YOUR_PROJECT_ID';
 
 // Setup queryClient
 export const queryClient = new QueryClient();

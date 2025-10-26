@@ -38,6 +38,9 @@ importers:
       react-native:
         specifier: 0.82.0
         version: 0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10)
+      react-native-dotenv:
+        specifier: ^3.4.11
+        version: 3.4.11(@babel/runtime@7.28.4)
       react-native-get-random-values:
         specifier: ^2.0.0
         version: 2.0.0(react-native@0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10))
@@ -2396,6 +2399,10 @@ packages:
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
 
+  dotenv@16.6.1:
+    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -4013,6 +4020,11 @@ packages:
 
   react-is@19.2.0:
     resolution: {integrity: sha512-x3Ax3kNSMIIkyVYhWPyO09bu0uttcAIoecO/um/rKGQ4EltYWVYtyiGkS/3xMynrbVQdS69Jhlv8FXUEZehlzA==}
+
+  react-native-dotenv@3.4.11:
+    resolution: {integrity: sha512-6vnIE+WHABSeHCaYP6l3O1BOEhWxKH6nHAdV7n/wKn/sciZ64zPPp2NUdEUf1m7g4uuzlLbjgr+6uDt89q2DOg==}
+    peerDependencies:
+      '@babel/runtime': ^7.20.6
 
   react-native-get-random-values@2.0.0:
     resolution: {integrity: sha512-wx7/aPqsUIiWsG35D+MsUJd8ij96e3JKddklSdrdZUrheTx89gPtz3Q2yl9knBArj5u26Cl23T88ai+Q0vypdQ==}
@@ -8991,6 +9003,8 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
+  dotenv@16.6.1: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -11054,6 +11068,11 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.2.0: {}
+
+  react-native-dotenv@3.4.11(@babel/runtime@7.28.4):
+    dependencies:
+      '@babel/runtime': 7.28.4
+      dotenv: 16.6.1
 
   react-native-get-random-values@2.0.0(react-native@0.82.0(@babel/core@7.28.4)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.4)(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10)):
     dependencies:
