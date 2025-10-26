@@ -1,5 +1,4 @@
 import React from 'react';
-import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, useColorScheme, View, ScrollView } from 'react-native';
 import {
     SafeAreaProvider,
