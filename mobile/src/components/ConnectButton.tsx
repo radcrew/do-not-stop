@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useAppKit, useAccount } from '@reown/appkit-react-native';
+import { useAppKit } from '@reown/appkit-react-native';
+import { useAccount } from 'wagmi';
 
 export default function ConnectButton() {
     const { open, disconnect } = useAppKit();
