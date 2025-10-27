@@ -1,0 +1,16 @@
+{
+    "name": "@do-not-stop/shared-auth",
+    "version": "0.0.1",
+    "description": "Shared authentication hooks for frontend and mobile",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "build": "echo 'Build scripts can be added here'"
+    },
+    "peerDependencies": {
+        "@tanstack/react-query": "^5.0.0",
+        "axios": "^1.0.0"
+    },
+    "devDependencies": {},
+    "dependencies": {}
+}
