@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@do-not-stop/shared-auth": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native/codegen": "^0.82.1",
