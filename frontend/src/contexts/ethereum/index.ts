@@ -1,2 +1,2 @@
-// Re-export all Ethereum contexts
-export * from './AuthContext';
+export { useAuth } from '@do-not-stop/shared-auth';
+export { AuthProvider } from './AuthContext';
