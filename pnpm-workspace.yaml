@@ -1,0 +1,7 @@
+packages:
+  - 'frontend'
+  - 'backend'
+  - 'mobile'
+  - 'contracts/ethereum'
+  - 'packages/*'
+
