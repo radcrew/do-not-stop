@@ -3,5 +3,5 @@ packages:
   - 'backend'
   - 'mobile'
   - 'contracts/ethereum'
+  - 'contracts/solana/cryptozombies'
   - 'packages/*'
-

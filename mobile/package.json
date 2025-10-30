@@ -1,5 +1,5 @@
 {
-  "name": "cryptozombies",
+  "name": "mobile",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/runtime": "^7.25.0",
+    "@babel/runtime": "^7.28.4",
     "@do-not-stop/shared-auth": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/netinfo": "^11.4.1",

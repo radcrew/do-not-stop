@@ -1,5 +1,5 @@
 {
-  "name": "do-not-stop-backend",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Backend for Web3 authentication example",
   "main": "dist/server.js",
