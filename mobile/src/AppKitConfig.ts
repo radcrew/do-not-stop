@@ -39,5 +39,10 @@ export const appKit = createAppKit({
             native: "cryptozombies://",
             universal: "cryptozombies.app",
         },
+    },
+    features: {
+        email: false,
+        socials: [],
+        showWallets: true,
     }
 });
