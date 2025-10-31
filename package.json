@@ -7,7 +7,7 @@
     "install:all": "pnpm install && pnpm --prefix frontend install && pnpm --prefix backend install && pnpm --prefix mobile install && pnpm --prefix contracts/ethereum install",
     "dev:fe": "pnpm --prefix frontend dev",
     "dev:be": "pnpm --prefix backend dev",
-    "dev:mobile": "pnpm --prefix mobile npm start",
+    "dev:mobile": "pnpm --filter mobile start",
     "eth:node": "pnpm --prefix contracts/ethereum node",
     "solana:start": "docker-compose -f contracts/solana/docker-compose.yml up -d",
     "sol:inject-ngrok": "tsx scripts/sol-inject-ngrok.ts",
