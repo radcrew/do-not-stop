@@ -31,11 +31,6 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const storageAdapter = getStorageAdapter();
-    if (!storageAdapter) {
-        throw new Error('Storage adapter not set. Call setStorageAdapter() before using AuthProvider.');
-    }
-
     const { address, isConnected, chainId } = useAccount();
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [user, setUser] = useState<User | null>(null);

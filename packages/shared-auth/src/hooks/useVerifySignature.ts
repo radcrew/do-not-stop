@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { getAuthApiClient } from '../api';
 
-export interface VerifySignatureParams {
+interface VerifySignatureParams {
     address: string;
     signature: string;
     nonce: string;
     chainId: number;
 }
 
-export interface VerifySignatureResult {
+interface VerifySignatureResult {
     success: boolean;
     token: string;
     user: {
