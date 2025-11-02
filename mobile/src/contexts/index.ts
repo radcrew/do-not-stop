@@ -1,3 +1,2 @@
-export { useAuth } from '@do-not-stop/shared-auth';
-export { AuthProvider } from './AuthContext';
+// Mobile contexts (empty for now, kept for structure)
 

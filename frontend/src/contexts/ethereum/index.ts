@@ -1,2 +1,1 @@
-export { useAuth } from '@do-not-stop/shared-auth';
-export { AuthProvider } from './AuthContext';
+// Ethereum-specific contexts (empty for now, kept for structure)

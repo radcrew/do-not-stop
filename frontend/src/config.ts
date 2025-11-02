@@ -1,6 +1,25 @@
+import { setApiBaseUrl, setTokenSuccessCallback, setStorageAdapter } from '@do-not-stop/shared-auth';
+
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 
 if (!CONTRACT_ADDRESS) {
     throw new Error('VITE_CONTRACT_ADDRESS environment variable is not set. Please run "pnpm dev:full" to deploy contracts and inject the address automatically.');
 }
+
+// Configure the shared auth API client
+setApiBaseUrl(API_URL);
+
+// Configure token storage callback
+setTokenSuccessCallback((data) => {
+    if (data.success) {
+        localStorage.setItem('authToken', data.token);
+    }
+});
+
+// Configure storage adapter
+setStorageAdapter({
+    getToken: () => localStorage.getItem('authToken'),
+    setToken: (token: string) => localStorage.setItem('authToken', token),
+    removeToken: () => localStorage.removeItem('authToken'),
+});

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAuth } from '../../contexts';
+import { useAuth } from '@do-not-stop/shared-auth';
 import { useDynamicContext } from '../../contexts/dynamic';
 
 import AccountDropdown from '../wallet/AccountDropdown';

@@ -9,7 +9,8 @@ import {
 import { injected } from 'wagmi/connectors';
 
 import Main from './components/layout/Main';
-import { AuthProvider, SolanaWalletProvider } from './contexts';
+import { AuthProvider } from '@do-not-stop/shared-auth';
+import { SolanaWalletProvider } from './contexts';
 import { DynamicProvider } from './contexts/dynamic';
 import { CHAINS } from './constants/chains';
 import './App.css';

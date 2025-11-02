@@ -1,18 +1,32 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
 /**
- * Creates a configured API client for authentication endpoints
- * This is platform-agnostic and can be used in both web and mobile
+ * Shared singleton API client for authentication endpoints
+ * Created once and reused by all hooks
  */
-export const createAuthApiClient = (baseURL: string): AxiosInstance => {
-    const client = axios.create({
-        baseURL,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+const apiClient: AxiosInstance = axios.create({
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-    return client;
+/**
+ * Sets the base URL for the shared API client
+ * This allows frontend and mobile to configure the client dynamically
+ */
+export const setApiBaseUrl = (baseURL: string): void => {
+    apiClient.defaults.baseURL = baseURL;
+};
+
+/**
+ * Gets the shared API client instance
+ * Hooks use this internally - no need to pass it around
+ */
+export const getAuthApiClient = (): AxiosInstance => {
+    if (!apiClient.defaults.baseURL) {
+        throw new Error('API base URL not set. Call setApiBaseUrl() before using auth hooks.');
+    }
+    return apiClient;
 };
 
 /**

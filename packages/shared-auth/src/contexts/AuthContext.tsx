@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { useAccount, useSignMessage } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
+import { useNonce } from '../hooks/useNonce';
+import { useVerifySignature } from '../hooks/useVerifySignature';
 
 interface User {
     address: string;
@@ -17,6 +19,12 @@ interface AuthContextType {
     isNonceLoading: boolean;
 }
 
+export interface StorageAdapter {
+    getToken: () => Promise<string | null> | string | null;
+    setToken: (token: string) => Promise<void> | void;
+    removeToken: () => Promise<void> | void;
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
@@ -27,142 +35,131 @@ export const useAuth = () => {
     return context;
 };
 
-interface CreateAuthProviderParams {
-    useAccountHook: typeof useAccount;
-    useSignMessageHook: typeof useSignMessage;
-    useNonce: () => { refetch: () => Promise<any>; isLoading: boolean };
-    useVerifySignature: () => {
-        mutate: (params: any) => void;
-        isPending: boolean;
-        data: any;
-        error: any;
-    };
-    storageAdapter: {
-        getToken: () => Promise<string | null> | string | null;
-        setToken: (token: string) => Promise<void> | void;
-        removeToken: () => Promise<void> | void;
-    };
-}
+// Global storage adapter
+let storageAdapter: StorageAdapter | undefined;
 
-export const createAuthProvider = ({
-    useAccountHook,
-    useSignMessageHook,
-    useNonce,
-    useVerifySignature,
-    storageAdapter,
-}: CreateAuthProviderParams) => {
-    return ({ children }: { children: ReactNode }) => {
-        const { address, isConnected, chainId } = useAccountHook();
-        const [isAuthenticated, setAuthenticated] = useState(false);
-        const [user, setUser] = useState<User | null>(null);
-        const [pendingNonce, setPendingNonce] = useState<string | null>(null);
+/**
+ * Sets the storage adapter for platform-specific token storage
+ */
+export const setStorageAdapter = (adapter: StorageAdapter): void => {
+    storageAdapter = adapter;
+};
 
-        // React Query hooks
-        const { refetch: getNonce, isLoading: isNonceLoading } = useNonce();
-        const {
-            mutate: verifySignature,
-            isPending: isVerifying,
-            data: authData,
-            error: verifyError
-        } = useVerifySignature();
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    if (!storageAdapter) {
+        throw new Error('Storage adapter not set. Call setStorageAdapter() before using AuthProvider.');
+    }
 
-        const {
-            signMessage,
-            isPending: isSigning,
-            data: signature,
-            error: signError
-        } = useSignMessageHook();
+    const { address, isConnected, chainId } = useAccount();
+    const [isAuthenticated, setAuthenticated] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [pendingNonce, setPendingNonce] = useState<string | null>(null);
 
-        useEffect(() => {
-            const isWalletConnected = isConnected && !!address;
+    // React Query hooks
+    const { refetch: getNonce, isLoading: isNonceLoading } = useNonce();
+    const {
+        mutate: verifySignature,
+        isPending: isVerifying,
+        data: authData,
+        error: verifyError
+    } = useVerifySignature();
 
-            // If wallet is disconnected, clear authentication state and token
-            if (!isWalletConnected) {
-                setAuthenticated(false);
-                setUser(null);
-                storageAdapter.removeToken();
-                return;
-            }
-        }, [address, isConnected]);
+    const {
+        signMessage,
+        isPending: isSigning,
+        data: signature,
+        error: signError
+    } = useSignMessage();
 
-        // Handle signature completion
-        useEffect(() => {
-            if (signature && pendingNonce && address && chainId) {
-                verifySignature({
-                    address,
-                    signature,
-                    nonce: pendingNonce,
-                    chainId,
-                });
-            }
-        }, [signature, pendingNonce, address, chainId, verifySignature]);
+    useEffect(() => {
+        const isWalletConnected = isConnected && !!address;
 
-        // Handle authentication success
-        useEffect(() => {
-            if (authData?.success) {
-                setAuthenticated(true);
-                setUser(authData.user);
-                setPendingNonce(null);
-            }
-        }, [authData]);
-
-        // Handle verification errors
-        useEffect(() => {
-            if (verifyError) {
-                setPendingNonce(null);
-                console.error('Authentication failed:', verifyError);
-            }
-        }, [verifyError]);
-
-        // Handle signing errors
-        useEffect(() => {
-            if (signError) {
-                setPendingNonce(null);
-                console.error('Signing failed:', signError);
-            }
-        }, [signError]);
-
-        const logout = async () => {
-            await storageAdapter.removeToken();
+        // If wallet is disconnected, clear authentication state and token
+        if (!isWalletConnected) {
             setAuthenticated(false);
             setUser(null);
-        };
+            storageAdapter!.removeToken();
+            return;
+        }
+    }, [address, isConnected]);
 
-        const signAndLogin = async () => {
-            if (!address) return;
+    // Handle signature completion
+    useEffect(() => {
+        if (signature && pendingNonce && address && chainId) {
+            verifySignature({
+                address,
+                signature,
+                nonce: pendingNonce,
+                chainId,
+            });
+        }
+    }, [signature, pendingNonce, address, chainId, verifySignature]);
 
-            try {
-                // Get nonce from backend
-                const { data } = await getNonce();
-                const { nonce } = data;
+    // Handle authentication success
+    useEffect(() => {
+        if (authData?.success) {
+            setAuthenticated(true);
+            setUser(authData.user);
+            setPendingNonce(null);
+        }
+    }, [authData]);
 
-                // Store nonce for later use
-                setPendingNonce(nonce);
+    // Handle verification errors
+    useEffect(() => {
+        if (verifyError) {
+            setPendingNonce(null);
+            console.error('Authentication failed:', verifyError);
+        }
+    }, [verifyError]);
 
-                // Create message to sign
-                const message = `Sign this message to authenticate: ${nonce}`;
+    // Handle signing errors
+    useEffect(() => {
+        if (signError) {
+            setPendingNonce(null);
+            console.error('Signing failed:', signError);
+        }
+    }, [signError]);
 
-                // Trigger the signing process
-                signMessage({ message });
-            } catch (error) {
-                console.error('Error getting nonce:', error);
-            }
-        };
-
-        return (
-            <AuthContext.Provider value={{
-                isAuthenticated,
-                user,
-                logout,
-                signAndLogin,
-                isSigning,
-                isVerifying,
-                isNonceLoading
-            }}>
-                {children}
-            </AuthContext.Provider>
-        );
+    const logout = async () => {
+        await storageAdapter!.removeToken();
+        setAuthenticated(false);
+        setUser(null);
     };
+
+    const signAndLogin = async () => {
+        if (!address) return;
+
+        try {
+            // Get nonce from backend
+            const { data } = await getNonce();
+            const { nonce } = data;
+
+            // Store nonce for later use
+            setPendingNonce(nonce);
+
+            // Create message to sign
+            const message = `Sign this message to authenticate: ${nonce}`;
+
+            // Trigger the signing process
+            signMessage({ message });
+        } catch (error) {
+            console.error('Error getting nonce:', error);
+        }
+    };
+
+    return (
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            user,
+            logout,
+            signAndLogin,
+            isSigning,
+            isVerifying,
+            isNonceLoading
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export type { AuthContextType, User };
