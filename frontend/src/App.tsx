@@ -1,5 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { http } from 'viem';
 import {
@@ -9,10 +8,11 @@ import {
 import { injected } from 'wagmi/connectors';
 
 import Main from './components/layout/Main';
-import { AuthProvider } from '@do-not-stop/shared-auth';
+import { AuthProvider, queryClient } from '@do-not-stop/shared-auth';
 import { SolanaWalletProvider } from './contexts';
 import { DynamicProvider } from './contexts/dynamic';
 import { CHAINS } from './constants/chains';
+import './config'; // Import config.ts to run shared auth configuration
 import './App.css';
 
 // All supported chains from centralized configuration
@@ -28,24 +28,6 @@ const config = createConfig({
       http(chain.rpcUrls.default.http[0])
     ])
   ),
-});
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: (failureCount, error) => {
-        // Don't retry on 401 (unauthorized)
-        if (error instanceof AxiosError && error.response?.status === 401) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-    },
-    mutations: {
-      retry: false, // Don't retry mutations by default
-    },
-  },
 });
 
 const App: React.FC = () => {

@@ -3,13 +3,9 @@ import { WagmiAdapter } from '@reown/appkit-wagmi-react-native';
 import { SolanaAdapter } from '@reown/appkit-solana-react-native';
 import { mainnet, sepolia } from 'wagmi/chains';
 import { storage } from './StorageUtil';
-import { QueryClient } from '@tanstack/react-query';
 import { REOWN_PROJECT_ID } from '@env';
 
 const projectId = REOWN_PROJECT_ID || 'YOUR_PROJECT_ID';
-
-// Setup queryClient
-export const queryClient = new QueryClient();
 
 // Create Wagmi adapter for Ethereum chains
 export const wagmiAdapter = new WagmiAdapter({
