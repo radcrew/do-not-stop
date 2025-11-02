@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import { useAccount, useSignMessage } from 'wagmi';
 import { useNonce } from '../hooks/useNonce';
 import { useVerifySignature } from '../hooks/useVerifySignature';
+import { getStorageAdapter } from '../api';
 
 interface User {
     address: string;
@@ -19,12 +20,6 @@ interface AuthContextType {
     isNonceLoading: boolean;
 }
 
-export interface StorageAdapter {
-    getToken: () => Promise<string | null> | string | null;
-    setToken: (token: string) => Promise<void> | void;
-    removeToken: () => Promise<void> | void;
-}
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
@@ -35,17 +30,8 @@ export const useAuth = () => {
     return context;
 };
 
-// Global storage adapter
-let storageAdapter: StorageAdapter | undefined;
-
-/**
- * Sets the storage adapter for platform-specific token storage
- */
-export const setStorageAdapter = (adapter: StorageAdapter): void => {
-    storageAdapter = adapter;
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const storageAdapter = getStorageAdapter();
     if (!storageAdapter) {
         throw new Error('Storage adapter not set. Call setStorageAdapter() before using AuthProvider.');
     }
@@ -78,7 +64,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!isWalletConnected) {
             setAuthenticated(false);
             setUser(null);
-            storageAdapter!.removeToken();
+            const adapter = getStorageAdapter();
+            if (adapter) {
+                adapter.removeToken();
+            }
             return;
         }
     }, [address, isConnected]);
@@ -121,7 +110,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [signError]);
 
     const logout = async () => {
-        await storageAdapter!.removeToken();
+        const adapter = getStorageAdapter();
+        if (adapter) {
+            await adapter.removeToken();
+        }
         setAuthenticated(false);
         setUser(null);
     };

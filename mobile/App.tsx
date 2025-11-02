@@ -5,17 +5,18 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@do-not-stop/shared-auth';
 import { appKit, wagmiConfig, queryClient } from './src/AppKitConfig';
 import YourAppRootComponent from './src/YourAppRootComponent.tsx';
+import './config';
 
 export default function App() {
   return (
-    <AppKitProvider instance={appKit}>
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <AppKitProvider instance={appKit}>
           <AuthProvider>
             <YourAppRootComponent />
           </AuthProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-    </AppKitProvider>
+        </AppKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
