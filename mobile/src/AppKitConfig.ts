@@ -1,3 +1,5 @@
+import "@walletconnect/react-native-compat";
+
 import { createAppKit, solana, type AppKitNetwork } from '@reown/appkit-react-native';
 import { WagmiAdapter } from '@reown/appkit-wagmi-react-native';
 import { SolanaAdapter } from '@reown/appkit-solana-react-native';
@@ -5,11 +7,11 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { storage } from './StorageUtil';
 import { REOWN_PROJECT_ID } from '@env';
 
-const projectId = REOWN_PROJECT_ID || 'YOUR_PROJECT_ID';
+const reownProjectId = REOWN_PROJECT_ID;
 
 // Create Wagmi adapter for Ethereum chains
-export const wagmiAdapter = new WagmiAdapter({
-    projectId,
+const wagmiAdapter = new WagmiAdapter({
+    projectId: reownProjectId,
     networks: [mainnet, sepolia],
 });
 
@@ -21,7 +23,7 @@ const solanaAdapter = new SolanaAdapter();
 
 // Create AppKit instance with both Ethereum and Solana support
 export const appKit = createAppKit({
-    projectId,
+    reownProjectId,
     networks: [mainnet, sepolia, solana],
     defaultNetwork: mainnet,
     adapters: [wagmiAdapter, solanaAdapter],
