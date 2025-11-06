@@ -14,8 +14,6 @@
     "@do-not-stop/shared-auth": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/netinfo": "^11.4.1",
-    "@react-native/codegen": "^0.82.1",
-    "@react-native/gradle-plugin": "^0.82.1",
     "@reown/appkit-react-native": "^2.0.1",
     "@reown/appkit-solana-react-native": "^2.0.1",
     "@reown/appkit-wagmi-react-native": "^2.0.1",
