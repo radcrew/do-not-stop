@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient, AuthProvider } from '@do-not-stop/shared-auth';
 
 import { appKit, wagmiConfig } from './src/AppKitConfig';
-import YourAppRootComponent from './src/YourAppRootComponent.tsx';
+import AppRoot from './src/AppContent.tsx';
 import './config';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <AppKitProvider instance={appKit}>
           <AuthProvider>
-            <YourAppRootComponent />
+            <AppRoot />
           </AuthProvider>
         </AppKitProvider>
       </QueryClientProvider>

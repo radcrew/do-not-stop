@@ -1,13 +1,10 @@
 import React from 'react';
-import { StatusBar, StyleSheet, useColorScheme, View, ScrollView } from 'react-native';
-import {
-    SafeAreaProvider,
-    useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StatusBar, StyleSheet, useColorScheme, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
 import ConnectButton from './components/ConnectButton';
 
-function YourAppRootComponent() {
+function AppRoot() {
     const isDarkMode = useColorScheme() === 'dark';
 
     return (
@@ -19,8 +16,6 @@ function YourAppRootComponent() {
 }
 
 function AppContent() {
-    const safeAreaInsets = useSafeAreaInsets();
-
     return (
         <ScrollView style={styles.container}>
             {/* Example AppKit usage */}
@@ -38,4 +33,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default YourAppRootComponent;
+export default AppRoot;
