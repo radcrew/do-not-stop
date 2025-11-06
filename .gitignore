@@ -156,13 +156,6 @@ deployments/
 # Solidity compiler output
 *.sol.js
 
-# Environment variables
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-
 # IDE files
 .vscode/
 .idea/
@@ -178,10 +171,14 @@ deployments/
 ehthumbs.db
 Thumbs.db
 
-# Build outputs
+# General build outputs (keep specific build/Release above)
 dist/
 build/
 
-#solana
+# Android debug keystore (should not be committed)
+**/debug.keystore
+
+# Solana / Rust build outputs
+**/target/
 test-ledger
 .pnpm-store
