@@ -1,7 +1,7 @@
 import { setApiBaseUrl, setTokenSuccessCallback, setStorageAdapter } from '@do-not-stop/shared-auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const API_URL = 'http://localhost:3001'; // Backend API URL
+import { API_URL } from '@env'
 
 // Configure the shared auth API client
 setApiBaseUrl(API_URL);
