@@ -356,8 +356,7 @@
 /* Responsive */
 @media (max-width: 480px) {
     .network-switcher-compact {
-        top: 10px;
-        right: 10px;
+        position: static;
     }
 
     .network-trigger-compact {

@@ -30,7 +30,7 @@ const Main: React.FC = () => {
           </>
         ) : (
           <div className="welcome-section">
-            <h2>Welcome to Do Not Stop</h2>
+            <br />
             <p>Connect your wallet to start creating and managing your zombie collection!</p>
             <div className="features">
               <div className="feature">

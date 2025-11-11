@@ -527,8 +527,11 @@
         right: auto;
         margin: 10px 0;
         width: auto;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
     }
 
     .connect-wallet-btn {
@@ -537,7 +540,8 @@
     }
 
     .user-trigger {
-        width: 100%;
+        width: auto;
+        min-width: 120px;
         justify-content: center;
     }
 
