@@ -46,6 +46,10 @@
   flex-direction: column;
 }
 
+.main-content:not(.authenticated) {
+  min-height: 0;
+}
+
 /* Header Styles */
 .main-header {
   position: fixed;
@@ -90,8 +94,10 @@
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Authenticated Layout */
