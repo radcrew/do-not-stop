@@ -4,12 +4,12 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite --host",
-        "build": "tsc -b && vite build",
+        "dev": "node ../node_modules/vite/bin/vite.js --host",
+        "build": "tsc -b && ../node_modules/.bin/vite build",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "lint:check": "eslint . --max-warnings 0",
-        "preview": "vite preview"
+        "preview": "node ../node_modules/vite/bin/vite.js preview"
     },
     "dependencies": {
         "@do-not-stop/shared-auth": "workspace:*",
