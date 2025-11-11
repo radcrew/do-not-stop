@@ -147,6 +147,12 @@
   margin-inline: auto;
 }
 
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
 .feature {
   background: var(--color-background);
   border-radius: var(--border-radius);
