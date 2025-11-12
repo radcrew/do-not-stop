@@ -1,7 +1,9 @@
 import React from 'react';
-import { StatusBar, StyleSheet, useColorScheme, ScrollView } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar, StyleSheet, useColorScheme, ScrollView, View, Text } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
+import { useAuth } from '@do-not-stop/shared-auth';
+import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
 
 function AppRoot() {
@@ -16,20 +18,135 @@ function AppRoot() {
 }
 
 function AppContent() {
+    const { isAuthenticated } = useAuth();
+    const { isConnected } = useAccount();
+    const insets = useSafeAreaInsets();
+
     return (
-        <ScrollView style={styles.container}>
-            {/* Example AppKit usage */}
-            <ConnectButton />
+        <View style={styles.mainContainer}>
+            {/* Header */}
+            <View style={[styles.header, { paddingTop: Math.max(insets.top, 16) }]}>
+                <Text style={styles.headerTitle}>Do Not Stop</Text>
+            </View>
+
+            {/* Main Content */}
+            <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                {isAuthenticated || isConnected ? (
+                    <View style={styles.authenticatedContent}>
+                        <Text style={styles.authenticatedText}>Welcome back!</Text>
+                        {/* TODO: Add ZombieGallery and ZombieInteractions components */}
+                    </View>
+                ) : (
+                    <View style={styles.welcomeSection}>
+                        <Text style={styles.welcomeText}>
+                            Connect your wallet to start creating and managing your zombie collection!
+                        </Text>
+                        <View style={styles.features}>
+                            <View style={styles.feature}>
+                                <Text style={styles.featureTitle}>🧟‍♂️ Create Zombies</Text>
+                            </View>
+                            <View style={styles.feature}>
+                                <Text style={styles.featureTitle}>⚔️ Battle System</Text>
+                            </View>
+                            <View style={styles.feature}>
+                                <Text style={styles.featureTitle}>🧬 Breeding</Text>
+                            </View>
+                        </View>
+                        <View style={styles.connectButtonContainer}>
+                            <ConnectButton />
+                        </View>
+                    </View>
+                )}
+            </ScrollView>
 
             {/* AppKit UI component for wallet connection */}
             <AppKit />
-        </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    mainContainer: {
         flex: 1,
+        backgroundColor: '#ffffff',
+    },
+    header: {
+        backgroundColor: '#ffffff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e0e0e0',
+        paddingHorizontal: 16,
+        paddingBottom: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    headerTitle: {
+        fontSize: 28,
+        fontWeight: '700',
+        textAlign: 'center',
+        color: '#667eea',
+    },
+    scrollView: {
+        flex: 1,
+    },
+    scrollContent: {
+        paddingHorizontal: 16,
+        paddingTop: 24,
+        paddingBottom: 32,
+    },
+    welcomeSection: {
+        alignItems: 'center',
+    },
+    welcomeText: {
+        fontSize: 18,
+        color: '#666',
+        textAlign: 'center',
+        marginBottom: 32,
+        maxWidth: 600,
+        lineHeight: 24,
+    },
+    features: {
+        width: '100%',
+        maxWidth: 900,
+    },
+    feature: {
+        backgroundColor: '#ffffff',
+        borderRadius: 16,
+        padding: 24,
+        marginBottom: 24,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+    },
+    featureTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#333',
+    },
+    connectButtonContainer: {
+        alignItems: 'center',
+        marginTop: 8,
+    },
+    authenticatedContent: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: 400,
+    },
+    authenticatedText: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: '#333',
     },
 });
 
