@@ -19,11 +19,9 @@ export default function ConnectButton() {
 
     if (!isConnected) {
         return (
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.button} onPress={() => open()}>
-                    <Text style={styles.buttonText}>Connect Wallet</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.connectButton} onPress={() => open()}>
+                <Text style={styles.connectButtonText}>Connect Wallet</Text>
+            </TouchableOpacity>
         );
     }
 
@@ -95,6 +93,25 @@ export default function ConnectButton() {
 }
 
 const styles = StyleSheet.create({
+    connectButton: {
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        backgroundColor: '#667eea',
+        borderRadius: 12,
+        minWidth: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    connectButtonText: {
+        color: '#ffffff',
+        fontSize: 14,
+        fontWeight: '600',
+    },
     container: {
         padding: 16,
         backgroundColor: '#f0f0f0',
