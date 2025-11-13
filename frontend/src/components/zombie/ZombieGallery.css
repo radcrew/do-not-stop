@@ -474,29 +474,43 @@
 /* Responsive Design */
 @media (max-width: 480px) {
     .zombie-gallery {
-        padding: var(--spacing-md);
+        padding: 16px;
+    }
+
+    .gallery-card {
+        padding: 20px;
+    }
+
+    .gallery-header {
+        margin-block-end: var(--spacing-sm);
     }
 
     .gallery-header h2 {
-        font-size: var(--font-size-2xl);
+        font-size: var(--font-size-xl);
     }
 
     .zombie-grid {
         grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+        gap: var(--spacing-sm);
+        margin-block-start: var(--spacing-sm);
     }
 
     .zombie-card {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
+    }
+
+    .zombie-header {
+        margin-block-end: var(--spacing-xs);
     }
 
     .zombie-header h3 {
-        font-size: var(--font-size-lg);
+        font-size: var(--font-size-base);
     }
 
     .zombie-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-sm);
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
+        margin-block-end: var(--spacing-xs);
     }
 
     .stat {
@@ -504,24 +518,67 @@
     }
 
     .stat-label {
-        font-size: var(--font-size-xs);
+        font-size: 0.625rem;
     }
 
     .stat-value {
+        font-size: var(--font-size-xs);
+    }
+
+    .zombie-status {
+        margin-block-start: var(--spacing-xs);
+    }
+
+    .status {
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-xs);
+    }
+
+    .zombie-actions {
+        margin-block-start: var(--spacing-xs);
+    }
+
+    .send-button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-xs);
+    }
+
+    .empty-state {
+        padding: var(--spacing-lg) var(--spacing-sm);
+        padding-block-start: var(--spacing-lg);
+    }
+
+    .empty-icon {
+        font-size: 2.5rem;
+        margin-block-end: var(--spacing-xs);
+    }
+
+    .empty-state h3 {
+        font-size: var(--font-size-lg);
+    }
+
+    .create-button-container {
+        margin-block-start: var(--spacing-sm);
+        margin-block-end: var(--spacing-sm);
+    }
+
+    .create-first-zombie-button {
+        padding: var(--spacing-sm) var(--spacing-md);
         font-size: var(--font-size-sm);
     }
-}
 
-@media (max-width: 480px) {
-    .zombie-stats {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
+    .loading-container {
+        padding: var(--spacing-lg);
+    }
+
+    .error-container {
+        padding: var(--spacing-lg);
     }
 
     .zombie-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: var(--spacing-sm);
+        gap: var(--spacing-xs);
     }
 
     .rarity-badge {
