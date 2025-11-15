@@ -65,10 +65,6 @@
     cursor: not-allowed;
 }
 
-.modal-content {
-    padding: 24px;
-}
-
 .zombie-preview {
     background: linear-gradient(135deg, #3d2817 0%, #2c1810 100%);
     border: 1px solid #8B4513;
