@@ -4,7 +4,11 @@ import { useAppKit } from '@reown/appkit-react-native';
 import { useAccount } from 'wagmi';
 import { useAuth } from '@do-not-stop/shared-auth';
 
-export default function ConnectButton() {
+interface ConnectButtonProps {
+    compact?: boolean;
+}
+
+export default function ConnectButton({ compact = false }: ConnectButtonProps = {}) {
     const { open, disconnect } = useAppKit();
     const { address, isConnected, chainId } = useAccount();
     const {
@@ -26,6 +30,16 @@ export default function ConnectButton() {
     }
 
     const isLoading = isSigning || isVerifying || isNonceLoading;
+
+    if (compact) {
+        return (
+            <TouchableOpacity style={styles.compactButton} onPress={() => open()}>
+                <Text style={styles.compactButtonText} numberOfLines={1} ellipsizeMode="middle">
+                    {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Connected'}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -110,6 +124,25 @@ const styles = StyleSheet.create({
     connectButtonText: {
         color: '#ffffff',
         fontSize: 14,
+        fontWeight: '600',
+    },
+    compactButton: {
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        backgroundColor: '#667eea',
+        borderRadius: 12,
+        minWidth: 120,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    compactButtonText: {
+        color: '#ffffff',
+        fontSize: 12,
         fontWeight: '600',
     },
     container: {

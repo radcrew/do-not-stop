@@ -27,6 +27,11 @@ function AppContent() {
             {/* Header */}
             <View style={[styles.header, { paddingTop: Math.max(insets.top, 16) }]}>
                 <Text style={styles.headerTitle}>Do Not Stop</Text>
+                {(isAuthenticated || isConnected) && (
+                    <View style={styles.walletSection}>
+                        <ConnectButton compact={true} />
+                    </View>
+                )}
             </View>
 
             {/* Main Content */}
@@ -91,6 +96,10 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         textAlign: 'center',
         color: '#667eea',
+    },
+    walletSection: {
+        marginTop: 12,
+        alignItems: 'center',
     },
     scrollView: {
         flex: 1,
