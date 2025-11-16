@@ -10,7 +10,7 @@ await setTimeout(10000); // Wait 5 seconds for Hardhat node to start
 
 console.log('🚀 Deploying contracts to local network...');
 try {
-    execSync('pnpm --prefix contracts/ethereum deploy:local', { stdio: 'inherit' });
+    execSync('pnpm deploy:local', { stdio: 'inherit' });
     console.log('✅ Contracts deployed successfully!');
 
     // Extract contract address and inject into frontend
@@ -23,7 +23,7 @@ try {
 async function injectContractAddress(): Promise<void> {
     try {
         // Read deployed addresses
-        const deployedAddressesPath = join(process.cwd(), 'contracts', 'ethereum', 'ignition', 'deployments', 'chain-31337', 'deployed_addresses.json');
+        const deployedAddressesPath = join(process.cwd(), 'ignition', 'deployments', 'chain-31337', 'deployed_addresses.json');
 
         if (!existsSync(deployedAddressesPath)) {
             console.error('❌ Deployed addresses file not found');
@@ -41,8 +41,7 @@ async function injectContractAddress(): Promise<void> {
         console.log(`📝 Contract address: ${contractAddress}`);
 
         // Update frontend .env file
-        const frontendEnvPath = join(process.cwd(), 'frontend', '.env');
-        const frontendEnvLocalPath = join(process.cwd(), 'frontend', '.env.local');
+        const frontendEnvLocalPath = join(process.cwd(), '..', '..', 'frontend', '.env.local');
 
         // Read existing .env.local or create new content
         let envContent = '';

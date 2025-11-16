@@ -12,7 +12,8 @@
         "deploy:local": "pnpm hh ignition deploy ignition/modules/CryptoZombies.ts --network localhost",
         "deploy:sepolia": "pnpm hh ignition deploy ignition/modules/CryptoZombies.ts --network sepolia",
         "deploy:status": "pnpm hh ignition status",
-        "deploy:visualize": "pnpm hh ignition visualize ignition/modules/CryptoZombies.ts"
+        "deploy:visualize": "pnpm hh ignition visualize ignition/modules/CryptoZombies.ts",
+        "deploy:inject": "tsx scripts/deploy.ts"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-ignition": "^3.0.3",
