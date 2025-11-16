@@ -45,7 +45,7 @@ async function injectNgrokUrl(): Promise<string | null> {
             console.log(`🌐 Found ngrok URL: ${ngrokUrl}`);
 
             // Update the .env file using dotenv
-            const envPath = path.join(process.cwd(), 'frontend/.env.local');
+            const envPath = path.join(process.cwd(), '..', '..', '..', 'frontend', '.env.local');
 
             // Read existing .env file and parse it
             let envConfig: Record<string, string> = {};
