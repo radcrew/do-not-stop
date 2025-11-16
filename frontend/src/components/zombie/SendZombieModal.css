@@ -11,11 +11,9 @@
     box-sizing: border-box;
 }
 
-/* Modal Content: match modal-content from CreateZombieModal.css */
 .send-zombie-modal {
     background: var(--color-background, white);
     border-radius: 16px;
-    /* --border-radius */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 100%;
@@ -24,22 +22,18 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    margin: 0 auto;
 }
 
-/* Modal Header: match modal-header */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2rem 2rem 1rem 2rem;
-    /* --spacing-xl, --spacing-md */
     border-block-end: 1px solid #e0e0e0;
-    /* --color-border */
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    /* --color-primary/secondary */
     color: white;
     border-radius: 16px 16px 0 0;
-    /* --border-radius */
     width: 100%;
     box-sizing: border-box;
 }
@@ -73,14 +67,13 @@
     color: white;
 }
 
-/* Modal Inner Body: match modal-body */
+/* Don't artificially expand modal-content width, rely on max-width only */
 .modal-content {
     padding: 2rem;
     overflow-y: auto;
     flex: 1;
-    width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
+    /* max-width: 100%; -- removed, let modal-limit control it */
 }
 
 .zombie-preview {
@@ -89,8 +82,6 @@
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
-    width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -190,7 +181,6 @@
     font-size: 0.95rem;
 }
 
-/* Modal Actions (footer) */
 .modal-actions {
     display: flex;
     gap: 12px;
@@ -242,7 +232,6 @@
     box-shadow: none;
 }
 
-/* Responsive Design -- match CreateZombieModal */
 @media (max-width: 768px) {
     .modal-overlay {
         padding: 0.5rem;
