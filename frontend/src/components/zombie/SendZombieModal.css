@@ -1,81 +1,102 @@
+/* Modal Overlay: match CreateZombieModal */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
+    padding: 1.5rem;
+    box-sizing: border-box;
 }
 
+/* Modal Content: match modal-content from CreateZombieModal.css */
 .send-zombie-modal {
-    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
-    border: 2px solid #8B4513;
-    border-radius: 12px;
-    padding: 0;
+    background: var(--color-background, white);
+    border-radius: 16px;
+    /* --border-radius */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
+/* Modal Header: match modal-header */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #8B4513;
-    background: linear-gradient(90deg, #8B4513 0%, #A0522D 100%);
-    border-radius: 10px 10px 0 0;
+    padding: 2rem 2rem 1rem 2rem;
+    /* --spacing-xl, --spacing-md */
+    border-block-end: 1px solid #e0e0e0;
+    /* --color-border */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* --color-primary/secondary */
+    color: white;
+    border-radius: 16px 16px 0 0;
+    /* --border-radius */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .modal-header h2 {
     margin: 0;
-    color: #fff;
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
+    color: white;
+    word-break: break-word;
 }
 
 .close-button {
     background: none;
     border: none;
-    color: #fff;
-    font-size: 24px;
+    font-size: 1.75rem;
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     padding: 0;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background-color 0.2s;
+    transition: background 0.2s;
 }
 
-.close-button:hover:not(:disabled) {
-    background-color: rgba(255, 255, 255, 0.2);
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
-.close-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+/* Modal Inner Body: match modal-body */
+.modal-content {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .zombie-preview {
-    background: linear-gradient(135deg, #3d2817 0%, #2c1810 100%);
-    border: 1px solid #8B4513;
+    background: var(--color-background-light, #f8f9fa);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .zombie-preview h3 {
     margin: 0 0 12px 0;
-    color: #fff;
+    color: #333;
     font-size: 1.25rem;
 }
 
@@ -83,44 +104,54 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .zombie-details p {
     margin: 0;
-    color: #ccc;
-    font-size: 0.9rem;
+    color: #555;
+    font-size: 0.95rem;
+    word-break: break-word;
 }
 
 .recipient-input {
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .recipient-input label {
     display: block;
     margin-bottom: 8px;
-    color: #fff;
-    font-weight: 500;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.875rem;
 }
 
 .recipient-input input {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #8B4513;
-    border-radius: 6px;
-    background: #2c1810;
-    color: #fff;
+    max-width: 100%;
+    padding: 0.5rem 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    color: #333;
     font-size: 1rem;
-    font-family: 'Courier New', monospace;
-    transition: border-color 0.2s;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
 }
 
 .recipient-input input:focus {
     outline: none;
-    border-color: #A0522D;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .recipient-input input.error {
-    border-color: #ff4444;
+    border-color: #dc3545;
 }
 
 .recipient-input input:disabled {
@@ -129,38 +160,53 @@
 }
 
 .error-message {
-    color: #ff4444;
-    font-size: 0.875rem;
-    margin: 8px 0 0 0;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-block-start: 1rem;
+    color: #dc3545;
+    font-size: 0.9rem;
+    font-weight: 500;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
 }
 
 .error-container {
-    background: #2c1810;
-    border: 1px solid #ff4444;
-    border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 20px;
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .error-container p {
     margin: 0;
-    color: #ff4444;
-    font-size: 0.9rem;
+    color: #dc3545;
+    font-size: 0.95rem;
 }
 
+/* Modal Actions (footer) */
 .modal-actions {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+    padding-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .cancel-button,
 .send-button {
-    padding: 12px 24px;
+    padding: 0.75rem 2rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -175,13 +221,17 @@
 }
 
 .send-button {
-    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    background: linear-gradient(45deg, #667eea, #764ba2);
     color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .send-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
-    transform: translateY(-1px);
+    background: linear-gradient(45deg, #764ba2, #667eea);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .send-button:disabled,
@@ -189,29 +239,38 @@
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
 }
 
-/* Responsive design */
-@media (max-width: 600px) {
+/* Responsive Design -- match CreateZombieModal */
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 0.5rem;
+    }
+
     .send-zombie-modal {
-        width: 95%;
-        margin: 20px;
+        max-width: 100%;
+    }
+
+    .modal-header {
+        padding: 1.5rem 1.5rem 1rem 1.5rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.25rem;
     }
 
     .modal-content {
-        padding: 16px;
+        padding: 1.5rem;
     }
 
-    .zombie-details {
-        grid-template-columns: 1fr;
+    .recipient-input input {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.5rem;
     }
 
-    .modal-actions {
-        flex-direction: column;
-    }
-
-    .cancel-button,
     .send-button {
-        width: 100%;
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
     }
 }
