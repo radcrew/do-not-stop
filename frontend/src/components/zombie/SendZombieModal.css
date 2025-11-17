@@ -11,25 +11,11 @@
     box-sizing: border-box;
 }
 
-.send-zombie-modal {
-    background: var(--color-background, white);
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 100%;
-    max-height: 90vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    margin: 0 auto;
-}
-
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 2rem 1rem 2rem;
+    padding: var(--spacing-xl);
     border-block-end: 1px solid #e0e0e0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -69,7 +55,6 @@
 
 /* Don't artificially expand modal-content width, rely on max-width only */
 .modal-content {
-    padding: 2rem;
     overflow-y: auto;
     flex: 1;
     box-sizing: border-box;
@@ -237,20 +222,12 @@
         padding: 0.5rem;
     }
 
-    .send-zombie-modal {
-        max-width: 100%;
-    }
-
     .modal-header {
         padding: 1.5rem 1.5rem 1rem 1.5rem;
     }
 
     .modal-header h2 {
         font-size: 1.25rem;
-    }
-
-    .modal-content {
-        padding: 1.5rem;
     }
 
     .recipient-input input {

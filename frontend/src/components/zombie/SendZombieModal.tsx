@@ -76,7 +76,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
 
     return (
         <div className="modal-overlay" onClick={handleClose}>
-            <div className="send-zombie-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
                     <h2>Send Zombie</h2>
                     <button
@@ -88,7 +88,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
                     </button>
                 </div>
 
-                <div className="modal-content">
+                <div className="modal-body">
                     <div className="zombie-preview">
                         <h3>{zombie.name}</h3>
                         <div className="zombie-details">
