@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useZombiesContract } from '../../hooks/useZombiesContract';
+import TransactionStatus from '../ui/TransactionStatus';
 import './SendZombieModal.css';
 
 interface SendZombieModalProps {
@@ -23,7 +24,8 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
     const [recipientAddress, setRecipientAddress] = useState('');
     const [isConfirming, setIsConfirming] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const { transferZombie, isPending, writeError, refetchZombieIds } = useZombiesContract();
+    const [txHash, setTxHash] = useState<string | undefined>(undefined);
+    const { transferZombie, isPending, writeError, refetchZombieIds, hash } = useZombiesContract();
 
     const validateAddress = (address: string): boolean => {
         return /^0x[a-fA-F0-9]{40}$/.test(address);
@@ -47,17 +49,9 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
             return;
         }
 
-        setIsConfirming(true);
-
         try {
+            setIsConfirming(true);
             await transferZombie(recipientAddress, zombieId);
-            // Wait for transaction to complete
-            setTimeout(() => {
-                refetchZombieIds();
-                onClose();
-                setRecipientAddress('');
-                setIsConfirming(false);
-            }, 2000);
         } catch (err) {
             setError('Failed to send zombie. Please try again.');
             setIsConfirming(false);
@@ -68,8 +62,24 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
         if (!isConfirming && !isPending) {
             setRecipientAddress('');
             setError(null);
+            setTxHash(undefined);
             onClose();
         }
+    };
+
+    React.useEffect(() => {
+        if (hash) {
+            setTxHash(hash);
+        }
+    }, [hash]);
+
+    const handleTransactionComplete = async () => {
+        await refetchZombieIds();
+        setRecipientAddress('');
+        setIsConfirming(false);
+        setError(null);
+        setTxHash(undefined);
+        onClose();
     };
 
     if (!isOpen) return null;
@@ -135,6 +145,16 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
                         </button>
                     </div>
                 </div>
+
+                <TransactionStatus
+                    hash={txHash}
+                    onComplete={handleTransactionComplete}
+                    onError={(err) => {
+                        setError(err.message);
+                        setIsConfirming(false);
+                        setTxHash(undefined);
+                    }}
+                />
             </div>
         </div>
     );

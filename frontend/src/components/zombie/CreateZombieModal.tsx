@@ -10,12 +10,13 @@ interface CreateZombieModalProps {
 }
 
 const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }) => {
-    const { isConnected, createRandomZombie, hash, isPending, writeError } = useZombiesContract();
+    const { isConnected, createRandomZombie, hash, isPending, writeError, refetchZombieIds } = useZombiesContract();
     const [zombieName, setZombieName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [isUserRejection, setIsUserRejection] = useState(false);
     const [isContractError, setIsContractError] = useState(false);
+    const [txHash, setTxHash] = useState<string | undefined>(undefined);
 
     const handleCreateZombie = async () => {
         if (!isConnected) {
@@ -46,8 +47,11 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         setZombieName('');
     };
 
-    const handleTransactionComplete = () => {
+    const handleTransactionComplete = async () => {
         handleSuccess();
+        onClose();
+        setTxHash(undefined);
+        await refetchZombieIds();
     };
 
     const handleClose = () => {
@@ -56,8 +60,15 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         setSuccess(null);
         setIsUserRejection(false);
         setIsContractError(false);
+        setTxHash(undefined);
         onClose();
     };
+
+    React.useEffect(() => {
+        if (hash) {
+            setTxHash(hash);
+        }
+    }, [hash]);
 
     React.useEffect(() => {
         if (writeError) {
@@ -119,9 +130,12 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
                     )}
 
                     <TransactionStatus
-                        hash={hash}
+                        hash={txHash}
                         onComplete={handleTransactionComplete}
-                        onError={(error) => setError(error.message)}
+                        onError={(error) => {
+                            setError(error.message);
+                            setTxHash(undefined);
+                        }}
                     />
                 </div>
             </div>
