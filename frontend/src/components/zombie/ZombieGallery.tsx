@@ -50,7 +50,7 @@ const ZombieGallery: React.FC = () => {
         return (
             <div className="zombie-gallery">
                 <div className="gallery-card">
-                    <div className="gallery-header">
+                    <div className="card-header">
                         <h2>🧟‍♂️ Your Zombie Collection</h2>
                         <p>Connect your wallet to view your zombies</p>
                     </div>
@@ -62,7 +62,7 @@ const ZombieGallery: React.FC = () => {
     return (
         <div className="zombie-gallery">
             <div className="gallery-card">
-                <div className="gallery-header">
+                <div className="card-header">
                     <h2>🧟‍♂️ Your Zombies</h2>
                     <button
                         onClick={() => refetchZombieIds()}

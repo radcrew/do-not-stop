@@ -17,14 +17,6 @@
     flex-direction: column;
 }
 
-.interactions-card h3 {
-    margin: 0 0 16px 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-    text-align: center;
-}
-
 .interactions-card p {
     margin: 0 0 20px 0;
     color: #666;
@@ -39,10 +31,14 @@
 }
 
 .action-buttons {
-    display: flex;
+    padding-block-start: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
     gap: 16px;
     justify-content: center;
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 24px;
 }
 
 .action-button {
@@ -55,7 +51,8 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    min-width: 160px;
+    min-width: 0;
+    text-align: center;
 }
 
 .breed-button {
@@ -317,13 +314,8 @@
     }
 
     .action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .action-button {
-        width: 100%;
-        max-width: 200px;
+        grid-template-columns: 1fr;
+        max-width: 280px;
     }
 
     .zombie-selection {

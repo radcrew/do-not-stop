@@ -164,7 +164,9 @@ const ZombieInteractions: React.FC = () => {
         return (
             <div className="zombie-interactions">
                 <div className="interactions-card">
-                    <h3>⚔️ Zombie Interactions</h3>
+                    <div className="card-header">
+                        <h3>⚔️ Zombie Interactions</h3>
+                    </div>
                     <p>Connect your wallet to interact with your zombies</p>
                 </div>
             </div>
@@ -186,7 +188,9 @@ const ZombieInteractions: React.FC = () => {
         return (
             <div className="zombie-interactions">
                 <div className="interactions-card">
-                    <h3>⚔️ Zombie Interactions</h3>
+                    <div className="card-header">
+                        <h3>⚔️ Zombie Interactions</h3>
+                    </div>
                     <p>You need at least 2 zombies to breed or battle</p>
                     <p className="help-text">Create your first zombie above, then breed it to create more zombies!</p>
                 </div>
@@ -199,7 +203,9 @@ const ZombieInteractions: React.FC = () => {
     return (
         <div className="zombie-interactions">
             <div className="interactions-card">
-                <h3>⚔️ Zombie Interactions</h3>
+                <div className="card-header">
+                    <h3>⚔️ Zombie Interactions</h3>
+                </div>
 
                 {!action && (
                     <div className="action-buttons">

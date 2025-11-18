@@ -97,8 +97,8 @@
     }
 }
 
-/* Gallery Header */
-.gallery-header {
+/* Card Header */
+.card-header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,7 +106,8 @@
     position: relative;
 }
 
-.gallery-header h2 {
+.card-header h2,
+.card-header h3 {
     margin: 0;
     font-size: var(--font-size-3xl);
     font-weight: 700;
@@ -481,11 +482,12 @@
         padding: 20px;
     }
 
-    .gallery-header {
+    .card-header {
         margin-block-end: var(--spacing-sm);
     }
 
-    .gallery-header h2 {
+    .card-header h2,
+    .card-header h3 {
         font-size: var(--font-size-xl);
     }
 
