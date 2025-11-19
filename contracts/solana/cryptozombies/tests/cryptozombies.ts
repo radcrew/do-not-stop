@@ -8,9 +8,19 @@ describe("cryptozombies", () => {
 
   const program = anchor.workspace.cryptozombies as Program<Cryptozombies>;
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
+  it("initializes global state", async () => {
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const tx = await program.methods
+      .initialize(new anchor.BN(1_000_000))
+      .accounts({
+        globalState,
+      })
+      .rpc();
+
+    console.log("initialized tx", tx);
   });
 });
