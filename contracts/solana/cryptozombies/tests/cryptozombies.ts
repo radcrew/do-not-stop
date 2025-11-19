@@ -23,4 +23,40 @@ describe("cryptozombies", () => {
 
     console.log("initialized tx", tx);
   });
+
+  it("creates starter zombie", async () => {
+    const provider = anchor.getProvider();
+    const wallet = provider.wallet as anchor.Wallet;
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const [playerProfile] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("player-profile"), wallet.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    const [zombie] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        wallet.publicKey.toBuffer(),
+        new anchor.BN(1).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    const tx = await program.methods
+      .createStarterZombie("Starter", new anchor.BN(12345), 1)
+      .accounts({
+        globalState,
+        playerProfile,
+        zombie,
+        owner: wallet.publicKey,
+      })
+      .rpc();
+
+    console.log("starter zombie tx", tx);
+  });
 });
