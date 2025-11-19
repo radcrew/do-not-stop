@@ -1,9 +1,13 @@
-mod errors;
-mod instructions;
-mod state;
+pub mod errors;
+pub mod instructions;
+pub mod state;
 
 use anchor_lang::prelude::*;
-use instructions::{create_starter_zombie::*, initialize::*};
+use instructions::{
+    create_starter_zombie::*,
+    initialize::*,
+    level_up::*,
+};
 
 declare_id!("BJ6fL2BsUqkRbqXEeQ4mQ6HLens4jYEqmwQg3yFkbSrF");
 
@@ -25,5 +29,9 @@ pub mod cryptozombies {
         rarity: u8,
     ) -> Result<()> {
         create_starter_zombie::handler(ctx, name, dna, rarity)
+    }
+
+    pub fn level_up(ctx: Context<LevelUp>) -> Result<()> {
+        level_up::handler(ctx)
     }
 }
