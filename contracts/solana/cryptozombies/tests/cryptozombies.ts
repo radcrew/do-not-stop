@@ -307,4 +307,48 @@ describe("cryptozombies", () => {
     }
     expect(threw).to.be.true;
   });
+
+  it("pauses and unpauses program (admin only)", async () => {
+    const provider = anchor.getProvider();
+    const wallet = provider.wallet as anchor.Wallet;
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    // pause as admin
+    await (program as any).methods.pause().accounts({ globalState }).rpc();
+
+    // attempt to create a new starter should fail while paused
+    const [playerProfile2] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("player-profile"), wallet.publicKey.toBuffer()],
+      program.programId,
+    );
+    const [z2] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("zombie"), wallet.publicKey.toBuffer(), new anchor.BN(10).toArrayLike(Buffer, "le", 4)],
+      program.programId,
+    );
+
+    let threw = false;
+    try {
+      await (program as any).methods
+        .createStarterZombie("AfterPause", new anchor.BN(5), 1)
+        .accounts({ globalState, playerProfile: playerProfile2, zombie: z2, owner: wallet.publicKey })
+        .rpc();
+    } catch (e) {
+      threw = true;
+    }
+    expect(threw).to.be.true;
+
+    // unpause
+    await (program as any).methods.unpause().accounts({ globalState }).rpc();
+
+    // now create should succeed
+    const tx = await (program as any).methods
+      .createStarterZombie("AfterUnpause", new anchor.BN(6), 1)
+      .accounts({ globalState, playerProfile: playerProfile2, zombie: z2, owner: wallet.publicKey })
+      .rpc();
+    expect(tx).to.exist;
+  });
 });
