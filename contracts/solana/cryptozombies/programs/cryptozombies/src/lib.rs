@@ -8,6 +8,8 @@ use instructions::{
     initialize::*,
     level_up::*,
     rename_zombie::*,
+    pause::*,
+    unpause::*,
 };
 
 declare_id!("BJ6fL2BsUqkRbqXEeQ4mQ6HLens4jYEqmwQg3yFkbSrF");
@@ -39,4 +41,12 @@ pub mod cryptozombies {
     pub fn rename_zombie(ctx: Context<RenameZombie>, name: String) -> Result<()> {
         rename_zombie::handler(ctx, name)
     }
+
+        pub fn pause(ctx: Context<Pause>) -> Result<()> {
+            pause::handler(ctx)
+        }
+
+        pub fn unpause(ctx: Context<Unpause>) -> Result<()> {
+            unpause::handler(ctx)
+        }
 }

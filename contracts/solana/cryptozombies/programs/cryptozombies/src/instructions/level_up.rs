@@ -6,6 +6,9 @@ pub fn handler(ctx: Context<LevelUp>) -> Result<()> {
     let global_state = &mut ctx.accounts.global_state;
     let zombie = &mut ctx.accounts.zombie;
 
+    // enforce pause
+    require!(!global_state.paused, crate::errors::ErrorCode::Paused);
+
     require_keys_eq!(
         zombie.owner,
         ctx.accounts.owner.key(),

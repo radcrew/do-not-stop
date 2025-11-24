@@ -8,5 +8,7 @@ pub enum ErrorCode {
     StarterAlreadyCreated,
     #[msg("Not authorized to perform this action")]
     Unauthorized,
+    #[msg("Program is paused")]
+    Paused,
 }
 

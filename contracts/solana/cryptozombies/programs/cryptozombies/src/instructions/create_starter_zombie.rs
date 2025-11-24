@@ -20,6 +20,9 @@ pub fn handler(
     let player_profile = &mut ctx.accounts.player_profile;
     let zombie = &mut ctx.accounts.zombie;
 
+    // enforce pause
+    require!(!global_state.paused, ErrorCode::Paused);
+
     require!(
         !player_profile.starter_created,
         ErrorCode::StarterAlreadyCreated
