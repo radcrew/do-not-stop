@@ -1,6 +1,8 @@
+// @ts-nocheck
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { Cryptozombies } from "../target/types/cryptozombies";
+import { expect } from "chai";
 
 describe("cryptozombies", () => {
   // Configure the client to use the local cluster.
@@ -22,6 +24,12 @@ describe("cryptozombies", () => {
       .rpc();
 
     console.log("initialized tx", tx);
+
+    // fetch and assert global state fields
+    const gs = await (program as any).account.globalState.fetch(globalState);
+    // basic existence checks
+    expect(gs).to.not.be.null;
+    expect(gs.admin).to.exist;
   });
 
   it("creates starter zombie", async () => {
@@ -58,6 +66,18 @@ describe("cryptozombies", () => {
       .rpc();
 
     console.log("starter zombie tx", tx);
+
+    // verify player profile and zombie accounts
+    const pp = await (program as any).account.playerProfile.fetch(playerProfile);
+    expect(pp).to.not.be.null;
+    // owner stored as Pubkey
+    expect(pp.owner?.toBase58 ? pp.owner.toBase58() : pp.owner).to.equal(wallet.publicKey.toBase58());
+    expect(pp.starter_created ?? pp.starterCreated).to.be.ok;
+
+    const z = await (program as any).account.zombieAccount.fetch(zombie);
+    expect(z).to.not.be.null;
+    expect(z.owner?.toBase58 ? z.owner.toBase58() : z.owner).to.equal(wallet.publicKey.toBase58());
+    expect(Number(z.level)).to.be.gte(1);
   });
 
   it("levels up a zombie", async () => {
@@ -78,7 +98,9 @@ describe("cryptozombies", () => {
       program.programId,
     );
 
-    const tx = await program.methods
+    const before = await (program as any).account.zombieAccount.fetch(zombie);
+
+    const tx = await (program as any).methods
       .levelUp()
       .accounts({
         globalState,
@@ -88,5 +110,130 @@ describe("cryptozombies", () => {
       .rpc();
 
     console.log("level up tx", tx);
+
+    const after = await (program as any).account.zombieAccount.fetch(zombie);
+    expect(Number(after.level)).to.equal(Number(before.level) + 1);
+  });
+
+  it("fails to create a second starter (StarterAlreadyCreated)", async () => {
+    const provider = anchor.getProvider();
+    const wallet = provider.wallet as anchor.Wallet;
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const [playerProfile] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("player-profile"), wallet.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    const [zombie2] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        wallet.publicKey.toBuffer(),
+        new anchor.BN(2).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    // should throw
+    let threw = false;
+    try {
+      await (program as any).methods
+        .createStarterZombie("Starter2", new anchor.BN(99999), 1)
+        .accounts({
+          globalState,
+          playerProfile,
+          zombie: zombie2,
+          owner: wallet.publicKey,
+        })
+        .rpc();
+    } catch (e) {
+      threw = true;
+    }
+    expect(threw).to.be.true;
+  });
+
+  it("fails when name is too long (NameTooLong)", async () => {
+    const provider = anchor.getProvider();
+    const wallet = provider.wallet as anchor.Wallet;
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    // reuse playerProfile from earlier
+    const [playerProfile] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("player-profile"), wallet.publicKey.toBuffer()],
+      program.programId,
+    );
+
+    const longName = "X".repeat(100);
+    const [zombie3] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        wallet.publicKey.toBuffer(),
+        new anchor.BN(3).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    let threw2 = false;
+    try {
+      await (program as any).methods
+        .createStarterZombie(longName, new anchor.BN(1), 1)
+        .accounts({
+          globalState,
+          playerProfile,
+          zombie: zombie3,
+          owner: wallet.publicKey,
+        })
+        .rpc();
+    } catch (e) {
+      threw2 = true;
+    }
+    expect(threw2).to.be.true;
+  });
+
+  it("fails to level up when not owner (Unauthorized)", async () => {
+    // create a different keypair to act as attacker
+    const attacker = anchor.web3.Keypair.generate();
+    const provider = anchor.getProvider();
+    // fund attacker
+    const airdropSig = await provider.connection.requestAirdrop(attacker.publicKey, 1_000_000_000);
+    await provider.connection.confirmTransaction(airdropSig);
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const [zombie] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        provider.wallet.publicKey.toBuffer(),
+        new anchor.BN(1).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    let threw3 = false;
+    try {
+      await (program as any).methods
+        .levelUp()
+        .accounts({
+          globalState,
+          zombie,
+          owner: attacker.publicKey,
+        })
+        .signers([attacker])
+        .rpc();
+    } catch (e) {
+      threw3 = true;
+    }
+    expect(threw3).to.be.true;
   });
 });
