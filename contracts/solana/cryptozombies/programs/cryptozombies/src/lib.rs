@@ -7,6 +7,7 @@ use instructions::{
     create_starter_zombie::*,
     initialize::*,
     level_up::*,
+    rename_zombie::*,
 };
 
 declare_id!("BJ6fL2BsUqkRbqXEeQ4mQ6HLens4jYEqmwQg3yFkbSrF");
@@ -33,5 +34,9 @@ pub mod cryptozombies {
 
     pub fn level_up(ctx: Context<LevelUp>) -> Result<()> {
         level_up::handler(ctx)
+    }
+
+    pub fn rename_zombie(ctx: Context<RenameZombie>, name: String) -> Result<()> {
+        rename_zombie::handler(ctx, name)
     }
 }

@@ -6,5 +6,7 @@ pub enum ErrorCode {
     NameTooLong,
     #[msg("Starter zombie already created")]
     StarterAlreadyCreated,
+    #[msg("Not authorized to perform this action")]
+    Unauthorized,
 }
 
