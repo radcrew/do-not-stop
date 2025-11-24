@@ -236,4 +236,75 @@ describe("cryptozombies", () => {
     }
     expect(threw3).to.be.true;
   });
+
+  it("renames a zombie (success)", async () => {
+    const provider = anchor.getProvider();
+    const wallet = provider.wallet as anchor.Wallet;
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const [zombie] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        wallet.publicKey.toBuffer(),
+        new anchor.BN(1).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    const newName = "Renamed";
+    await (program as any).methods
+      .renameZombie(newName)
+      .accounts({
+        globalState,
+        zombie,
+        owner: wallet.publicKey,
+      })
+      .rpc();
+
+    const z = await (program as any).account.zombieAccount.fetch(zombie);
+    expect(z.name_len).to.be.gt(0);
+    // name() helper isn't available in TS fetch; check stored bytes
+    const stored = Buffer.from(z.name as any).slice(0, z.name_len);
+    expect(stored.toString()).to.equal(newName);
+  });
+
+  it("fails to rename when not owner (Unauthorized)", async () => {
+    const attacker = anchor.web3.Keypair.generate();
+    const provider = anchor.getProvider();
+    await provider.connection.requestAirdrop(attacker.publicKey, 1_000_000_000).then(sig => provider.connection.confirmTransaction(sig));
+
+    const [globalState] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("global-state")],
+      program.programId,
+    );
+
+    const [zombie] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("zombie"),
+        provider.wallet.publicKey.toBuffer(),
+        new anchor.BN(1).toArrayLike(Buffer, "le", 4),
+      ],
+      program.programId,
+    );
+
+    let threw = false;
+    try {
+      await (program as any).methods
+        .renameZombie("x")
+        .accounts({
+          globalState,
+          zombie,
+          owner: attacker.publicKey,
+        })
+        .signers([attacker])
+        .rpc();
+    } catch (e) {
+      threw = true;
+    }
+    expect(threw).to.be.true;
+  });
 });
