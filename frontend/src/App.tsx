@@ -9,7 +9,7 @@ import {
 import { injected } from 'wagmi/connectors';
 
 import Main from './components/layout/Main';
-import ZombieInteractions from './components/zombie/ZombieInteractions';
+import PetInteractions from './components/pet/PetInteractions';
 import { ApiClientProvider, AuthProvider, queryClient, useAuth } from '@do-not-stop/shared-auth';
 import { API_URL } from './config';
 import { SolanaWalletProvider } from './contexts';
@@ -47,36 +47,36 @@ const WalletAwareRoutes: React.FC = () => {
         path="/dashboard"
         element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}
       >
-        <Route index element={<ZombieInteractions />} />
+        <Route index element={<PetInteractions />} />
         <Route path="interactions/breed" element={<Navigate to="/breed" replace />} />
         <Route path="interactions/battle" element={<Navigate to="/battle" replace />} />
         <Route path="interactions/levelup" element={<Navigate to="/levelup" replace />} />
         <Route path="interactions/rename" element={<Navigate to="/rename" replace />} />
-        <Route path="interactions/:action?" element={<ZombieInteractions />} />
+        <Route path="interactions/:action?" element={<PetInteractions />} />
       </Route>
       <Route
         path="/breed"
         element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}
       >
-        <Route index element={<ZombieInteractions />} />
+        <Route index element={<PetInteractions />} />
       </Route>
       <Route
         path="/battle"
         element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}
       >
-        <Route index element={<ZombieInteractions />} />
+        <Route index element={<PetInteractions />} />
       </Route>
       <Route
         path="/levelup"
         element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}
       >
-        <Route index element={<ZombieInteractions />} />
+        <Route index element={<PetInteractions />} />
       </Route>
       <Route
         path="/rename"
         element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}
       >
-        <Route index element={<ZombieInteractions />} />
+        <Route index element={<PetInteractions />} />
       </Route>
       <Route
         path="*"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import TransactionStatus from '../ui/TransactionStatus';
-import { useZombiesContract, type Zombie } from '../../hooks/useZombiesContract';
+import { usePetsContract, type Pet } from '../../hooks/usePetsContract';
 import { parseContractError } from '../../utils/errorParser';
 import { getLifePercent } from '../../utils/petCard';
 import {
@@ -11,7 +11,7 @@ import {
     LEVELUP_PATH,
     RENAME_PATH,
 } from '../../constants/interactionRoutes';
-import './ZombieInteractions.css';
+import './PetInteractions.css';
 
 type InteractionAction = 'breed' | 'battle' | 'levelup' | 'changename';
 
@@ -39,7 +39,7 @@ const STANDALONE_HEADERS: Record<InteractionAction, { title: string; sub: string
     changename: { title: '✏️ Rename Pet', sub: "Change your pet's name (requires level 2+)" },
 };
 
-const ZombieInteractions: React.FC = () => {
+const PetInteractions: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { action: actionParam } = useParams<{ action?: string }>();
@@ -47,24 +47,24 @@ const ZombieInteractions: React.FC = () => {
     const isStandaloneView = standaloneAction !== null;
     const {
         isConnected,
-        zombies,
-        zombieIds,
+        pets,
+        petIds,
         isLoading,
-        createZombieFromDNA,
-        battleZombies,
+        createPetFromDNA,
+        battlePets,
         levelUp,
         changeName,
         hash,
         isPending,
         writeError,
-        refetchZombieIds,
+        refetchPetIds,
         isReady
-    } = useZombiesContract();
+    } = usePetsContract();
 
-    const [selectedZombie1, setSelectedZombie1] = useState<bigint | null>(null);
-    const [selectedZombie2, setSelectedZombie2] = useState<bigint | null>(null);
-    const [newZombieName, setNewZombieName] = useState('');
-    const [selectedZombie, setSelectedZombie] = useState<bigint | null>(null);
+    const [selectedPet1, setSelectedPet1] = useState<bigint | null>(null);
+    const [selectedPet2, setSelectedPet2] = useState<bigint | null>(null);
+    const [newPetName, setNewPetName] = useState('');
+    const [selectedPet, setSelectedPet] = useState<bigint | null>(null);
     const [newName, setNewName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -90,14 +90,14 @@ const ZombieInteractions: React.FC = () => {
         setLoading(isLoading);
     }, [isLoading]);
 
-    const getReadyZombies = (): { id: bigint; zombie: Zombie }[] => {
-        return zombieIds
-            .map((id, index) => ({ id, zombie: zombies[index] }))
-            .filter(({ zombie }) => zombie && isReady(zombie.readyTime));
+    const getReadyPets = (): { id: bigint; pet: Pet }[] => {
+        return petIds
+            .map((id, index) => ({ id, pet: pets[index] }))
+            .filter(({ pet }) => pet && isReady(pet.readyTime));
     };
 
     const handleBreed = async () => {
-        if (!selectedZombie1 || !selectedZombie2 || !newZombieName.trim()) {
+        if (!selectedPet1 || !selectedPet2 || !newPetName.trim()) {
             setError('Please select two pets and enter a name for the offspring');
             return;
         }
@@ -109,7 +109,7 @@ const ZombieInteractions: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await createZombieFromDNA(selectedZombie1, selectedZombie2, newZombieName.trim());
+            await createPetFromDNA(selectedPet1, selectedPet2, newPetName.trim());
         } catch (err) {
             setError('Failed to breed pets. Please try again.');
             console.error('Error breeding pets:', err);
@@ -117,7 +117,7 @@ const ZombieInteractions: React.FC = () => {
     };
 
     const handleBattle = async () => {
-        if (!selectedZombie1 || !selectedZombie2) {
+        if (!selectedPet1 || !selectedPet2) {
             setError('Please select two pets to battle');
             return;
         }
@@ -129,7 +129,7 @@ const ZombieInteractions: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await battleZombies(selectedZombie1, selectedZombie2);
+            await battlePets(selectedPet1, selectedPet2);
         } catch (err) {
             setError('Failed to start battle. Please try again.');
             console.error('Error starting battle:', err);
@@ -137,7 +137,7 @@ const ZombieInteractions: React.FC = () => {
     };
 
     const handleLevelUp = async () => {
-        if (!selectedZombie) {
+        if (!selectedPet) {
             setError('Please select a pet to level up');
             return;
         }
@@ -149,7 +149,7 @@ const ZombieInteractions: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await levelUp(selectedZombie);
+            await levelUp(selectedPet);
         } catch (err) {
             setError('Failed to level up pet. Please try again.');
             console.error('Error leveling up pet:', err);
@@ -157,7 +157,7 @@ const ZombieInteractions: React.FC = () => {
     };
 
     const handleChangeName = async () => {
-        if (!selectedZombie || !newName.trim()) {
+        if (!selectedPet || !newName.trim()) {
             setError('Please select a pet and enter a new name');
             return;
         }
@@ -169,7 +169,7 @@ const ZombieInteractions: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await changeName(selectedZombie, newName.trim());
+            await changeName(selectedPet, newName.trim());
         } catch (err) {
             setError('Failed to change pet name. Please try again.');
             console.error('Error changing pet name:', err);
@@ -177,10 +177,10 @@ const ZombieInteractions: React.FC = () => {
     };
 
     const clearFormState = () => {
-        setSelectedZombie1(null);
-        setSelectedZombie2(null);
-        setSelectedZombie(null);
-        setNewZombieName('');
+        setSelectedPet1(null);
+        setSelectedPet2(null);
+        setSelectedPet(null);
+        setNewPetName('');
         setNewName('');
         setError(null);
         setIsUserRejection(false);
@@ -199,7 +199,7 @@ const ZombieInteractions: React.FC = () => {
 
     const handleTransactionComplete = () => {
         if (action === 'breed') {
-            setSuccess(`Pet "${newZombieName}" created successfully!`);
+            setSuccess(`Pet "${newPetName}" created successfully!`);
         } else if (action === 'battle') {
             setSuccess('Battle completed! Check your pets for level ups.');
         } else if (action === 'levelup') {
@@ -209,7 +209,7 @@ const ZombieInteractions: React.FC = () => {
         }
         clearFormState();
         navigate(DASHBOARD_HOME);
-        refetchZombieIds();
+        refetchPetIds();
     };
 
     useEffect(() => {
@@ -223,7 +223,7 @@ const ZombieInteractions: React.FC = () => {
 
     if (!isConnected) {
         return (
-            <div className="zombie-interactions">
+            <div className="pet-interactions">
                 <div className="interactions-card">
                     <div className="card-header">
                         <h3>⚔️ Pet Interactions</h3>
@@ -234,9 +234,9 @@ const ZombieInteractions: React.FC = () => {
         );
     }
 
-    if (loading && zombies.length === 0) {
+    if (loading && pets.length === 0) {
         return (
-            <div className="zombie-interactions">
+            <div className="pet-interactions">
                 <div className="loading-container">
                     <div className="loading-spinner"></div>
                     <p>Loading your pets...</p>
@@ -245,9 +245,9 @@ const ZombieInteractions: React.FC = () => {
         );
     }
 
-    if (zombies.length === 0) {
+    if (pets.length === 0) {
         return (
-            <div className={`zombie-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
+            <div className={`pet-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
                 <div className="interactions-card">
                     <div className="card-header">
                         <h3>
@@ -264,9 +264,9 @@ const ZombieInteractions: React.FC = () => {
     }
 
     const needsTwoPets = standaloneAction === 'breed' || standaloneAction === 'battle';
-    if (standaloneAction && needsTwoPets && zombies.length < 2) {
+    if (standaloneAction && needsTwoPets && pets.length < 2) {
         return (
-            <div className="zombie-interactions interaction-standalone">
+            <div className="pet-interactions interaction-standalone">
                 <div className="interactions-card">
                     <div className="card-header interaction-standalone-header">
                         <h3>{STANDALONE_HEADERS[standaloneAction].title}</h3>
@@ -279,13 +279,13 @@ const ZombieInteractions: React.FC = () => {
         );
     }
 
-    const readyZombies = getReadyZombies();
-    const previewParentA = readyZombies[0]?.zombie;
-    const previewParentB = readyZombies[1]?.zombie;
-    const availableBattles = Math.min(3, readyZombies.length > 1 ? 3 : 0);
+    const readyPets = getReadyPets();
+    const previewParentA = readyPets[0]?.pet;
+    const previewParentB = readyPets[1]?.pet;
+    const availableBattles = Math.min(3, readyPets.length > 1 ? 3 : 0);
 
     return (
-        <div className={`zombie-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
+        <div className={`pet-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
             <div className="interactions-card">
                 {!isStandaloneView && (
                     <div className="card-header">
@@ -320,7 +320,7 @@ const ZombieInteractions: React.FC = () => {
                                 type="button"
                                 onClick={() => navigate(BREED_PATH)}
                                 className="lab-breed-button"
-                                disabled={readyZombies.length < 2}
+                                disabled={readyPets.length < 2}
                             >
                                 Start breeding
                             </button>
@@ -353,7 +353,7 @@ const ZombieInteractions: React.FC = () => {
                                 type="button"
                                 onClick={() => navigate(BATTLE_PATH)}
                                 className="lab-breed-button start-button"
-                                disabled={readyZombies.length < 2}
+                                disabled={readyPets.length < 2}
                             >
                                 Start battle
                             </button>
@@ -370,7 +370,7 @@ const ZombieInteractions: React.FC = () => {
                                 type="button"
                                 onClick={() => navigate(LEVELUP_PATH)}
                                 className="lab-breed-button levelup-button"
-                                disabled={readyZombies.length < 1}
+                                disabled={readyPets.length < 1}
                             >
                                 Open level up
                             </button>
@@ -387,7 +387,7 @@ const ZombieInteractions: React.FC = () => {
                                 type="button"
                                 onClick={() => navigate(RENAME_PATH)}
                                 className="lab-breed-button changename-button"
-                                disabled={readyZombies.length < 1}
+                                disabled={readyPets.length < 1}
                             >
                                 Open rename
                             </button>
@@ -404,17 +404,17 @@ const ZombieInteractions: React.FC = () => {
                             </>
                         )}
 
-                        <div className="zombie-selection">
+                        <div className="pet-selection">
                             <div className="selection-group">
                                 <label>First Parent</label>
                                 <select
-                                    value={selectedZombie1?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie1(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet1?.toString() || ''}
+                                    onChange={(e) => setSelectedPet1(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies.map(({ id, zombie }) => (
+                                    {readyPets.map(({ id, pet }) => (
                                         <option key={id.toString()} value={id.toString()}>
-                                            {zombie.name} (Level {zombie.level})
+                                            {pet.name} (Level {pet.level})
                                         </option>
                                     ))}
                                 </select>
@@ -423,15 +423,15 @@ const ZombieInteractions: React.FC = () => {
                             <div className="selection-group">
                                 <label>Second Parent</label>
                                 <select
-                                    value={selectedZombie2?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie2(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet2?.toString() || ''}
+                                    onChange={(e) => setSelectedPet2(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies
-                                        .filter(({ id }) => id !== selectedZombie1)
-                                        .map(({ id, zombie }) => (
+                                    {readyPets
+                                        .filter(({ id }) => id !== selectedPet1)
+                                        .map(({ id, pet }) => (
                                             <option key={id.toString()} value={id.toString()}>
-                                                {zombie.name} (Level {zombie.level})
+                                                {pet.name} (Level {pet.level})
                                             </option>
                                         ))}
                                 </select>
@@ -442,15 +442,15 @@ const ZombieInteractions: React.FC = () => {
                             <label>Offspring Name</label>
                             <input
                                 type="text"
-                                value={newZombieName}
-                                onChange={(e) => setNewZombieName(e.target.value)}
+                                value={newPetName}
+                                onChange={(e) => setNewPetName(e.target.value)}
                                 placeholder="Enter name for the new pet..."
                                 maxLength={20}
                             />
                         </div>
 
                         <div className="action-controls">
-                            <button onClick={handleBreed} disabled={isPending || !selectedZombie1 || !selectedZombie2 || !newZombieName.trim()}>
+                            <button onClick={handleBreed} disabled={isPending || !selectedPet1 || !selectedPet2 || !newPetName.trim()}>
                                 {isPending ? 'Breeding...' : 'Breed Pets'}
                             </button>
                             <button type="button" onClick={cancelInteraction} className="cancel-button">
@@ -469,17 +469,17 @@ const ZombieInteractions: React.FC = () => {
                             </>
                         )}
 
-                        <div className="zombie-selection">
+                        <div className="pet-selection">
                             <div className="selection-group">
                                 <label>First Fighter</label>
                                 <select
-                                    value={selectedZombie1?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie1(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet1?.toString() || ''}
+                                    onChange={(e) => setSelectedPet1(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies.map(({ id, zombie }) => (
+                                    {readyPets.map(({ id, pet }) => (
                                         <option key={id.toString()} value={id.toString()}>
-                                            {zombie.name} (Level {zombie.level})
+                                            {pet.name} (Level {pet.level})
                                         </option>
                                     ))}
                                 </select>
@@ -488,15 +488,15 @@ const ZombieInteractions: React.FC = () => {
                             <div className="selection-group">
                                 <label>Second Fighter</label>
                                 <select
-                                    value={selectedZombie2?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie2(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet2?.toString() || ''}
+                                    onChange={(e) => setSelectedPet2(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies
-                                        .filter(({ id }) => id !== selectedZombie1)
-                                        .map(({ id, zombie }) => (
+                                    {readyPets
+                                        .filter(({ id }) => id !== selectedPet1)
+                                        .map(({ id, pet }) => (
                                             <option key={id.toString()} value={id.toString()}>
-                                                {zombie.name} (Level {zombie.level})
+                                                {pet.name} (Level {pet.level})
                                             </option>
                                         ))}
                                 </select>
@@ -504,7 +504,7 @@ const ZombieInteractions: React.FC = () => {
                         </div>
 
                         <div className="action-controls">
-                            <button onClick={handleBattle} disabled={isPending || !selectedZombie1 || !selectedZombie2}>
+                            <button onClick={handleBattle} disabled={isPending || !selectedPet1 || !selectedPet2}>
                                 {isPending ? 'Starting Battle...' : 'Start Battle'}
                             </button>
                             <button type="button" onClick={cancelInteraction} className="cancel-button">
@@ -523,17 +523,17 @@ const ZombieInteractions: React.FC = () => {
                             </>
                         )}
 
-                        <div className="zombie-selection">
+                        <div className="pet-selection">
                             <div className="selection-group">
                                 <label>Select Pet</label>
                                 <select
-                                    value={selectedZombie?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet?.toString() || ''}
+                                    onChange={(e) => setSelectedPet(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies.map(({ id, zombie }) => (
+                                    {readyPets.map(({ id, pet }) => (
                                         <option key={id.toString()} value={id.toString()}>
-                                            {zombie.name} (Level {zombie.level})
+                                            {pet.name} (Level {pet.level})
                                         </option>
                                     ))}
                                 </select>
@@ -541,7 +541,7 @@ const ZombieInteractions: React.FC = () => {
                         </div>
 
                         <div className="action-controls">
-                            <button onClick={handleLevelUp} disabled={isPending || !selectedZombie}>
+                            <button onClick={handleLevelUp} disabled={isPending || !selectedPet}>
                                 {isPending ? 'Leveling Up...' : 'Level Up (0.001 ETH)'}
                             </button>
                             <button type="button" onClick={cancelInteraction} className="cancel-button">
@@ -560,19 +560,19 @@ const ZombieInteractions: React.FC = () => {
                             </>
                         )}
 
-                        <div className="zombie-selection">
+                        <div className="pet-selection">
                             <div className="selection-group">
                                 <label>Select Pet</label>
                                 <select
-                                    value={selectedZombie?.toString() || ''}
-                                    onChange={(e) => setSelectedZombie(e.target.value ? BigInt(e.target.value) : null)}
+                                    value={selectedPet?.toString() || ''}
+                                    onChange={(e) => setSelectedPet(e.target.value ? BigInt(e.target.value) : null)}
                                 >
                                     <option value="">Select pet...</option>
-                                    {readyZombies
-                                        .filter(({ zombie }) => zombie.level >= 2)
-                                        .map(({ id, zombie }) => (
+                                    {readyPets
+                                        .filter(({ pet }) => pet.level >= 2)
+                                        .map(({ id, pet }) => (
                                             <option key={id.toString()} value={id.toString()}>
-                                                {zombie.name} (Level {zombie.level})
+                                                {pet.name} (Level {pet.level})
                                             </option>
                                         ))}
                                 </select>
@@ -591,7 +591,7 @@ const ZombieInteractions: React.FC = () => {
                         </div>
 
                         <div className="action-controls">
-                            <button onClick={handleChangeName} disabled={isPending || !selectedZombie || !newName.trim()}>
+                            <button onClick={handleChangeName} disabled={isPending || !selectedPet || !newName.trim()}>
                                 {isPending ? 'Changing Name...' : 'Change Name'}
                             </button>
                             <button type="button" onClick={cancelInteraction} className="cancel-button">
@@ -623,4 +623,4 @@ const ZombieInteractions: React.FC = () => {
     );
 };
 
-export default ZombieInteractions;
+export default PetInteractions;

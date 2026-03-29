@@ -18,7 +18,7 @@ That's it! The app will be running at http://localhost:5173
 
 - **Unified Wallet Experience** - Connect to Ethereum or Solana with one interface
 - **Multi-Chain Support** - Ethereum, Polygon, BSC, Arbitrum, and Solana
-- **Crypto Pets** — collect, breed, and battle on-chain companions (Ethereum contract based on CryptoZombies course patterns)
+- **Crypto Pets** — collect, breed, and battle on-chain companions (Ethereum NFT-style contract with composable modules)
 - **Modern Stack** - React 19, TypeScript, Wagmi v2, Solana Web3.js
 - **One-Command Setup** - Everything starts with a single command
 

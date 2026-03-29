@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useZombiesContract } from '../../hooks/useZombiesContract';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import {
     getGeneration,
     getPropertyEmoji,
@@ -10,18 +10,17 @@ import {
     getPetElement,
     getPetProperties,
 } from '../../utils/petCard';
-import CreateZombieModal from './CreateZombieModal';
-import SendZombieModal from './SendZombieModal';
-import './ZombieGallery.css';
+import CreatePetModal from './CreatePetModal';
+import SendPetModal from './SendPetModal';
+import './PetGallery.css';
 
-const ZombieGallery: React.FC = () => {
-    const { isConnected, zombies, zombieIds, isLoading, contractError, refetchZombieIds, getRarityColor, getRarityName } = useZombiesContract();
+const PetGallery: React.FC = () => {
+    const { isConnected, pets, petIds, isLoading, contractError, refetchPetIds, getRarityColor, getRarityName } = usePetsContract();
     const [loading, setLoading] = useState(false);
     const [sendModalOpen, setSendModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
-    const [selectedZombie, setSelectedZombie] = useState<{ zombie: any; zombieId: bigint } | null>(null);
+    const [sendSelection, setSendSelection] = useState<{ pet: any; petId: bigint } | null>(null);
 
-    // Set loading state
     useEffect(() => {
         setLoading(isLoading);
     }, [isLoading]);
@@ -46,19 +45,19 @@ const ZombieGallery: React.FC = () => {
         return `${seconds}s`;
     };
 
-    const handleSendClick = (zombie: any, zombieId: bigint) => {
-        setSelectedZombie({ zombie, zombieId });
+    const handleSendClick = (pet: any, id: bigint) => {
+        setSendSelection({ pet, petId: id });
         setSendModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setSendModalOpen(false);
-        setSelectedZombie(null);
+        setSendSelection(null);
     };
 
     if (!isConnected) {
         return (
-            <div className="zombie-gallery">
+            <div className="pet-gallery">
                 <div className="gallery-card">
                     <div className="card-header">
                         <h2>🐾 Your Pet Collection</h2>
@@ -70,12 +69,12 @@ const ZombieGallery: React.FC = () => {
     }
 
     return (
-        <div className="zombie-gallery">
+        <div className="pet-gallery">
             <div className="gallery-card">
                 <div className="card-header">
                     <h2>🐾 Your Pets</h2>
                     <button
-                        onClick={() => refetchZombieIds()}
+                        onClick={() => refetchPetIds()}
                         className="refresh-button"
                         disabled={loading}
                         title={loading ? 'Loading...' : 'Refresh'}
@@ -94,23 +93,23 @@ const ZombieGallery: React.FC = () => {
                 {contractError && (
                     <div className="error-container">
                         <p>❌ {contractError?.message || 'Failed to load pet data'}</p>
-                        <button onClick={() => refetchZombieIds()} className="retry-button">
+                        <button onClick={() => refetchPetIds()} className="retry-button">
                             Try Again
                         </button>
                     </div>
                 )}
 
-                {!loading && !contractError && zombies.length === 0 && (
+                {!loading && !contractError && pets.length === 0 && (
                     <div className="empty-state">
                         <div className="empty-icon">🐾</div>
                         <h3>No pets yet!</h3>
                     </div>
                 )}
 
-                {!loading && !contractError && zombies.length === 0 && (
+                {!loading && !contractError && pets.length === 0 && (
                     <div className="create-button-container">
                         <button
-                            className="create-first-zombie-button"
+                            className="create-first-pet-button"
                             onClick={() => setCreateModalOpen(true)}
                         >
                             🐾 Create your first pet
@@ -118,40 +117,40 @@ const ZombieGallery: React.FC = () => {
                     </div>
                 )}
 
-                {!loading && !contractError && zombies.length > 0 && (
-                    <div className="zombie-grid">
-                        {zombies.map((zombie, index) => (
-                            <div key={index} className="zombie-card">
-                                <div className="zombie-visual">
+                {!loading && !contractError && pets.length > 0 && (
+                    <div className="pet-grid">
+                        {pets.map((pet, index) => (
+                            <div key={index} className="pet-card">
+                                <div className="pet-visual">
                                     <div
                                         className="rarity-badge"
-                                        style={{ backgroundColor: getRarityColor(zombie.rarity) }}
+                                        style={{ backgroundColor: getRarityColor(pet.rarity) }}
                                     >
-                                        {getRarityName(zombie.rarity)}
+                                        {getRarityName(pet.rarity)}
                                     </div>
-                                    <div className="element-tag">{getPetElement(zombie.dna)}</div>
-                                    <div className="zombie-avatar">{getPetAvatar(zombie.dna)}</div>
-                                    <div className="level-badge">Lv. {zombie.level}</div>
+                                    <div className="element-tag">{getPetElement(pet.dna)}</div>
+                                    <div className="pet-avatar">{getPetAvatar(pet.dna)}</div>
+                                    <div className="level-badge">Lv. {pet.level}</div>
                                 </div>
 
-                                <div className="zombie-main-info">
-                                    <div className="zombie-header">
-                                        <h3>{zombie.name}</h3>
-                                        <span className="zombie-dna">{getPetClass(zombie.dna)} · Gen {getGeneration(zombie.dna)}</span>
+                                <div className="pet-main-info">
+                                    <div className="pet-header">
+                                        <h3>{pet.name}</h3>
+                                        <span className="pet-dna">{getPetClass(pet.dna)} · Gen {getGeneration(pet.dna)}</span>
                                     </div>
                                     <div className="xp-row">
                                         <span className="xp-label">XP</span>
                                         <span className="xp-value">
-                                            {getXpNumbers(zombie).xpCurrent}/{getXpNumbers(zombie).xpMax}
+                                            {getXpNumbers(pet).xpCurrent}/{getXpNumbers(pet).xpMax}
                                         </span>
                                     </div>
                                     <div className="xp-bar">
-                                        <div className="xp-fill" style={{ width: `${getXpPercent(zombie)}%` }} />
+                                        <div className="xp-fill" style={{ width: `${getXpPercent(pet)}%` }} />
                                     </div>
                                 </div>
 
-                                <div className="zombie-properties">
-                                    {Object.entries(getPetProperties(zombie)).map(([key, value]) => (
+                                <div className="pet-properties">
+                                    {Object.entries(getPetProperties(pet)).map(([key, value]) => (
                                         <div className="property-item" key={key}>
                                             <span className="property-name" title={key}>
                                                 {getPropertyEmoji(key)}
@@ -161,18 +160,18 @@ const ZombieGallery: React.FC = () => {
                                     ))}
                                 </div>
 
-                                <div className="zombie-status">
-                                    {isReady(zombie.readyTime) ? (
+                                <div className="pet-status">
+                                    {isReady(pet.readyTime) ? (
                                         <div className="status ready">✅ Ready for action!</div>
                                     ) : (
-                                        <div className="status cooldown">⏰ Ready in {getTimeUntilReady(zombie.readyTime)}</div>
+                                        <div className="status cooldown">⏰ Ready in {getTimeUntilReady(pet.readyTime)}</div>
                                     )}
                                 </div>
 
-                                <div className="zombie-actions">
+                                <div className="pet-actions">
                                     <button
                                         className="send-button"
-                                        onClick={() => handleSendClick(zombie, zombieIds[index])}
+                                        onClick={() => handleSendClick(pet, petIds[index])}
                                     >
                                         📤 Send
                                     </button>
@@ -183,16 +182,16 @@ const ZombieGallery: React.FC = () => {
                 )}
             </div>
 
-            {sendModalOpen && selectedZombie && (
-                <SendZombieModal
+            {sendModalOpen && sendSelection && (
+                <SendPetModal
                     isOpen={sendModalOpen}
                     onClose={handleCloseModal}
-                    pet={selectedZombie.zombie}
-                    petId={selectedZombie.zombieId}
+                    pet={sendSelection.pet}
+                    petId={sendSelection.petId}
                 />
             )}
 
-            <CreateZombieModal
+            <CreatePetModal
                 isOpen={createModalOpen}
                 onClose={() => setCreateModalOpen(false)}
             />
@@ -200,4 +199,4 @@ const ZombieGallery: React.FC = () => {
     );
 };
 
-export default ZombieGallery;
+export default PetGallery;

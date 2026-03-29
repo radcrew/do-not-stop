@@ -1,4 +1,4 @@
-.zombie-interactions {
+.pet-interactions {
     --zi-card-bg: #ffffff;
     --zi-surface-bg: #f8f9fa;
     --zi-text: #333;
@@ -6,7 +6,7 @@
     --zi-border: #e0e0e0;
 }
 
-:root[data-theme='dark'] .zombie-interactions {
+:root[data-theme='dark'] .pet-interactions {
     --zi-card-bg: #141923;
     --zi-surface-bg: #1d2430;
     --zi-text: #f3f4f6;
@@ -14,7 +14,7 @@
     --zi-border: #2b3240;
 }
 
-.zombie-interactions {
+.pet-interactions {
     padding: 0;
     max-width: none;
     margin: 0;
@@ -23,7 +23,7 @@
 }
 
 /* Full-page /breed, /battle, /levelup, /rename — no gallery */
-.zombie-interactions.interaction-standalone {
+.pet-interactions.interaction-standalone {
     max-width: 640px;
     margin-inline: auto;
 }
@@ -367,7 +367,7 @@
     font-size: 14px;
 }
 
-.zombie-selection {
+.pet-selection {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
@@ -566,7 +566,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .zombie-interactions {
+    .pet-interactions {
         padding: 16px;
     }
 
@@ -591,7 +591,7 @@
         grid-template-columns: 1fr;
     }
 
-    .zombie-selection {
+    .pet-selection {
         grid-template-columns: 1fr;
         gap: 16px;
     }

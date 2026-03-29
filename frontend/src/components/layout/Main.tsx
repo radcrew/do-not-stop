@@ -6,7 +6,7 @@ import { useDynamicContext } from '../../contexts/dynamic';
 
 import AccountDropdown from '../wallet/AccountDropdown';
 import SolanaWalletTrigger from '../wallet/SolanaWalletTrigger';
-import ZombieGallery from '../zombie/ZombieGallery';
+import PetGallery from '../pet/PetGallery';
 import { isStandaloneInteractionPath } from '../../constants/interactionRoutes';
 import './Main.css';
 
@@ -33,7 +33,7 @@ const Main: React.FC = () => {
         {isAuthenticated || isLoggedIn ? (
           <>
             <Outlet />
-            {!isGalleryHidden && <ZombieGallery />}
+            {!isGalleryHidden && <PetGallery />}
           </>
         ) : (
           <div className="welcome-section">

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useZombiesContract } from '../../hooks/useZombiesContract';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import TransactionStatus from '../ui/TransactionStatus';
-import './SendZombieModal.css';
+import './SendPetModal.css';
 
-interface SendZombieModalProps {
+interface SendPetModalProps {
     isOpen: boolean;
     onClose: () => void;
     pet: {
@@ -15,7 +15,7 @@ interface SendZombieModalProps {
     petId: bigint;
 }
 
-const SendZombieModal: React.FC<SendZombieModalProps> = ({
+const SendPetModal: React.FC<SendPetModalProps> = ({
     isOpen,
     onClose,
     pet,
@@ -25,7 +25,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
     const [isConfirming, setIsConfirming] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [txHash, setTxHash] = useState<string | undefined>(undefined);
-    const { transferZombie, isPending, writeError, refetchZombieIds, hash } = useZombiesContract();
+    const { transferPet, isPending, writeError, refetchPetIds, hash } = usePetsContract();
 
     const validateAddress = (address: string): boolean => {
         return /^0x[a-fA-F0-9]{40}$/.test(address);
@@ -51,7 +51,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
 
         try {
             setIsConfirming(true);
-            await transferZombie(recipientAddress, petId);
+            await transferPet(recipientAddress, petId);
         } catch (err) {
             setError('Failed to send pet. Please try again.');
             setIsConfirming(false);
@@ -74,7 +74,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
     }, [hash]);
 
     const handleTransactionComplete = async () => {
-        await refetchZombieIds();
+        await refetchPetIds();
         setRecipientAddress('');
         setIsConfirming(false);
         setError(null);
@@ -99,9 +99,9 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
                 </div>
 
                 <div className="modal-body">
-                    <div className="zombie-preview">
+                    <div className="pet-preview">
                         <h3>{pet.name}</h3>
-                        <div className="zombie-details">
+                        <div className="pet-details">
                             <p><strong>Level:</strong> {pet.level}</p>
                             <p><strong>DNA:</strong> {pet.dna.toString()}</p>
                             <p><strong>Rarity:</strong> {pet.rarity}</p>
@@ -160,4 +160,4 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
     );
 };
 
-export default SendZombieModal;
+export default SendPetModal;

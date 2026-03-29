@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import TransactionStatus from '../ui/TransactionStatus';
-import { useZombiesContract } from '../../hooks/useZombiesContract';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import { parseContractError } from '../../utils/errorParser';
-import './ZombieCreator.css';
+import './PetCreator.css';
 
-const ZombieCreator: React.FC = () => {
-    const { isConnected, createRandomZombie, hash, isPending, writeError } = useZombiesContract();
+const PetCreator: React.FC = () => {
+    const { isConnected, createRandomPet, hash, isPending, writeError } = usePetsContract();
     const [petName, setPetName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
@@ -29,7 +29,7 @@ const ZombieCreator: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await createRandomZombie(petName.trim());
+            await createRandomPet(petName.trim());
         } catch (err) {
             setError('Failed to create pet. Please try again.');
             console.error('Error creating pet:', err);
@@ -56,7 +56,7 @@ const ZombieCreator: React.FC = () => {
 
     if (!isConnected) {
         return (
-            <div className="zombie-creator">
+            <div className="pet-creator">
                 <div className="creator-card">
                     <h3>🐾 Create Your First Pet</h3>
                     <p>Connect your wallet to start creating pets!</p>
@@ -66,7 +66,7 @@ const ZombieCreator: React.FC = () => {
     }
 
     return (
-        <div className="zombie-creator">
+        <div className="pet-creator">
             <div className="creator-card">
                 <h3>🐾 Create Your First Pet</h3>
                 <p>Give your pet a unique name and bring it to life! You can only create one pet initially — breed to grow your collection!</p>
@@ -116,4 +116,4 @@ const ZombieCreator: React.FC = () => {
     );
 };
 
-export default ZombieCreator;
+export default PetCreator;

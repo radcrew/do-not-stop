@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import TransactionStatus from '../ui/TransactionStatus';
-import { useZombiesContract } from '../../hooks/useZombiesContract';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import { parseContractError } from '../../utils/errorParser';
-import './CreateZombieModal.css';
+import './CreatePetModal.css';
 
-interface CreateZombieModalProps {
+interface CreatePetModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }) => {
-    const { isConnected, createRandomZombie, hash, isPending, writeError, refetchZombieIds } = useZombiesContract();
+const CreatePetModal: React.FC<CreatePetModalProps> = ({ isOpen, onClose }) => {
+    const { isConnected, createRandomPet, hash, isPending, writeError, refetchPetIds } = usePetsContract();
     const [petName, setPetName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
@@ -18,7 +18,7 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
     const [isContractError, setIsContractError] = useState(false);
     const [txHash, setTxHash] = useState<string | undefined>(undefined);
 
-    const handleCreateZombie = async () => {
+    const handleCreatePet = async () => {
         if (!isConnected) {
             setError('Please connect your wallet first');
             return;
@@ -35,7 +35,7 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         setIsContractError(false);
 
         try {
-            await createRandomZombie(petName.trim());
+            await createRandomPet(petName.trim());
         } catch (err) {
             setError('Failed to create pet. Please try again.');
             console.error('Error creating pet:', err);
@@ -51,7 +51,7 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         handleSuccess();
         onClose();
         setTxHash(undefined);
-        await refetchZombieIds();
+        await refetchPetIds();
     };
 
     const handleClose = () => {
@@ -109,7 +109,7 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
                         </div>
 
                         <button
-                            onClick={handleCreateZombie}
+                            onClick={handleCreatePet}
                             disabled={isPending || !petName.trim() || !isConnected}
                             className="create-button"
                         >
@@ -143,4 +143,4 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
     );
 };
 
-export default CreateZombieModal;
+export default CreatePetModal;

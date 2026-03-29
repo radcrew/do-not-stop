@@ -1,4 +1,4 @@
-.zombie-creator {
+.pet-creator {
     display: flex;
     justify-content: center;
     padding: 0;
@@ -161,7 +161,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .zombie-creator {
+    .pet-creator {
         padding: 16px;
     }
 
