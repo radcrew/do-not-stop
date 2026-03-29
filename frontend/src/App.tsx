@@ -8,11 +8,11 @@ import {
 import { injected } from 'wagmi/connectors';
 
 import Main from './components/layout/Main';
-import { AuthProvider, queryClient } from '@do-not-stop/shared-auth';
+import { ApiClientProvider, AuthProvider, queryClient } from '@do-not-stop/shared-auth';
+import { API_URL } from './config';
 import { SolanaWalletProvider } from './contexts';
 import { DynamicProvider } from './contexts/dynamic';
 import { CHAINS } from './constants/chains';
-import './config'; // Import config.ts to run shared auth configuration
 import './App.css';
 
 // All supported chains from centralized configuration
@@ -36,9 +36,11 @@ const App: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <DynamicProvider>
           <SolanaWalletProvider network="Solana Local">
-            <AuthProvider>
-              <Main />
-            </AuthProvider>
+            <ApiClientProvider baseURL={API_URL}>
+              <AuthProvider>
+                <Main />
+              </AuthProvider>
+            </ApiClientProvider>
           </SolanaWalletProvider>
         </DynamicProvider>
       </QueryClientProvider>

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    type ReactNode,
+} from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
 import { useNonce } from '../hooks/useNonce';
 import { useVerifySignature } from '../hooks/useVerifySignature';
@@ -36,26 +42,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [pendingNonce, setPendingNonce] = useState<string | null>(null);
 
-    // React Query hooks
     const { refetch: getNonce, isLoading: isNonceLoading } = useNonce();
     const {
         mutate: verifySignature,
         isPending: isVerifying,
         data: authData,
-        error: verifyError
+        error: verifyError,
     } = useVerifySignature();
 
     const {
         signMessage,
         isPending: isSigning,
         data: signature,
-        error: signError
+        error: signError,
     } = useSignMessage();
 
     useEffect(() => {
         const isWalletConnected = isConnected && !!address;
 
-        // If wallet is disconnected, clear authentication state and token
         if (!isWalletConnected) {
             setAuthenticated(false);
             setUser(null);
@@ -67,7 +71,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [address, isConnected]);
 
-    // Handle signature completion
     useEffect(() => {
         if (signature && pendingNonce && address && chainId) {
             verifySignature({
@@ -79,7 +82,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [signature, pendingNonce, address, chainId, verifySignature]);
 
-    // Handle authentication success
     useEffect(() => {
         if (authData?.success) {
             setAuthenticated(true);
@@ -88,7 +90,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [authData]);
 
-    // Handle verification errors
     useEffect(() => {
         if (verifyError) {
             setPendingNonce(null);
@@ -96,7 +97,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [verifyError]);
 
-    // Handle signing errors
     useEffect(() => {
         if (signError) {
             setPendingNonce(null);
@@ -117,17 +117,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!address) return;
 
         try {
-            // Get nonce from backend
             const { data } = await getNonce();
             const { nonce } = data;
 
-            // Store nonce for later use
             setPendingNonce(nonce);
 
-            // Create message to sign
             const message = `Sign this message to authenticate: ${nonce}`;
 
-            // Trigger the signing process
             signMessage({ message });
         } catch (error) {
             console.error('Error getting nonce:', error);
@@ -135,19 +131,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{
-            isAuthenticated,
-            user,
-            logout,
-            signAndLogin,
-            isSigning,
-            isVerifying,
-            isNonceLoading
-        }}>
+        <AuthContext.Provider
+            value={{
+                isAuthenticated,
+                user,
+                logout,
+                signAndLogin,
+                isSigning,
+                isVerifying,
+                isNonceLoading,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
 };
 
 export type { AuthContextType, User };
-

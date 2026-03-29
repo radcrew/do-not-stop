@@ -28,54 +28,38 @@ export const getStorageAdapter = (): StorageAdapter | undefined => {
 };
 
 /**
- * Shared singleton API client for authentication endpoints
- * Created once and reused by all hooks
+ * Creates an axios instance for auth API calls with the given base URL.
+ * One instance per AuthProvider — avoids global singleton / duplicate bundles missing config.
  */
-const apiClient: AxiosInstance = axios.create({
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+export const createAuthApiClient = (baseURL: string): AxiosInstance => {
+    const client = axios.create({
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 
-// Add auth token interceptor
-apiClient.interceptors.request.use(async (config) => {
-    if (storageAdapter) {
-        const token = await storageAdapter.getToken();
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+    client.interceptors.request.use(async (config) => {
+        if (storageAdapter) {
+            const token = await storageAdapter.getToken();
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
         }
-    }
-    return config;
-});
+        return config;
+    });
 
-// Handle unauthorized responses
-apiClient.interceptors.response.use(
-    (response) => response,
-    async (error: AxiosError) => {
-        if (error.response?.status === 401 && storageAdapter) {
-            await storageAdapter.removeToken();
+    client.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError) => {
+            if (error.response?.status === 401 && storageAdapter) {
+                await storageAdapter.removeToken();
+            }
+            return Promise.reject(error);
         }
-        return Promise.reject(error);
-    }
-);
+    );
 
-/**
- * Sets the base URL for the shared API client
- * This allows frontend and mobile to configure the client dynamically
- */
-export const setApiBaseUrl = (baseURL: string): void => {
-    apiClient.defaults.baseURL = baseURL;
-};
-
-/**
- * Gets the shared API client instance
- * Hooks use this internally - no need to pass it around
- */
-export const getAuthApiClient = (): AxiosInstance => {
-    if (!apiClient.defaults.baseURL) {
-        throw new Error('API base URL not set. Call setApiBaseUrl() before using auth hooks.');
-    }
-    return apiClient;
+    return client;
 };
 
 /**
@@ -85,5 +69,3 @@ export interface AuthApiClient {
     get<T>(url: string): Promise<{ data: T }>;
     post<T>(url: string, data?: any): Promise<{ data: T }>;
 }
-
-

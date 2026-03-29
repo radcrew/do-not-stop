@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState, useEffect } from 'react';
-import { getAuthApiClient, getStorageAdapter } from '../api';
+import { getStorageAdapter } from '../api';
+import { useApiClient } from '../contexts/ApiClientContext';
 
 /**
- * Gets the user profile from the backend
- * Uses the shared API client and storage adapter
+ * Gets the user profile from the backend (requires {@link ApiClientProvider}).
  */
 export const useUserProfile = () => {
-    const apiClient = getAuthApiClient();
+    const apiClient = useApiClient();
+    const baseURL = apiClient.defaults.baseURL ?? '';
     const [hasToken, setHasToken] = useState(false);
 
-    // Check if token exists (handles both sync and async storage adapters)
     useEffect(() => {
         const checkToken = async () => {
             const storageAdapter = getStorageAdapter();
@@ -33,18 +33,16 @@ export const useUserProfile = () => {
     }, []);
 
     return useQuery({
-        queryKey: ['user', 'profile'],
+        queryKey: ['user', 'profile', baseURL],
         queryFn: async () => {
             const { data } = await apiClient.get('/api/protected/profile');
             return data;
         },
         enabled: hasToken,
         retry: (failureCount, error) => {
-            // Don't retry on 401 (unauthorized)
             if (error instanceof AxiosError && error.response?.status === 401) {
                 const adapter = getStorageAdapter();
                 if (adapter) {
-                    // Fire and forget token removal
                     const removeResult = adapter.removeToken();
                     if (removeResult instanceof Promise) {
                         removeResult.catch(() => { });
@@ -56,4 +54,3 @@ export const useUserProfile = () => {
         },
     });
 };
-

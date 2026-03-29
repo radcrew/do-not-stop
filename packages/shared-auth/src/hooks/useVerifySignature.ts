@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { getAuthApiClient } from '../api';
+import { useApiClient } from '../contexts/ApiClientContext';
 
 interface VerifySignatureParams {
     address: string;
@@ -30,13 +30,10 @@ export const setTokenSuccessCallback = (callback: (data: VerifySignatureResult) 
 };
 
 /**
- * Platform-agnostic hook for verifying signatures
- * Works in both web and mobile environments
- * Uses the shared API client - no need to pass apiClient
+ * Verifies wallet signature with the backend (requires {@link ApiClientProvider}).
  */
 export const useVerifySignature = () => {
-    const apiClient = getAuthApiClient();
-
+    const apiClient = useApiClient();
     return useMutation({
         mutationFn: async (params: VerifySignatureParams) => {
             const { data } = await apiClient.post('/api/auth/verify', {
@@ -54,5 +51,3 @@ export const useVerifySignature = () => {
         },
     });
 };
-
-

@@ -1,21 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAuthApiClient } from '../api';
+import { useApiClient } from '../contexts/ApiClientContext';
 
 /**
- * Platform-agnostic hook for fetching nonces
- * Works in both web and mobile environments
- * Uses the shared API client - no need to pass apiClient
+ * Fetches a nonce from the auth API (requires {@link ApiClientProvider}).
  */
 export const useNonce = () => {
-    const apiClient = getAuthApiClient();
+    const apiClient = useApiClient();
+    const baseURL = apiClient.defaults.baseURL ?? '';
 
     return useQuery({
-        queryKey: ['nonce'],
+        queryKey: ['nonce', baseURL],
         queryFn: async () => {
             const { data } = await apiClient.get('/api/auth/nonce');
             return data;
         },
-        enabled: false, // Only run when manually triggered
-        staleTime: 0, // Always fetch fresh nonce
+        enabled: false,
+        staleTime: 0,
     });
 };
