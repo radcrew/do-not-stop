@@ -7,7 +7,7 @@ import { useDynamicContext } from '../../contexts/dynamic';
 import AccountDropdown from '../wallet/AccountDropdown';
 import SolanaWalletTrigger from '../wallet/SolanaWalletTrigger';
 import PetGallery from '../pet/PetGallery';
-import { isStandaloneInteractionPath } from '../../constants/interactionRoutes';
+import { isInteractionRoute } from '../../constants/interactionRoutes';
 import './Main.css';
 
 const Main: React.FC = () => {
@@ -16,7 +16,7 @@ const Main: React.FC = () => {
   const isLoggedIn = Boolean(user || primaryWallet);
   const location = useLocation();
   /** Full-page interaction routes hide the pet collection. */
-  const isGalleryHidden = isStandaloneInteractionPath(location.pathname);
+  const isGalleryHidden = isInteractionRoute(location.pathname);
 
   return (
     <div className="main-container">
