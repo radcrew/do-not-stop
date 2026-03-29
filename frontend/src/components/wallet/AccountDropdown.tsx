@@ -176,7 +176,7 @@ const AccountDropdown: React.FC = () => {
                 <button
                     type="button"
                     onClick={toggleTheme}
-                    className={`theme-switch ${isDark ? 'is-dark' : ''}`}
+                    className={`theme-switch ${isDark ? 'dark' : ''}`}
                     role="switch"
                     aria-checked={isDark}
                     aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
@@ -204,7 +204,7 @@ const AccountDropdown: React.FC = () => {
             <button
                 type="button"
                 onClick={toggleTheme}
-                className={`theme-switch ${isDark ? 'is-dark' : ''}`}
+                className={`theme-switch ${isDark ? 'dark' : ''}`}
                 role="switch"
                 aria-checked={isDark}
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}

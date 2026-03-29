@@ -96,7 +96,7 @@
     transition: var(--transition-fast);
   }
 
-  &.is-dark {
+  &.dark {
     .track {
       background: var(--color-primary);
     }
