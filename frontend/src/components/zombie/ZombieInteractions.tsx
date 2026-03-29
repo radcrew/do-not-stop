@@ -270,7 +270,7 @@ const ZombieInteractions: React.FC = () => {
                 <div className="interactions-card">
                     <div className="card-header interaction-standalone-header">
                         <h3>{STANDALONE_HEADERS[standaloneAction].title}</h3>
-                        <p className="interaction-standalone-sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
+                        <p className="sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
                     </div>
                     <p>You need at least two pets to breed or battle.</p>
                     <p className="help-text">Create another pet from the dashboard, then come back here.</p>
@@ -296,24 +296,24 @@ const ZombieInteractions: React.FC = () => {
                 {isStandaloneView && standaloneAction && (
                     <div className="card-header interaction-standalone-header">
                         <h3>{STANDALONE_HEADERS[standaloneAction].title}</h3>
-                        <p className="interaction-standalone-sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
+                        <p className="sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
                     </div>
                 )}
 
                 {!action && (
                     <div className="action-buttons">
                         <div className="breeding-lab-card">
-                            <div className="breeding-lab-header">🥚 Breeding Lab</div>
-                            <div className="breeding-lab-divider" />
-                            <div className="breeding-lab-content">
-                                <div className="lab-parent-item">
-                                    <span className="lab-parent-name">{previewParentA?.name ?? 'Parent A'}</span>
-                                    <span className="lab-parent-meta">{previewParentA ? `Lv.${previewParentA.level}` : 'Select'}</span>
+                            <div className="header">🥚 Breeding Lab</div>
+                            <div className="hub-divider" />
+                            <div className="content">
+                                <div className="parent-item">
+                                    <span className="parent-name">{previewParentA?.name ?? 'Parent A'}</span>
+                                    <span className="parent-meta">{previewParentA ? `Lv.${previewParentA.level}` : 'Select'}</span>
                                 </div>
-                                <div className="lab-egg">🥚</div>
-                                <div className="lab-parent-item">
-                                    <span className="lab-parent-name">{previewParentB?.name ?? 'Parent B'}</span>
-                                    <span className="lab-parent-meta">{previewParentB ? `Lv.${previewParentB.level}` : 'Select'}</span>
+                                <div className="egg">🥚</div>
+                                <div className="parent-item">
+                                    <span className="parent-name">{previewParentB?.name ?? 'Parent B'}</span>
+                                    <span className="parent-meta">{previewParentB ? `Lv.${previewParentB.level}` : 'Select'}</span>
                                 </div>
                             </div>
                             <button
@@ -326,42 +326,42 @@ const ZombieInteractions: React.FC = () => {
                             </button>
                         </div>
                         <div className="battle-arena-card">
-                            <div className="battle-arena-header">
+                            <div className="header">
                                 <span>⚔️ Battle Arena</span>
-                                <span className="battle-left-badge">{availableBattles} left</span>
+                                <span className="left-badge">{availableBattles} left</span>
                             </div>
-                            <div className="breeding-lab-divider" />
-                            <div className="battle-arena-content">
-                                <div className="battle-pet-item">
-                                    <span className="battle-pet-name">{previewParentA?.name ?? 'Fighter A'}</span>
-                                    <div className="battle-life-track">
-                                        <div className="battle-life-fill" style={{ width: `${getLifePercent(previewParentA)}%` }} />
+                            <div className="hub-divider" />
+                            <div className="content">
+                                <div className="pet-item">
+                                    <span className="pet-name">{previewParentA?.name ?? 'Fighter A'}</span>
+                                    <div className="life-track">
+                                        <div className="life-fill" style={{ width: `${getLifePercent(previewParentA)}%` }} />
                                     </div>
                                 </div>
-                                <div className="battle-center">
-                                    <div className="battle-icon">⚔️</div>
-                                    <div className="battle-vs">VS</div>
+                                <div className="center">
+                                    <div className="icon">⚔️</div>
+                                    <div className="vs">VS</div>
                                 </div>
-                                <div className="battle-pet-item">
-                                    <span className="battle-pet-name">{previewParentB?.name ?? 'Fighter B'}</span>
-                                    <div className="battle-life-track">
-                                        <div className="battle-life-fill" style={{ width: `${getLifePercent(previewParentB)}%` }} />
+                                <div className="pet-item">
+                                    <span className="pet-name">{previewParentB?.name ?? 'Fighter B'}</span>
+                                    <div className="life-track">
+                                        <div className="life-fill" style={{ width: `${getLifePercent(previewParentB)}%` }} />
                                     </div>
                                 </div>
                             </div>
                             <button
                                 type="button"
                                 onClick={() => navigate(BATTLE_PATH)}
-                                className="lab-breed-button battle-start-button"
+                                className="lab-breed-button start-button"
                                 disabled={readyZombies.length < 2}
                             >
                                 Start battle
                             </button>
                         </div>
                         <div className="feature-action-card">
-                            <div className="feature-action-header">⬆️ Level Up</div>
-                            <div className="breeding-lab-divider" />
-                            <div className="feature-action-content">
+                            <div className="header">⬆️ Level Up</div>
+                            <div className="hub-divider" />
+                            <div className="content">
                                 Boost your pet stats by leveling up.
                                 <br />
                                 Cost: 0.001 ETH per level.
@@ -369,16 +369,16 @@ const ZombieInteractions: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate(LEVELUP_PATH)}
-                                className="lab-breed-button levelup-start-button"
+                                className="lab-breed-button levelup-button"
                                 disabled={readyZombies.length < 1}
                             >
                                 Open level up
                             </button>
                         </div>
                         <div className="feature-action-card">
-                            <div className="feature-action-header">✏️ Change Name</div>
-                            <div className="breeding-lab-divider" />
-                            <div className="feature-action-content">
+                            <div className="header">✏️ Change Name</div>
+                            <div className="hub-divider" />
+                            <div className="content">
                                 Rename your pet once it reaches level 2.
                                 <br />
                                 Pick a new identity for your companion.
@@ -386,7 +386,7 @@ const ZombieInteractions: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate(RENAME_PATH)}
-                                className="lab-breed-button changename-start-button"
+                                className="lab-breed-button changename-button"
                                 disabled={readyZombies.length < 1}
                             >
                                 Open rename

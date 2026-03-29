@@ -36,7 +36,7 @@
         margin-bottom: 8px;
     }
 
-    .interaction-standalone-sub {
+    .sub {
         margin: 0 !important;
         font-size: 0.95rem;
         color: var(--zi-text-muted);
@@ -78,6 +78,12 @@
     margin: 0 auto 24px;
 }
 
+/* Shared by breeding, battle, and feature hub cards */
+.hub-divider {
+    height: 1px;
+    background: var(--zi-border);
+}
+
 .breeding-lab-card {
     background: var(--zi-surface-bg);
     border: 1px solid var(--zi-border);
@@ -86,55 +92,49 @@
     display: grid;
     gap: 10px;
 
-    .breeding-lab-header {
+    .header {
         font-size: 14px;
         font-weight: 700;
         color: var(--zi-text);
         text-align: left;
     }
 
-    .breeding-lab-content {
+    .content {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         gap: 8px;
         align-items: center;
     }
-}
 
-/* Shared by breeding, battle, and feature hub cards */
-.breeding-lab-divider {
-    height: 1px;
-    background: var(--zi-border);
-}
+    .parent-item {
+        background: var(--zi-card-bg);
+        border: 1px solid var(--zi-border);
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        text-align: left;
+    }
 
-.lab-parent-item {
-    background: var(--zi-card-bg);
-    border: 1px solid var(--zi-border);
-    border-radius: 8px;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    text-align: left;
-}
+    .parent-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--zi-text);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-.lab-parent-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--zi-text);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+    .parent-meta {
+        font-size: 11px;
+        color: var(--zi-text-muted);
+    }
 
-.lab-parent-meta {
-    font-size: 11px;
-    color: var(--zi-text-muted);
-}
-
-.lab-egg {
-    font-size: 22px;
-    filter: drop-shadow(0 1px 4px rgba(255, 200, 0, 0.45));
+    .egg {
+        font-size: 22px;
+        filter: drop-shadow(0 1px 4px rgba(255, 200, 0, 0.45));
+    }
 }
 
 .lab-breed-button {
@@ -166,7 +166,7 @@
     display: grid;
     gap: 10px;
 
-    .battle-arena-header {
+    .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -174,7 +174,7 @@
         font-weight: 700;
         color: var(--zi-text);
 
-        .battle-left-badge {
+        .left-badge {
             background: rgba(255, 193, 7, 0.2);
             color: #d79b00;
             border: 1px solid rgba(255, 193, 7, 0.45);
@@ -185,13 +185,13 @@
         }
     }
 
-    .battle-arena-content {
+    .content {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         gap: 8px;
         align-items: center;
 
-        .battle-pet-item {
+        .pet-item {
             background: var(--zi-card-bg);
             border: 1px solid var(--zi-border);
             border-radius: 8px;
@@ -199,7 +199,7 @@
             display: grid;
             gap: 6px;
 
-            .battle-pet-name {
+            .pet-name {
                 font-size: 12px;
                 font-weight: 700;
                 color: var(--zi-text);
@@ -208,26 +208,26 @@
                 white-space: nowrap;
             }
 
-            .battle-life-track {
+            .life-track {
                 height: 7px;
                 background: color-mix(in srgb, var(--zi-border) 65%, transparent);
                 border-radius: 999px;
                 overflow: hidden;
 
-                .battle-life-fill {
+                .life-fill {
                     height: 100%;
                     background: linear-gradient(90deg, #34d399, #22c55e);
                 }
             }
         }
 
-        .battle-center {
+        .center {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2px;
 
-            .battle-icon {
+            .icon {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
@@ -238,7 +238,7 @@
                 color: #fff;
             }
 
-            .battle-vs {
+            .vs {
                 font-size: 11px;
                 font-weight: 700;
                 color: var(--zi-text-muted);
@@ -246,7 +246,7 @@
         }
     }
 
-    .battle-start-button {
+    .start-button {
         background: linear-gradient(135deg, #ff6b6b, #ee5a24);
 
         &:hover:not(:disabled) {
@@ -263,14 +263,14 @@
     display: grid;
     gap: 10px;
 
-    .feature-action-header {
+    .header {
         font-size: 14px;
         font-weight: 700;
         color: var(--zi-text);
         text-align: left;
     }
 
-    .feature-action-content {
+    .content {
         font-size: 12px;
         line-height: 1.35;
         color: var(--zi-text-muted);
@@ -282,7 +282,7 @@
         text-align: left;
     }
 
-    .levelup-start-button {
+    .levelup-button {
         background: linear-gradient(135deg, #4f46e5, #6366f1);
 
         &:hover:not(:disabled) {
@@ -290,7 +290,7 @@
         }
     }
 
-    .changename-start-button {
+    .changename-button {
         background: linear-gradient(135deg, #06b6d4, #0891b2);
 
         &:hover:not(:disabled) {
@@ -579,15 +579,15 @@
         max-width: 420px;
     }
 
-    .breeding-lab-content {
+    .breeding-lab-card .content {
         grid-template-columns: 1fr;
     }
 
-    .lab-egg {
+    .breeding-lab-card .egg {
         justify-self: center;
     }
 
-    .battle-arena-content {
+    .battle-arena-card .content {
         grid-template-columns: 1fr;
     }
 
