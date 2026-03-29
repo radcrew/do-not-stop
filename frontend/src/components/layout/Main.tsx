@@ -16,7 +16,7 @@ const Main: React.FC = () => {
   const isLoggedIn = Boolean(user || primaryWallet);
   const location = useLocation();
   /** Full-page interaction routes hide the pet collection. */
-  const hideGallery = isStandaloneInteractionPath(location.pathname);
+  const isGalleryHidden = isStandaloneInteractionPath(location.pathname);
 
   return (
     <div className="main-container">
@@ -33,7 +33,7 @@ const Main: React.FC = () => {
         {isAuthenticated || isLoggedIn ? (
           <>
             <Outlet />
-            {!hideGallery && <ZombieGallery />}
+            {!isGalleryHidden && <ZombieGallery />}
           </>
         ) : (
           <div className="welcome-section">

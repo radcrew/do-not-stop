@@ -30,7 +30,7 @@ const AccountDropdown: React.FC = () => {
         isNonceLoading
     } = useAuth();
     const { theme, toggleTheme } = useTheme();
-
+    const isDark = theme === 'dark';
 
     // Memoize popular tokens to prevent infinite re-renders
     const popularTokens = useMemo(() => getPopularTokens(chain?.id), [chain?.id]);
@@ -176,13 +176,13 @@ const AccountDropdown: React.FC = () => {
                 <button
                     type="button"
                     onClick={toggleTheme}
-                    className={`theme-switch ${theme === 'dark' ? 'is-dark' : ''}`}
+                    className={`theme-switch ${isDark ? 'is-dark' : ''}`}
                     role="switch"
-                    aria-checked={theme === 'dark'}
-                    aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                    aria-checked={isDark}
+                    aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
                 >
                     <span className="theme-switch-label" aria-hidden="true">
-                        {theme === 'dark' ? 'Dark' : 'Light'}
+                        {isDark ? 'Dark' : 'Light'}
                     </span>
                     <span className="theme-switch-track" aria-hidden="true">
                         <span className="theme-switch-thumb" />
@@ -204,13 +204,13 @@ const AccountDropdown: React.FC = () => {
             <button
                 type="button"
                 onClick={toggleTheme}
-                className={`theme-switch ${theme === 'dark' ? 'is-dark' : ''}`}
+                className={`theme-switch ${isDark ? 'is-dark' : ''}`}
                 role="switch"
-                aria-checked={theme === 'dark'}
-                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                aria-checked={isDark}
+                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
             >
                 <span className="theme-switch-label" aria-hidden="true">
-                    {theme === 'dark' ? 'Dark' : 'Light'}
+                    {isDark ? 'Dark' : 'Light'}
                 </span>
                 <span className="theme-switch-track" aria-hidden="true">
                     <span className="theme-switch-thumb" />

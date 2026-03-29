@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useZombiesContract } from '../../hooks/useZombiesContract';
-import { getGeneration, getPropertyEmoji, getXpNumbers, getXpPercent, getPetAvatar, getPetClass, getPetElement, getPetProperties } from '../../utils/petCard';
+import {
+    getGeneration,
+    getPropertyEmoji,
+    getXpNumbers,
+    getXpPercent,
+    getPetAvatar,
+    getPetClass,
+    getPetElement,
+    getPetProperties,
+} from '../../utils/petCard';
 import CreateZombieModal from './CreateZombieModal';
 import SendZombieModal from './SendZombieModal';
 import './ZombieGallery.css';

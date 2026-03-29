@@ -1,20 +1,5 @@
-/* Modern CSS Custom Properties with Enhanced Features */
+/* Color tokens: frontend/src/styles/variables.css */
 :root {
-    /* Color System with Modern Values */
-    --color-primary: #667eea;
-    --color-secondary: #764ba2;
-    --color-text: #333;
-    --color-text-muted: #666;
-    --color-text-light: #999;
-    --color-border: #e0e0e0;
-    --color-background: white;
-    --color-background-light: #f8f9fa;
-    --color-background-hover: #e9ecef;
-    --color-shadow: rgba(0, 0, 0, 0.1);
-    --color-shadow-hover: rgba(0, 0, 0, 0.15);
-    --color-shadow-button: rgba(102, 126, 234, 0.3);
-    --color-shadow-button-hover: rgba(102, 126, 234, 0.4);
-
     /* Spacing Scale with clamp for responsive scaling */
     --spacing-xs: clamp(0.125rem, 0.25rem, 0.375rem);
     --spacing-sm: clamp(0.25rem, 0.5rem, 0.75rem);
@@ -54,30 +39,6 @@
     --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     --shadow-elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     --shadow-elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-:root[data-theme='dark'] {
-    --color-background: #141923;
-    --color-background-light: #1d2430;
-    --color-background-hover: #273244;
-    --color-text: #f3f4f6;
-    --color-text-muted: #c7ccd4;
-    --color-text-light: #9ca3af;
-    --color-border: #2b3240;
-    --color-shadow: rgba(0, 0, 0, 0.35);
-    --color-shadow-hover: rgba(0, 0, 0, 0.5);
-}
-
-:root[data-theme='light'] {
-    --color-background: white;
-    --color-background-light: #f8f9fa;
-    --color-background-hover: #e9ecef;
-    --color-text: #333;
-    --color-text-muted: #666;
-    --color-text-light: #999;
-    --color-border: #e0e0e0;
-    --color-shadow: rgba(0, 0, 0, 0.1);
-    --color-shadow-hover: rgba(0, 0, 0, 0.15);
 }
 
 /* Modern Gallery Container with Container Queries */

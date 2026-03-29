@@ -1,11 +1,13 @@
+@import './styles/variables.css';
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light;
-  color: #111827;
-  background-color: #f4f6fb;
+  color: var(--cp-body-text-light);
+  background-color: var(--cp-body-bg-light);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,18 +17,18 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  color: #e5e7eb;
-  background-color: #0f1117;
+  color: var(--cp-body-text-dark);
+  background-color: var(--cp-body-bg-dark);
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--cp-link);
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: var(--cp-link-hover);
 }
 
 body {
@@ -55,7 +57,7 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: var(--cp-link);
 }
 
 button:focus,
