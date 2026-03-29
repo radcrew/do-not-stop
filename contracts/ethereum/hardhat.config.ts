@@ -1,8 +1,6 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
-import { configVariable } from "hardhat/config";
-
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin],
   solidity: {
@@ -34,7 +32,12 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       type: "http",
-      url: process.env.SEPOLIA_URL || "https://sepolia.infura.io/v3/787a211aaf0e43958312cfffb47e96db",
+      // Full RPC URL (any provider), or omit and set INFURA_PROJECT_ID for Infura Sepolia.
+      url:
+        process.env.SEPOLIA_URL ||
+        (process.env.INFURA_PROJECT_ID
+          ? `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+          : ""),
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },
