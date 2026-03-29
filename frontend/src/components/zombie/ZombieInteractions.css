@@ -1,4 +1,20 @@
 .zombie-interactions {
+    --zi-card-bg: #ffffff;
+    --zi-surface-bg: #f8f9fa;
+    --zi-text: #333;
+    --zi-text-muted: #666;
+    --zi-border: #e0e0e0;
+}
+
+:root[data-theme='dark'] .zombie-interactions {
+    --zi-card-bg: #141923;
+    --zi-surface-bg: #1d2430;
+    --zi-text: #f3f4f6;
+    --zi-text-muted: #c7ccd4;
+    --zi-border: #2b3240;
+}
+
+.zombie-interactions {
     padding: 0;
     max-width: none;
     margin: 0;
@@ -6,12 +22,33 @@
     box-sizing: border-box;
 }
 
+/* Full-page /breed, /battle, /levelup, /rename — no gallery */
+.zombie-interactions.interaction-standalone {
+    max-width: 640px;
+    margin-inline: auto;
+}
+
+.interaction-standalone-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.interaction-standalone-header h3 {
+    margin-bottom: 8px;
+}
+
+.interaction-standalone-sub {
+    margin: 0 !important;
+    font-size: 0.95rem;
+    color: var(--zi-text-muted);
+}
+
 .interactions-card {
-    background: white;
+    background: var(--zi-card-bg);
     border-radius: 16px;
     padding: var(--spacing-xl);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--zi-border);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -19,7 +56,7 @@
 
 .interactions-card p {
     margin: 0 0 20px 0;
-    color: #666;
+    color: var(--zi-text-muted);
     text-align: center;
 }
 
@@ -33,12 +70,232 @@
 .action-buttons {
     padding-block-start: var(--spacing-lg);
     display: grid;
-    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
     gap: 16px;
     justify-content: center;
     width: 100%;
-    max-width: 500px;
+    max-width: none;
     margin: 0 auto 24px;
+}
+
+.breeding-lab-card {
+    background: var(--zi-surface-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 12px;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.breeding-lab-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--zi-text);
+    text-align: left;
+}
+
+.breeding-lab-divider {
+    height: 1px;
+    background: var(--zi-border);
+}
+
+.breeding-lab-content {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.lab-parent-item {
+    background: var(--zi-card-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+}
+
+.lab-parent-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--zi-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lab-parent-meta {
+    font-size: 11px;
+    color: var(--zi-text-muted);
+}
+
+.lab-egg {
+    font-size: 22px;
+    filter: drop-shadow(0 1px 4px rgba(255, 200, 0, 0.45));
+}
+
+.lab-breed-button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #2fb267, #1f9f5f);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.lab-breed-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(47, 178, 103, 0.35);
+}
+
+.lab-breed-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.battle-arena-card {
+    background: var(--zi-surface-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 12px;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.battle-arena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--zi-text);
+}
+
+.battle-left-badge {
+    background: rgba(255, 193, 7, 0.2);
+    color: #d79b00;
+    border: 1px solid rgba(255, 193, 7, 0.45);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.battle-arena-content {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+}
+
+.battle-pet-item {
+    background: var(--zi-card-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 8px;
+    padding: 8px;
+    display: grid;
+    gap: 6px;
+}
+
+.battle-pet-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--zi-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.battle-life-track {
+    height: 7px;
+    background: color-mix(in srgb, var(--zi-border) 65%, transparent);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.battle-life-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #34d399, #22c55e);
+}
+
+.battle-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.battle-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.battle-vs {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--zi-text-muted);
+}
+
+.battle-start-button {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.battle-start-button:hover:not(:disabled) {
+    box-shadow: 0 6px 14px rgba(255, 107, 107, 0.35);
+}
+
+.feature-action-card {
+    background: var(--zi-surface-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 12px;
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.feature-action-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--zi-text);
+    text-align: left;
+}
+
+.feature-action-content {
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--zi-text-muted);
+    background: var(--zi-card-bg);
+    border: 1px solid var(--zi-border);
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 56px;
+    text-align: left;
+}
+
+.levelup-start-button {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.levelup-start-button:hover:not(:disabled) {
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.35);
+}
+
+.changename-start-button {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.changename-start-button:hover:not(:disabled) {
+    box-shadow: 0 6px 14px rgba(8, 145, 178, 0.35);
 }
 
 .action-button {
@@ -86,7 +343,7 @@
 
 .breed-interface,
 .battle-interface {
-    background: #f8f9fa;
+    background: var(--zi-surface-bg);
     border-radius: 12px;
     padding: 20px;
     margin-top: 20px;
@@ -97,14 +354,14 @@
     margin: 0 0 8px 0;
     font-size: 20px;
     font-weight: 700;
-    color: #333;
+    color: var(--zi-text);
     text-align: center;
 }
 
 .breed-interface p,
 .battle-interface p {
     margin: 0 0 20px 0;
-    color: #666;
+    color: var(--zi-text-muted);
     text-align: center;
     font-size: 14px;
 }
@@ -124,16 +381,17 @@
 
 .selection-group label {
     font-weight: 600;
-    color: #333;
+    color: var(--zi-text);
     font-size: 14px;
 }
 
 .selection-group select {
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--zi-border);
     border-radius: 8px;
     font-size: 14px;
-    background: white;
+    background: var(--zi-card-bg);
+    color: var(--zi-text);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -153,16 +411,18 @@
 
 .name-input label {
     font-weight: 600;
-    color: #333;
+    color: var(--zi-text);
     font-size: 14px;
 }
 
 .name-input input {
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--zi-border);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.3s ease;
+    background: var(--zi-card-bg);
+    color: var(--zi-text);
 }
 
 .name-input input:focus {
@@ -223,7 +483,7 @@
     align-items: center;
     justify-content: center;
     padding: 40px;
-    color: #666;
+    color: var(--zi-text-muted);
 }
 
 .loading-spinner {
@@ -315,7 +575,19 @@
 
     .action-buttons {
         grid-template-columns: 1fr;
-        max-width: 280px;
+        max-width: 420px;
+    }
+
+    .breeding-lab-content {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-egg {
+        justify-self: center;
+    }
+
+    .battle-arena-content {
+        grid-template-columns: 1fr;
     }
 
     .zombie-selection {

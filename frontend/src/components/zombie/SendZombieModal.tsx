@@ -6,20 +6,20 @@ import './SendZombieModal.css';
 interface SendZombieModalProps {
     isOpen: boolean;
     onClose: () => void;
-    zombie: {
+    pet: {
         name: string;
         dna: bigint;
         level: number;
         rarity: number;
     };
-    zombieId: bigint;
+    petId: bigint;
 }
 
 const SendZombieModal: React.FC<SendZombieModalProps> = ({
     isOpen,
     onClose,
-    zombie,
-    zombieId,
+    pet,
+    petId,
 }) => {
     const [recipientAddress, setRecipientAddress] = useState('');
     const [isConfirming, setIsConfirming] = useState(false);
@@ -45,15 +45,15 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
         }
 
         if (recipientAddress.toLowerCase() === window.ethereum?.selectedAddress?.toLowerCase()) {
-            setError('You cannot send a zombie to yourself');
+            setError('You cannot send a pet to yourself');
             return;
         }
 
         try {
             setIsConfirming(true);
-            await transferZombie(recipientAddress, zombieId);
+            await transferZombie(recipientAddress, petId);
         } catch (err) {
-            setError('Failed to send zombie. Please try again.');
+            setError('Failed to send pet. Please try again.');
             setIsConfirming(false);
         }
     };
@@ -88,7 +88,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
         <div className="modal-overlay" onClick={handleClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>Send Zombie</h2>
+                    <h2>Send Pet</h2>
                     <button
                         className="close-button"
                         onClick={handleClose}
@@ -100,11 +100,11 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
 
                 <div className="modal-body">
                     <div className="zombie-preview">
-                        <h3>{zombie.name}</h3>
+                        <h3>{pet.name}</h3>
                         <div className="zombie-details">
-                            <p><strong>Level:</strong> {zombie.level}</p>
-                            <p><strong>DNA:</strong> {zombie.dna.toString()}</p>
-                            <p><strong>Rarity:</strong> {zombie.rarity}</p>
+                            <p><strong>Level:</strong> {pet.level}</p>
+                            <p><strong>DNA:</strong> {pet.dna.toString()}</p>
+                            <p><strong>Rarity:</strong> {pet.rarity}</p>
                         </div>
                     </div>
 
@@ -141,7 +141,7 @@ const SendZombieModal: React.FC<SendZombieModalProps> = ({
                             onClick={handleSend}
                             disabled={!recipientAddress || isConfirming || isPending}
                         >
-                            {isConfirming || isPending ? 'Sending...' : 'Send Zombie'}
+                            {isConfirming || isPending ? 'Sending...' : 'Send Pet'}
                         </button>
                     </div>
                 </div>

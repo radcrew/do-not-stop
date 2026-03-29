@@ -1,6 +1,6 @@
-# Do Not Stop
+# Crypto Pets
 
-A full-stack Web3 app with React frontend, Node.js backend, and multi-blockchain smart contracts. Supports both Ethereum and Solana with a unified wallet experience.
+A full-stack Web3 **crypto pets** app with React frontend, Node.js backend, and multi-blockchain smart contracts. Supports both Ethereum and Solana with a unified wallet experience.
 
 ## Quick Start
 
@@ -18,7 +18,7 @@ That's it! The app will be running at http://localhost:5173
 
 - **Unified Wallet Experience** - Connect to Ethereum or Solana with one interface
 - **Multi-Chain Support** - Ethereum, Polygon, BSC, Arbitrum, and Solana
-- **CryptoZombies** - NFT collection with breeding and battles
+- **Crypto Pets** — collect, breed, and battle on-chain companions (Ethereum contract based on CryptoZombies course patterns)
 - **Modern Stack** - React 19, TypeScript, Wagmi v2, Solana Web3.js
 - **One-Command Setup** - Everything starts with a single command
 

@@ -6,20 +6,20 @@ import './ZombieCreator.css';
 
 const ZombieCreator: React.FC = () => {
     const { isConnected, createRandomZombie, hash, isPending, writeError } = useZombiesContract();
-    const [zombieName, setZombieName] = useState('');
+    const [petName, setPetName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [isUserRejection, setIsUserRejection] = useState(false);
     const [isContractError, setIsContractError] = useState(false);
 
-    const handleCreateZombie = async () => {
+    const handleCreatePet = async () => {
         if (!isConnected) {
             setError('Please connect your wallet first');
             return;
         }
 
-        if (!zombieName.trim()) {
-            setError('Please enter a zombie name');
+        if (!petName.trim()) {
+            setError('Please enter a pet name');
             return;
         }
 
@@ -29,16 +29,16 @@ const ZombieCreator: React.FC = () => {
         setIsContractError(false);
 
         try {
-            await createRandomZombie(zombieName.trim());
+            await createRandomZombie(petName.trim());
         } catch (err) {
-            setError('Failed to create zombie. Please try again.');
-            console.error('Error creating zombie:', err);
+            setError('Failed to create pet. Please try again.');
+            console.error('Error creating pet:', err);
         }
     };
 
     const handleSuccess = () => {
-        setSuccess(`Zombie "${zombieName}" created successfully!`);
-        setZombieName('');
+        setSuccess(`Pet "${petName}" created successfully!`);
+        setPetName('');
     };
 
     const handleTransactionComplete = () => {
@@ -58,8 +58,8 @@ const ZombieCreator: React.FC = () => {
         return (
             <div className="zombie-creator">
                 <div className="creator-card">
-                    <h3>🧟‍♂️ Create Your First Zombie</h3>
-                    <p>Connect your wallet to start creating zombies!</p>
+                    <h3>🐾 Create Your First Pet</h3>
+                    <p>Connect your wallet to start creating pets!</p>
                 </div>
             </div>
         );
@@ -68,29 +68,29 @@ const ZombieCreator: React.FC = () => {
     return (
         <div className="zombie-creator">
             <div className="creator-card">
-                <h3>🧟‍♂️ Create Your First Zombie</h3>
-                <p>Give your zombie a unique name and bring it to life! You can only create one zombie initially - breed it to create more!</p>
+                <h3>🐾 Create Your First Pet</h3>
+                <p>Give your pet a unique name and bring it to life! You can only create one pet initially — breed to grow your collection!</p>
 
                 <div className="creator-form">
                     <div className="input-group">
-                        <label htmlFor="zombieName">Zombie Name</label>
+                        <label htmlFor="petNameCreator">Pet Name</label>
                         <input
-                            id="zombieName"
+                            id="petNameCreator"
                             type="text"
-                            value={zombieName}
-                            onChange={(e) => setZombieName(e.target.value)}
-                            placeholder="Enter zombie name..."
+                            value={petName}
+                            onChange={(e) => setPetName(e.target.value)}
+                            placeholder="Enter pet name..."
                             maxLength={20}
                             disabled={isPending}
                         />
                     </div>
 
                     <button
-                        onClick={handleCreateZombie}
-                        disabled={isPending || !zombieName.trim()}
+                        onClick={handleCreatePet}
+                        disabled={isPending || !petName.trim()}
                         className="create-button"
                     >
-                        {isPending ? 'Creating...' : 'Create Zombie'}
+                        {isPending ? 'Creating...' : 'Create Pet'}
                     </button>
                 </div>
 

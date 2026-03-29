@@ -2,6 +2,7 @@ import { useAccount, useWriteContract, useReadContract, useReadContracts } from 
 import { CONTRACT_ADDRESS } from '../config';
 import CryptoZombiesABI from '../contracts/CryptoZombies.json';
 
+/** On-chain entity (CryptoZombies contract still uses “zombie” naming). */
 export interface Zombie {
     name: string;
     dna: bigint;
@@ -11,6 +12,9 @@ export interface Zombie {
     lossCount: number;
     rarity: number;
 }
+
+/** Alias for UI — same shape as {@link Zombie}. */
+export type Pet = Zombie;
 
 export interface ZombieStats {
     level: number;

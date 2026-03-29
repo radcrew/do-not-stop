@@ -115,7 +115,7 @@ function mapRevertReasonToFriendlyMessage(revertReason: string): string {
 
   // Handle the most common contract revert reasons
   if (reason.includes('you already have a zombie')) {
-    return '🧟‍♂️ You already have a zombie! Create a new one by breeding or battling.';
+    return '🐾 You already have a pet! Create a new one by breeding or battling.';
   }
 
   if (reason.includes('insufficient funds')) {

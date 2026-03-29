@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       type: "http",
-      url: process.env.SEPOLIA_URL || "https://sepolia.infura.io/v3/YOUR_PROJECT_ID",
+      url: process.env.SEPOLIA_URL || "https://sepolia.infura.io/v3/787a211aaf0e43958312cfffb47e96db",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },

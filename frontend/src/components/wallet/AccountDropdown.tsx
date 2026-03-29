@@ -3,6 +3,7 @@ import { useAccount, usePublicClient } from 'wagmi';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useAuth } from '@do-not-stop/shared-auth';
+import { useTheme } from '../../contexts/theme';
 import { getPopularTokens } from '../../constants/tokens';
 import { EthereumNetworkSwitcher, SolanaNetworkSwitcher } from './NetworkSwitcher';
 import TokenBalance from './TokenBalance';
@@ -28,6 +29,7 @@ const AccountDropdown: React.FC = () => {
         isVerifying,
         isNonceLoading
     } = useAuth();
+    const { theme, toggleTheme } = useTheme();
 
 
     // Memoize popular tokens to prevent infinite re-renders
@@ -172,6 +174,21 @@ const AccountDropdown: React.FC = () => {
         return (
             <div className="account-dropdown-container">
                 <button
+                    type="button"
+                    onClick={toggleTheme}
+                    className={`theme-switch ${theme === 'dark' ? 'is-dark' : ''}`}
+                    role="switch"
+                    aria-checked={theme === 'dark'}
+                    aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                >
+                    <span className="theme-switch-label" aria-hidden="true">
+                        {theme === 'dark' ? 'Dark' : 'Light'}
+                    </span>
+                    <span className="theme-switch-track" aria-hidden="true">
+                        <span className="theme-switch-thumb" />
+                    </span>
+                </button>
+                <button
                     className="connect-wallet-btn"
                     onClick={() => setShowAuthFlow(true)}
                 >
@@ -184,6 +201,21 @@ const AccountDropdown: React.FC = () => {
 
     return (
         <div className="account-dropdown-container">
+            <button
+                type="button"
+                onClick={toggleTheme}
+                className={`theme-switch ${theme === 'dark' ? 'is-dark' : ''}`}
+                role="switch"
+                aria-checked={theme === 'dark'}
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+                <span className="theme-switch-label" aria-hidden="true">
+                    {theme === 'dark' ? 'Dark' : 'Light'}
+                </span>
+                <span className="theme-switch-track" aria-hidden="true">
+                    <span className="theme-switch-thumb" />
+                </span>
+            </button>
             {isConnected && <EthereumNetworkSwitcher />}
             {solanaConnected && <SolanaNetworkSwitcher />}
             <div className="account-dropdown" ref={dropdownRef}>
