@@ -68,12 +68,12 @@
   cursor: pointer;
   transform: none;
 
-  .theme-switch-label {
+  .label {
     font-size: var(--font-size-sm);
     font-weight: 600;
   }
 
-  .theme-switch-track {
+  .track {
     position: relative;
     inline-size: 46px;
     block-size: 26px;
@@ -84,7 +84,7 @@
     box-shadow: 0 2px 4px var(--color-shadow);
   }
 
-  .theme-switch-thumb {
+  .thumb {
     position: absolute;
     inset-block-start: 2px;
     inset-inline-start: 2px;
@@ -97,16 +97,16 @@
   }
 
   &.is-dark {
-    .theme-switch-track {
+    .track {
       background: var(--color-primary);
     }
 
-    .theme-switch-thumb {
+    .thumb {
       inset-inline-start: 22px;
     }
   }
 
-  &:hover .theme-switch-track {
+  &:hover .track {
     box-shadow: 0 4px 10px var(--color-shadow-hover);
   }
 

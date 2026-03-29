@@ -181,11 +181,11 @@ const AccountDropdown: React.FC = () => {
                     aria-checked={isDark}
                     aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
                 >
-                    <span className="theme-switch-label" aria-hidden="true">
+                    <span className="label" aria-hidden="true">
                         {isDark ? 'Dark' : 'Light'}
                     </span>
-                    <span className="theme-switch-track" aria-hidden="true">
-                        <span className="theme-switch-thumb" />
+                    <span className="track" aria-hidden="true">
+                        <span className="thumb" />
                     </span>
                 </button>
                 <button
@@ -209,11 +209,11 @@ const AccountDropdown: React.FC = () => {
                 aria-checked={isDark}
                 aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
             >
-                <span className="theme-switch-label" aria-hidden="true">
+                <span className="label" aria-hidden="true">
                     {isDark ? 'Dark' : 'Light'}
                 </span>
-                <span className="theme-switch-track" aria-hidden="true">
-                    <span className="theme-switch-thumb" />
+                <span className="track" aria-hidden="true">
+                    <span className="thumb" />
                 </span>
             </button>
             {isConnected && <EthereumNetworkSwitcher />}
