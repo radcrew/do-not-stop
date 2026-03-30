@@ -7,10 +7,11 @@ import { getReadyPets } from '../../../utils/readyPets';
 import { useWriteContractErrorState } from '../../../hooks/useWriteContractErrorState';
 
 export type BreedPanelProps = {
-    isStandaloneView: boolean;
+    /** `false` when embedded under the dashboard interactions hub. */
+    isStandaloneView?: boolean;
 };
 
-const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView }) => {
+const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
     const { createPetFromDNA, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } = usePetsContract();
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);

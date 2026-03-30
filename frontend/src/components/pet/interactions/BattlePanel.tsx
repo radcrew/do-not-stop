@@ -7,10 +7,10 @@ import { getReadyPets } from '../../../utils/readyPets';
 import { useWriteContractErrorState } from '../../../hooks/useWriteContractErrorState';
 
 export type BattlePanelProps = {
-    isStandaloneView: boolean;
+    isStandaloneView?: boolean;
 };
 
-const BattlePanel: React.FC<BattlePanelProps> = ({ isStandaloneView }) => {
+const BattlePanel: React.FC<BattlePanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
     const { battlePets, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } = usePetsContract();
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);

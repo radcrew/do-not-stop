@@ -1,3 +1,14 @@
+/** Internal action id (`interactions/:action`; `rename` segment → changename). */
+export type InteractionAction = 'breed' | 'battle' | 'levelup' | 'changename';
+
+/** Standalone page titles for `/breed` … `/rename` (dashboard hub uses its own header). */
+export const STANDALONE_INTERACTION_HEADERS: Record<InteractionAction, { title: string; sub: string }> = {
+    breed: { title: '🥚 Breeding Lab', sub: 'Breed two pets to create a new one' },
+    battle: { title: '⚔️ Battle Arena', sub: 'Pick two pets to fight' },
+    levelup: { title: '⬆️ Level Up', sub: 'Pay 0.001 ETH to level up your pet' },
+    changename: { title: '✏️ Rename Pet', sub: "Change your pet's name (requires level 2+)" },
+};
+
 /** Dashboard home (hub + gallery). */
 export const DASHBOARD_HOME = '/dashboard';
 

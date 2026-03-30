@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePetsContract } from '../../hooks/usePetsContract';
 import { getLifePercent } from '../../utils/petCard';
+import type { InteractionAction } from '../../constants/interactionRoutes';
 import {
     BATTLE_PATH,
     BREED_PATH,
@@ -16,9 +17,7 @@ import RenamePanel from './interactions/RenamePanel';
 import { getReadyPets } from '../../utils/readyPets';
 import './PetInteractions.css';
 
-type InteractionAction = 'breed' | 'battle' | 'levelup' | 'changename';
-
-/** Map URL segment (e.g. `rename`) to internal action id. */
+/** Map `interactions/:action` segment (e.g. `rename`) to internal action id. */
 function parseActionParam(raw: string | undefined): InteractionAction | null {
     if (!raw) return null;
     if (raw === 'rename') return 'changename';
@@ -26,44 +25,23 @@ function parseActionParam(raw: string | undefined): InteractionAction | null {
     return null;
 }
 
-function parseStandalonePath(pathname: string): InteractionAction | null {
-    const p = pathname.replace(/\/$/, '') || '/';
-    if (p === BREED_PATH) return 'breed';
-    if (p === BATTLE_PATH) return 'battle';
-    if (p === LEVELUP_PATH) return 'levelup';
-    if (p === RENAME_PATH) return 'changename';
-    return null;
-}
-
-const STANDALONE_HEADERS: Record<InteractionAction, { title: string; sub: string }> = {
-    breed: { title: '🥚 Breeding Lab', sub: 'Breed two pets to create a new one' },
-    battle: { title: '⚔️ Battle Arena', sub: 'Pick two pets to fight' },
-    levelup: { title: '⬆️ Level Up', sub: 'Pay 0.001 ETH to level up your pet' },
-    changename: { title: '✏️ Rename Pet', sub: "Change your pet's name (requires level 2+)" },
-};
-
+/**
+ * Dashboard interactions hub (`/dashboard`, `/dashboard/interactions/:action?`).
+ * Standalone `/breed` … `/rename` are separate router entries + `InteractionStandalonePage`.
+ */
 const PetInteractions: React.FC = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const { action: actionParam } = useParams<{ action?: string }>();
-    const standaloneAction = useMemo(() => parseStandalonePath(location.pathname), [location.pathname]);
-    const isStandaloneView = standaloneAction !== null;
     const { isConnected, pets, petIds, isLoading, isReady } = usePetsContract();
 
-    const action = useMemo((): InteractionAction | null => {
-        if (standaloneAction) return standaloneAction;
-        return parseActionParam(actionParam);
-    }, [actionParam, standaloneAction]);
-
+    const action = useMemo(() => parseActionParam(actionParam), [actionParam]);
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
 
-    // Unknown interaction path → dashboard hub
     useEffect(() => {
-        if (isStandaloneView) return;
         if (actionParam !== undefined && actionParam !== '' && action === null) {
             navigate(DASHBOARD_HOME, { replace: true });
         }
-    }, [actionParam, action, navigate, isStandaloneView]);
+    }, [actionParam, action, navigate]);
 
     if (!isConnected) {
         return (
@@ -91,33 +69,13 @@ const PetInteractions: React.FC = () => {
 
     if (pets.length === 0) {
         return (
-            <div className={`pet-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
+            <div className="pet-interactions">
                 <div className="interactions-card">
                     <div className="card-header">
-                        <h3>
-                            {isStandaloneView && standaloneAction
-                                ? STANDALONE_HEADERS[standaloneAction].title
-                                : '⚔️ Pet Interactions'}
-                        </h3>
+                        <h3>⚔️ Pet Interactions</h3>
                     </div>
                     <p>You don&apos;t have any pets yet.</p>
                     <p className="help-text">Go to the dashboard and create your first pet.</p>
-                </div>
-            </div>
-        );
-    }
-
-    const needsTwoPets = standaloneAction === 'breed' || standaloneAction === 'battle';
-    if (standaloneAction && needsTwoPets && pets.length < 2) {
-        return (
-            <div className="pet-interactions interaction-standalone">
-                <div className="interactions-card">
-                    <div className="card-header interaction-standalone-header">
-                        <h3>{STANDALONE_HEADERS[standaloneAction].title}</h3>
-                        <p className="sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
-                    </div>
-                    <p>You need at least two pets to breed or battle.</p>
-                    <p className="help-text">Create another pet from the dashboard, then come back here.</p>
                 </div>
             </div>
         );
@@ -128,20 +86,11 @@ const PetInteractions: React.FC = () => {
     const availableBattles = Math.min(3, readyPets.length > 1 ? 3 : 0);
 
     return (
-        <div className={`pet-interactions${isStandaloneView ? ' interaction-standalone' : ''}`}>
+        <div className="pet-interactions">
             <div className="interactions-card">
-                {!isStandaloneView && (
-                    <div className="card-header">
-                        <h3>⚔️ Pet Interactions</h3>
-                    </div>
-                )}
-
-                {isStandaloneView && standaloneAction && (
-                    <div className="card-header interaction-standalone-header">
-                        <h3>{STANDALONE_HEADERS[standaloneAction].title}</h3>
-                        <p className="sub">{STANDALONE_HEADERS[standaloneAction].sub}</p>
-                    </div>
-                )}
+                <div className="card-header">
+                    <h3>⚔️ Pet Interactions</h3>
+                </div>
 
                 {!action && (
                     <div className="action-buttons">
@@ -238,13 +187,13 @@ const PetInteractions: React.FC = () => {
                     </div>
                 )}
 
-                {action === 'breed' && <BreedPanel isStandaloneView={isStandaloneView} />}
+                {action === 'breed' && <BreedPanel isStandaloneView={false} />}
 
-                {action === 'battle' && <BattlePanel isStandaloneView={isStandaloneView} />}
+                {action === 'battle' && <BattlePanel isStandaloneView={false} />}
 
-                {action === 'levelup' && <LevelUpPanel isStandaloneView={isStandaloneView} />}
+                {action === 'levelup' && <LevelUpPanel isStandaloneView={false} />}
 
-                {action === 'changename' && <RenamePanel isStandaloneView={isStandaloneView} />}
+                {action === 'changename' && <RenamePanel isStandaloneView={false} />}
             </div>
         </div>
     );

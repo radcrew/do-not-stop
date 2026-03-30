@@ -4,6 +4,10 @@ import { useAuth } from '@do-not-stop/shared-auth';
 
 import Main from '../components/layout/Main';
 import PetInteractions from '../components/pet/PetInteractions';
+import BattleRoute from './BattleRoute';
+import BreedRoute from './BreedRoute';
+import LevelUpRoute from './LevelUpRoute';
+import RenameRoute from './RenameRoute';
 
 /**
  * Auth-gated route tree: landing vs dashboard, nested interactions, standalone breed/battle/levelup/rename.
@@ -24,16 +28,16 @@ const WalletAwareRoutes: React.FC = () => {
                 <Route path="interactions/:action?" element={<PetInteractions />} />
             </Route>
             <Route path="/breed" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
-                <Route index element={<PetInteractions />} />
+                <Route index element={<BreedRoute />} />
             </Route>
             <Route path="/battle" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
-                <Route index element={<PetInteractions />} />
+                <Route index element={<BattleRoute />} />
             </Route>
             <Route path="/levelup" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
-                <Route index element={<PetInteractions />} />
+                <Route index element={<LevelUpRoute />} />
             </Route>
             <Route path="/rename" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
-                <Route index element={<PetInteractions />} />
+                <Route index element={<RenameRoute />} />
             </Route>
             <Route path="*" element={<Navigate to={isLoggedIn ? '/dashboard' : '/landing'} replace />} />
         </Routes>

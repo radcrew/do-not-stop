@@ -7,10 +7,10 @@ import { getReadyPets } from '../../../utils/readyPets';
 import { useWriteContractErrorState } from '../../../hooks/useWriteContractErrorState';
 
 export type LevelUpPanelProps = {
-    isStandaloneView: boolean;
+    isStandaloneView?: boolean;
 };
 
-const LevelUpPanel: React.FC<LevelUpPanelProps> = ({ isStandaloneView }) => {
+const LevelUpPanel: React.FC<LevelUpPanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
     const { levelUp, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } = usePetsContract();
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);

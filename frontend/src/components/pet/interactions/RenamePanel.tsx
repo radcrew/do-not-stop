@@ -7,10 +7,10 @@ import { getReadyPets } from '../../../utils/readyPets';
 import { useWriteContractErrorState } from '../../../hooks/useWriteContractErrorState';
 
 export type RenamePanelProps = {
-    isStandaloneView: boolean;
+    isStandaloneView?: boolean;
 };
 
-const RenamePanel: React.FC<RenamePanelProps> = ({ isStandaloneView }) => {
+const RenamePanel: React.FC<RenamePanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
     const { changeName, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } = usePetsContract();
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
