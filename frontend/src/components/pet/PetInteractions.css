@@ -507,44 +507,9 @@
     }
 }
 
-.error-message {
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 16px;
-    color: #dc3545;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-
-.error-message.user-rejection {
-    background: rgba(108, 117, 125, 0.1);
-    border: 1px solid rgba(108, 117, 125, 0.3);
-    color: #6c757d;
-    font-style: italic;
-}
-
-.error-message.contract-error {
-    background: rgba(255, 193, 7, 0.1);
-    border: 1px solid rgba(255, 193, 7, 0.3);
-    color: #ffc107;
-    font-weight: 600;
-}
-
-.success-message {
-    background: rgba(40, 167, 69, 0.1);
-    border: 1px solid rgba(40, 167, 69, 0.3);
-    border-radius: 8px;
-    padding: 12px;
-    margin-top: 16px;
-    color: #28a745;
-    font-size: 14px;
-    font-weight: 500;
+/* Centered alerts on interaction flows (global messages.css defaults to start) */
+.pet-interactions .error-message,
+.pet-interactions .success-message {
     text-align: center;
 }
 

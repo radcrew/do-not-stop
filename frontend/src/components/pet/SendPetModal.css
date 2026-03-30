@@ -135,21 +135,6 @@
     cursor: not-allowed;
 }
 
-.error-message {
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin-block-start: 1rem;
-    color: #dc3545;
-    font-size: 0.9rem;
-    font-weight: 500;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-}
-
 .error-container {
     background: rgba(220, 53, 69, 0.1);
     border: 1px solid rgba(220, 53, 69, 0.3);

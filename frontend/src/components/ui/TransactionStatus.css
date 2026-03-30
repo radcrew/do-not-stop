@@ -1,81 +1,82 @@
 .transaction-status {
+    --tx-inset: 1.25rem;
+    --tx-slide-duration: 0.3s;
+    --tx-state-duration: 0.6s;
+
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e0e0e0;
-    z-index: 1000;
+    z-index: var(--z-modal);
+    inset-block-start: var(--tx-inset);
+    inset-inline-end: var(--tx-inset);
     min-width: 300px;
     max-width: 400px;
-    animation: slideIn 0.3s ease-out;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    box-shadow: 0 8px 32px var(--color-shadow-hover);
+    animation: tx-slide-in var(--tx-slide-duration) ease-out;
 }
 
-@keyframes slideIn {
+@keyframes tx-slide-in {
     from {
-        transform: translateX(100%);
         opacity: 0;
+        transform: translateX(100%);
     }
 
     to {
-        transform: translateX(0);
         opacity: 1;
+        transform: translateX(0);
     }
 }
 
 .status-content {
     display: flex;
     align-items: center;
-    padding: 16px;
-    gap: 12px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
 }
 
 .status-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
-    font-size: 16px;
+    font-size: var(--font-size-base);
 }
 
 .transaction-status.pending .status-icon {
-    background: #fff3cd;
-    color: #856404;
+    background: color-mix(in srgb, #ffc107 24%, var(--color-background));
+    color: #92400e;
 }
 
 .transaction-status.confirming .status-icon {
-    background: #d1ecf1;
-    color: #0c5460;
+    background: color-mix(in srgb, var(--warning-color) 22%, var(--color-background));
+    color: color-mix(in srgb, var(--warning-color) 55%, #0a3d44);
 }
 
 .transaction-status.confirmed .status-icon {
-    background: #d4edda;
-    color: #155724;
+    background: color-mix(in srgb, var(--success-color) 22%, var(--color-background));
+    color: var(--success-color);
 }
 
 .transaction-status.error .status-icon {
-    background: #f8d7da;
-    color: #721c24;
+    background: color-mix(in srgb, var(--danger-color) 18%, var(--color-background));
+    color: var(--danger-color);
 }
 
 .spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e0e0e0;
-    border-top: 2px solid #0c5460;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--warning-color);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: tx-spin 1s linear infinite;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
+@keyframes tx-spin {
+    to {
         transform: rotate(360deg);
     }
 }
@@ -86,38 +87,40 @@
 }
 
 .status-title {
+    margin-block-end: 0.25rem;
     font-weight: 600;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 4px;
+    font-size: var(--font-sm);
+    color: var(--color-text);
 }
 
 .transaction-hash {
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: 12px;
-    color: #666;
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+    font-size: var(--font-xs);
+    color: var(--color-text-muted);
     word-break: break-all;
 }
 
 .close-button {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #999;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    width: 24px;
-    height: 24px;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: var(--radius-sm);
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: var(--font-xl);
+    line-height: 1;
+    color: var(--color-text-light);
+    cursor: pointer;
+    transition: var(--transition-fast);
 }
 
 .close-button:hover:not(:disabled) {
-    background: #f0f0f0;
-    color: #666;
+    background: var(--color-background-hover);
+    color: var(--color-text-muted);
 }
 
 .close-button:disabled {
@@ -125,31 +128,26 @@
     cursor: not-allowed;
 }
 
-/* Status-specific animations */
 .transaction-status.confirmed {
-    animation: successPulse 0.6s ease-out;
+    animation: tx-success-pulse var(--tx-state-duration) ease-out;
 }
 
-@keyframes successPulse {
-    0% {
+@keyframes tx-success-pulse {
+    0%,
+    100% {
         transform: scale(1);
     }
 
     50% {
         transform: scale(1.05);
     }
-
-    100% {
-        transform: scale(1);
-    }
 }
 
 .transaction-status.error {
-    animation: errorShake 0.6s ease-out;
+    animation: tx-error-shake var(--tx-state-duration) ease-out;
 }
 
-@keyframes errorShake {
-
+@keyframes tx-error-shake {
     0%,
     100% {
         transform: translateX(0);
@@ -164,36 +162,47 @@
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .transaction-status {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        min-width: auto;
+        --tx-inset: 0.625rem;
+        inset-inline: var(--tx-inset);
+        min-width: 0;
         max-width: none;
     }
 
     .status-content {
-        padding: 12px;
+        padding: 0.75rem;
     }
 
     .status-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: var(--font-sm);
     }
 
     .spinner {
-        width: 16px;
-        height: 16px;
+        width: 1rem;
+        height: 1rem;
     }
 
     .status-title {
-        font-size: 13px;
+        font-size: 0.8125rem;
     }
 
     .transaction-hash {
-        font-size: 11px;
+        font-size: 0.6875rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .transaction-status,
+    .transaction-status.confirmed,
+    .transaction-status.error {
+        animation: none;
+    }
+
+    .spinner {
+        animation: none;
+        border-top-color: var(--color-border);
     }
 }

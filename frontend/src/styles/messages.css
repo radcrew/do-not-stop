@@ -1,0 +1,40 @@
+/* Global form/flow alerts — use class names only; no per-component copy. */
+
+.error-message,
+.success-message {
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
+    margin-block-start: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    text-align: start;
+    box-sizing: border-box;
+}
+
+.error-message {
+    background: rgb(220 53 69 / 0.1);
+    border: 1px solid rgb(220 53 69 / 0.3);
+    color: var(--danger-color, #dc3545);
+}
+
+.error-message.user-rejection {
+    background: rgb(108 117 125 / 0.1);
+    border-color: rgb(108 117 125 / 0.3);
+    color: var(--secondary-color, #6c757d);
+    font-style: italic;
+}
+
+.error-message.contract-error {
+    background: rgb(255 193 7 / 0.1);
+    border-color: rgb(255 193 7 / 0.3);
+    color: var(--warning-color, #ffc107);
+    font-weight: 600;
+}
+
+.success-message {
+    background: rgb(40 167 69 / 0.1);
+    border: 1px solid rgb(40 167 69 / 0.3);
+    color: var(--success-color, #28a745);
+}
