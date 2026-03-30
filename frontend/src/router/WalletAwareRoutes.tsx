@@ -21,11 +21,6 @@ const WalletAwareRoutes: React.FC = () => {
             <Route path="/landing" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Main />} />
             <Route path="/dashboard" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
                 <Route index element={<PetInteractions />} />
-                <Route path="interactions/breed" element={<Navigate to="/breed" replace />} />
-                <Route path="interactions/battle" element={<Navigate to="/battle" replace />} />
-                <Route path="interactions/levelup" element={<Navigate to="/levelup" replace />} />
-                <Route path="interactions/rename" element={<Navigate to="/rename" replace />} />
-                <Route path="interactions/:action?" element={<PetInteractions />} />
             </Route>
             <Route path="/breed" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
                 <Route index element={<BreedRoute />} />

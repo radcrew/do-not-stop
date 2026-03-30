@@ -10,7 +10,6 @@ export type InteractionStandalonePageProps = {
     children: React.ReactNode;
 };
 
-/** Shell for `/breed`, `/battle`, `/levelup`, `/rename`: auth/loading/empty/min-pets gates, then header + panel. */
 const InteractionStandalonePage: React.FC<InteractionStandalonePageProps> = ({ action, minPets, children }) => {
     const { isConnected, pets, isLoading } = usePetsContract();
     const header = STANDALONE_INTERACTION_HEADERS[action];
