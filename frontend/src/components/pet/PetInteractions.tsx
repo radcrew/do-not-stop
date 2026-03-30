@@ -15,6 +15,7 @@ import BreedPanel from './interactions/BreedPanel';
 import LevelUpPanel from './interactions/LevelUpPanel';
 import RenamePanel from './interactions/RenamePanel';
 import { getReadyPets } from '../../utils/readyPets';
+import PetInteractionsStateCard from './PetInteractionsStateCard';
 import './PetInteractions.css';
 
 /** Map `interactions/:action` segment (e.g. `rename`) to internal action id. */
@@ -45,14 +46,10 @@ const PetInteractions: React.FC = () => {
 
     if (!isConnected) {
         return (
-            <div className="pet-interactions">
-                <div className="interactions-card">
-                    <div className="card-header">
-                        <h3>⚔️ Pet Interactions</h3>
-                    </div>
-                    <p>Connect your wallet to interact with your pets</p>
-                </div>
-            </div>
+            <PetInteractionsStateCard
+                title="⚔️ Pet Interactions"
+                description="Connect your wallet to interact with your pets"
+            />
         );
     }
 
@@ -69,15 +66,11 @@ const PetInteractions: React.FC = () => {
 
     if (pets.length === 0) {
         return (
-            <div className="pet-interactions">
-                <div className="interactions-card">
-                    <div className="card-header">
-                        <h3>⚔️ Pet Interactions</h3>
-                    </div>
-                    <p>You don&apos;t have any pets yet.</p>
-                    <p className="help-text">Go to the dashboard and create your first pet.</p>
-                </div>
-            </div>
+            <PetInteractionsStateCard
+                title="⚔️ Pet Interactions"
+                description="You don't have any pets yet."
+                helpText="Go to the dashboard and create your first pet."
+            />
         );
     }
 
