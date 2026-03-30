@@ -20,6 +20,8 @@
     margin: 0;
     width: 100%;
     box-sizing: border-box;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 
     .picker {
         display: grid;

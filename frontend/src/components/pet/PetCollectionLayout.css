@@ -34,7 +34,7 @@
 
     padding: 0;
     max-width: none;
-    margin: 0;
+    margin-top: var(--spacing-md);
     width: 100%;
     box-sizing: border-box;
     container-type: inline-size;

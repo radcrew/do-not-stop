@@ -3,10 +3,10 @@ export type InteractionAction = 'breed' | 'battle' | 'levelup' | 'changename';
 
 /** Standalone page titles for `/breed` … `/rename` (dashboard hub uses its own header). */
 export const STANDALONE_INTERACTION_HEADERS: Record<InteractionAction, { title: string; sub: string }> = {
-    breed: { title: '🥚 Breeding Lab', sub: 'Breed two pets to create a new one' },
-    battle: { title: '⚔️ Battle Arena', sub: 'Pick two pets to fight' },
-    levelup: { title: '⬆️ Level Up', sub: 'Pay 0.001 ETH to level up your pet' },
-    changename: { title: '✏️ Rename Pet', sub: "Change your pet's name (requires level 2+)" },
+  breed: { title: '🥚 Breeding Lab', sub: 'Breed two pets to create a new one' },
+  battle: { title: '⚔️ Battle Arena', sub: 'Pick two pets to fight' },
+  levelup: { title: '⬆️ Level Up', sub: 'Pay 0.001 ETH to level up your pet' },
+  changename: { title: '✏️ Rename Pet', sub: "Change your pet's name (requires level 2+)" },
 };
 
 /** Dashboard home (hub + gallery). */
@@ -32,8 +32,11 @@ export const DASHBOARD_INTERACTIONS = '/dashboard/interactions';
 export type InteractionSlug = 'breed' | 'battle' | 'levelup' | 'rename';
 
 export function isInteractionRoute(pathname: string): boolean {
-  const p = pathname.replace(/\/$/, '') || '/';
-  return INTERACTION_ROUTES.includes(p);
+  const path = pathname.replace(/\/$/, '') || '/';
+  if (INTERACTION_ROUTES.includes(path)) return true;
+  // Also hide the gallery for legacy /dashboard/interactions/* pages
+  // (so PetInteractions and PetGallery don't fight for the same space).
+  return path === DASHBOARD_INTERACTIONS || path.startsWith(`${DASHBOARD_INTERACTIONS}/`);
 }
 
 export function interactionPath(slug: InteractionSlug): string {
