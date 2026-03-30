@@ -4,6 +4,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useAuth } from '@do-not-stop/shared-auth';
 import { getPopularTokens } from '../../constants/tokens';
+import { NeonButton } from '../common';
 import { EthereumNetworkSwitcher, SolanaNetworkSwitcher } from './NetworkSwitcher';
 import TokenBalance from './TokenBalance';
 import NativeBalance from './NativeBalance';
@@ -169,12 +170,9 @@ const AccountDropdown: React.FC = () => {
     if (!isConnected) {
         return (
             <div className="account-dropdown-container">
-                <button
-                    className="connect-wallet-btn"
-                    onClick={() => setShowAuthFlow(true)}
-                >
+                <NeonButton tone="azure" className="connect-wallet-btn" onClick={() => setShowAuthFlow(true)}>
                     Connect Wallet
-                </button>
+                </NeonButton>
             </div>
         );
     }

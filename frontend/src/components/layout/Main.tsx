@@ -7,8 +7,33 @@ import { useDynamicContext } from '../../contexts/dynamic';
 import AccountDropdown from '../wallet/AccountDropdown';
 import SolanaWalletTrigger from '../wallet/SolanaWalletTrigger';
 import PetGallery from '../pet/PetGallery';
+import { NeonButton } from '../common';
+import lionImage from '../../assets/images/pets/lion.png';
 import { isInteractionRoute } from '../../constants/interactionRoutes';
 import './Main.css';
+
+const FEATURE_CARDS = [
+  { title: 'Breed Unique Pets', text: 'Combine rare DNA traits and hatch powerful new companions.', icon: '🧬' },
+  { title: 'Epic Battles', text: 'Challenge rivals and climb the leaderboard with tactical fights.', icon: '⚔️' },
+  { title: 'Power Growth', text: 'Level up, optimize stats, and unlock advanced abilities.', icon: '📈' },
+  { title: 'Trade & Earn', text: 'Collect, showcase, and trade your best CryptoPets.', icon: '💰' },
+];
+
+const FEATURED_PETS = [
+  { name: 'Phoenix Blaze', level: 99, rarity: 'Legendary', emoji: '🔥' },
+  { name: 'Frost Dragon', level: 37, rarity: 'Epic', emoji: '❄️' },
+  { name: 'Thunder Wolf', level: 96, rarity: 'Rare', emoji: '⚡' },
+  { name: 'Crystal Guardian', level: 62, rarity: 'Epic', emoji: '💎' },
+  { name: 'Shadow Panther', level: 83, rarity: 'Rare', emoji: '🌑' },
+  { name: 'Mystic Owl', level: 71, rarity: 'Legendary', emoji: '🦉' },
+];
+
+const COMMUNITY_CARDS = [
+  { name: 'Discord', members: '150k+ Members', color: 'discord', icon: '💬' },
+  { name: 'Twitter', members: '250k+ Followers', color: 'twitter', icon: '🐦' },
+  { name: 'Telegram', members: '120k+ Members', color: 'telegram', icon: '✈️' },
+  { name: 'YouTube', members: '180k+ Members', color: 'youtube', icon: '▶️' },
+];
 
 const Main: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -36,23 +61,83 @@ const Main: React.FC = () => {
             {!isGalleryHidden && <PetGallery />}
           </>
         ) : (
-          <div className="welcome-section">
-            <br />
-            <p>Connect your wallet to start creating and managing your crypto pet collection!</p>
-            <div className="features">
-              <div className="feature">
-                <h3>🐾 Create Pets</h3>
-                <p>Generate unique pets with random DNA and rarity</p>
+          <div className="landing">
+            <section className="landing-hero">
+              <div className="hero-copy">
+                <h2>Collect, Battle &amp; Breed Your Dream Pets!</h2>
+                <p>10K+ handcrafted digital pets in the ultimate on-chain adventure.</p>
+                <div className="hero-actions">
+                  <NeonButton tone="emerald">Start Playing</NeonButton>
+                  <NeonButton tone="azure">Watch Trailer</NeonButton>
+                </div>
               </div>
-              <div className="feature">
-                <h3>⚔️ Battle System</h3>
-                <p>Pit your pets against each other in epic battles</p>
+              <div className="hero-art">
+                <div className="pet-orb">
+                  <img src={lionImage} alt="Lion pet" className="pet-orb-image" />
+                </div>
               </div>
-              <div className="feature">
-                <h3>🧬 Breeding</h3>
-                <p>Combine two pets to create new offspring</p>
+            </section>
+
+            <section className="landing-section">
+              <h3 className="section-title">Pet Interactions</h3>
+              <div className="feature-grid">
+                {FEATURE_CARDS.map((feature) => (
+                  <article key={feature.title} className="feature-card">
+                    <div className="feature-icon" aria-hidden="true">{feature.icon}</div>
+                    <h4>{feature.title}</h4>
+                    <p>{feature.text}</p>
+                  </article>
+                ))}
               </div>
-            </div>
+            </section>
+
+            <section className="landing-section featured-pets">
+              <h3 className="section-title">Your Pets</h3>
+              <div className="pet-showcase-grid">
+                {FEATURED_PETS.map((pet) => (
+                  <article key={pet.name} className="pet-showcase-card">
+                    <div className="pet-avatar">{pet.emoji}</div>
+                    <h4>{pet.name}</h4>
+                    <p>Lv. {pet.level} · {pet.rarity}</p>
+                    <NeonButton tone="amber" size="sm">Send</NeonButton>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="stats-band" aria-label="Project statistics">
+              <div className="stat-item"><strong>10,000+</strong><span>Unique Pets</span></div>
+              <div className="stat-item"><strong>5,250+</strong><span>Pet Holders</span></div>
+              <div className="stat-item"><strong>1M+</strong><span>Battles Fought</span></div>
+              <div className="stat-item"><strong>$2.5M</strong><span>Rewards Earned</span></div>
+            </section>
+
+            <section className="landing-section">
+              <h3 className="section-title">Join Our Community</h3>
+              <div className="community-grid">
+                {COMMUNITY_CARDS.map((community) => (
+                  <article key={community.name} className={`community-card ${community.color}`}>
+                    <div className="community-icon" aria-hidden="true">{community.icon}</div>
+                    <h4>{community.name}</h4>
+                    <p>{community.members}</p>
+                    <NeonButton tone="cyan" size="sm">Join Now</NeonButton>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <footer className="landing-footer">
+              <div className="footer-brand">
+                <h4>CryptoPet</h4>
+                <p>Build your dream pet roster, rule the arena, and trade legendary companions.</p>
+              </div>
+              <div className="footer-links">
+                <a href="#" onClick={(e) => e.preventDefault()}>About</a>
+                <a href="#" onClick={(e) => e.preventDefault()}>Roadmap</a>
+                <a href="#" onClick={(e) => e.preventDefault()}>Docs</a>
+                <a href="#" onClick={(e) => e.preventDefault()}>Support</a>
+              </div>
+            </footer>
           </div>
         )}
       </div>
