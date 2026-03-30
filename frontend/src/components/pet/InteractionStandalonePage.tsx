@@ -2,6 +2,7 @@ import React from 'react';
 import type { InteractionAction } from '../../constants/interactionRoutes';
 import { STANDALONE_INTERACTION_HEADERS } from '../../constants/interactionRoutes';
 import { usePetsContract } from '../../hooks/usePetsContract';
+import StateCard from './interactions/StateCard';
 import './PetInteractions.css';
 
 export type InteractionStandalonePageProps = {
@@ -16,14 +17,10 @@ const InteractionStandalonePage: React.FC<InteractionStandalonePageProps> = ({ a
 
     if (!isConnected) {
         return (
-            <div className="pet-interactions">
-                <div className="interactions-card">
-                    <div className="card-header">
-                        <h3>⚔️ Pet Interactions</h3>
-                    </div>
-                    <p>Connect your wallet to interact with your pets</p>
-                </div>
-            </div>
+            <StateCard
+                title="⚔️ Pet Interactions"
+                description="Connect your wallet to interact with your pets"
+            />
         );
     }
 
@@ -40,43 +37,31 @@ const InteractionStandalonePage: React.FC<InteractionStandalonePageProps> = ({ a
 
     if (pets.length === 0) {
         return (
-            <div className="pet-interactions interaction-standalone">
-                <div className="interactions-card">
-                    <div className="card-header">
-                        <h3>{header.title}</h3>
-                    </div>
-                    <p>You don&apos;t have any pets yet.</p>
-                    <p className="help-text">Go to the dashboard and create your first pet.</p>
-                </div>
-            </div>
+            <StateCard
+                containerClassName="interaction-standalone"
+                title={header.title}
+                description="You don't have any pets yet."
+                helpText="Go to the dashboard and create your first pet."
+            />
         );
     }
 
     if (minPets > 1 && pets.length < minPets) {
         return (
-            <div className="pet-interactions interaction-standalone">
-                <div className="interactions-card">
-                    <div className="card-header interaction-standalone-header">
-                        <h3>{header.title}</h3>
-                        <p className="sub">{header.sub}</p>
-                    </div>
-                    <p>You need at least two pets to breed or battle.</p>
-                    <p className="help-text">Create another pet from the dashboard, then come back here.</p>
-                </div>
-            </div>
+            <StateCard
+                containerClassName="interaction-standalone"
+                title={header.title}
+                sub={header.sub}
+                description="You need at least two pets to breed or battle."
+                helpText="Create another pet from the dashboard, then come back here."
+            />
         );
     }
 
     return (
-        <div className="pet-interactions interaction-standalone">
-            <div className="interactions-card">
-                <div className="card-header interaction-standalone-header">
-                    <h3>{header.title}</h3>
-                    <p className="sub">{header.sub}</p>
-                </div>
-                {children}
-            </div>
-        </div>
+        <StateCard containerClassName="interaction-standalone" title={header.title} sub={header.sub}>
+            {children}
+        </StateCard>
     );
 };
 
