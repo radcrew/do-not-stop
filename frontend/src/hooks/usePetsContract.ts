@@ -1,8 +1,9 @@
 import { useAccount, useWriteContract, useReadContract, useReadContracts } from 'wagmi';
 import { CONTRACT_ADDRESS } from '../config';
-import CryptoZombiesABI from '../contracts/CryptoZombies.json';
+import ethereumAbi from '../contracts/ethereumAbi.json';
 
-export interface Zombie {
+/** Pet entity returned from the contract reader (on-chain names in ABI remain historical). */
+export interface Pet {
     name: string;
     dna: bigint;
     level: number;
@@ -12,7 +13,7 @@ export interface Zombie {
     rarity: number;
 }
 
-export interface ZombieStats {
+export interface PetStats {
     level: number;
     winCount: number;
     lossCount: number;
@@ -25,14 +26,13 @@ export interface BattleStats {
     readyTime: bigint;
 }
 
-export const useZombiesContract = () => {
+export const usePetsContract = () => {
     const { address, isConnected } = useAccount();
     const { writeContract, data: hash, isPending, error: writeError } = useWriteContract();
 
-    // Get zombie IDs owned by the user
-    const { data: zombieIdsData, refetch: refetchZombieIds } = useReadContract({
+    const { data: petIdsData, refetch: refetchPetIds } = useReadContract({
         address: CONTRACT_ADDRESS,
-        abi: CryptoZombiesABI.abi,
+        abi: ethereumAbi.abi,
         functionName: 'getZombiesByOwner',
         args: address ? [address] : undefined,
         query: {
@@ -40,171 +40,166 @@ export const useZombiesContract = () => {
         },
     });
 
-    // Create contracts array for batch reading zombie data
-    const zombieContracts = (zombieIdsData as bigint[])?.map((zombieId: bigint) => ({
+    const petReadContracts = (petIdsData as bigint[])?.map((petId: bigint) => ({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: CryptoZombiesABI.abi as any,
+        abi: ethereumAbi.abi as any,
         functionName: 'getZombie' as const,
-        args: [zombieId],
+        args: [petId],
     })) || [];
 
-    // Batch read all zombie data
-    const { data: zombiesData, isLoading: isZombiesLoading, error: zombiesError } = useReadContracts({
-        contracts: zombieContracts,
+    const { data: petsData, isLoading: isPetsLoading, error: petsError } = useReadContracts({
+        contracts: petReadContracts,
         query: {
-            enabled: zombieContracts.length > 0,
+            enabled: petReadContracts.length > 0,
         },
     });
 
-    // Process zombie data
-    const zombies: Zombie[] = zombiesData
+    const pets: Pet[] = petsData
         ?.filter((result: any) => result.status === 'success' && result.result)
         .map((result: any) => {
-            const zombieData = result.result as any;
+            const raw = result.result as any;
             return {
-                name: zombieData.name,
-                dna: BigInt(zombieData.dna),
-                level: Number(zombieData.level),
-                readyTime: BigInt(zombieData.readyTime),
-                winCount: Number(zombieData.winCount),
-                lossCount: Number(zombieData.lossCount),
-                rarity: Number(zombieData.rarity),
-            } as Zombie;
+                name: raw.name,
+                dna: BigInt(raw.dna),
+                level: Number(raw.level),
+                readyTime: BigInt(raw.readyTime),
+                winCount: Number(raw.winCount),
+                lossCount: Number(raw.lossCount),
+                rarity: Number(raw.rarity),
+            } as Pet;
         }) || [];
 
-    const zombieIds: bigint[] = (zombieIdsData as bigint[]) || [];
+    const petIds: bigint[] = (petIdsData as bigint[]) || [];
 
-    // Contract interaction functions
-    const createRandomZombie = (name: string) => {
+    const createRandomPet = (name: string) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'createRandomZombie',
             args: [name],
             gas: 500000n,
         });
     };
 
-    const levelUp = (zombieId: bigint) => {
+    const levelUp = (petId: bigint) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'levelUp',
-            args: [zombieId],
-            value: 1000000000000000n, // 0.001 ETH
+            args: [petId],
+            value: 1000000000000000n,
             gas: 200000n,
         });
     };
 
-    const changeName = (zombieId: bigint, newName: string) => {
+    const changeName = (petId: bigint, newName: string) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'changeName',
-            args: [zombieId, newName],
+            args: [petId, newName],
             gas: 100000n,
         });
     };
 
-    const battleZombies = (zombieId1: bigint, zombieId2: bigint) => {
+    const battlePets = (petId1: bigint, petId2: bigint) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'battleZombies',
-            args: [zombieId1, zombieId2],
+            args: [petId1, petId2],
             gas: 300000n,
         });
     };
 
-    const createZombieFromDNA = (zombieId1: bigint, zombieId2: bigint, name: string) => {
+    const createPetFromDNA = (parentId1: bigint, parentId2: bigint, name: string) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'createZombieFromDNA',
-            args: [zombieId1, zombieId2, name],
+            args: [parentId1, parentId2, name],
             gas: 500000n,
         });
     };
 
-    const attack = (zombieId: bigint, targetId: bigint) => {
+    const attack = (petId: bigint, targetId: bigint) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'attack',
-            args: [zombieId, targetId],
+            args: [petId, targetId],
             gas: 300000n,
         });
     };
 
-    const changeDna = (zombieId: bigint, newDna: bigint) => {
+    const changeDna = (petId: bigint, newDna: bigint) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'changeDna',
-            args: [zombieId, newDna],
+            args: [petId, newDna],
             gas: 100000n,
         });
     };
 
-    const transferZombie = (to: string, zombieId: bigint) => {
+    const transferPet = (to: string, petId: bigint) => {
         return writeContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'transferFrom',
-            args: [address, to as `0x${string}`, zombieId],
+            args: [address, to as `0x${string}`, petId],
             gas: 200000n,
         });
     };
 
-    // Read functions for individual zombie data
-    const getZombie = (zombieId: bigint) => {
+    const getPet = (petId: bigint) => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'getZombie',
-            args: [zombieId],
+            args: [petId],
             query: {
-                enabled: !!zombieId,
+                enabled: !!petId,
             },
         });
     };
 
-    const getZombieStats = (zombieId: bigint) => {
+    const getPetStats = (petId: bigint) => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'getZombieStats',
-            args: [zombieId],
+            args: [petId],
             query: {
-                enabled: !!zombieId,
+                enabled: !!petId,
             },
         });
     };
 
-    const getBattleStats = (zombieId: bigint) => {
+    const getBattleStats = (petId: bigint) => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'getBattleStats',
-            args: [zombieId],
+            args: [petId],
             query: {
-                enabled: !!zombieId,
+                enabled: !!petId,
             },
         });
     };
 
-    const getTotalZombiesCount = () => {
+    const getTotalPetsCount = () => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'getTotalZombiesCount',
         });
     };
 
-    const getOwnerZombieCount = (owner: string) => {
+    const getOwnerPetCount = (owner: string) => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
-            abi: CryptoZombiesABI.abi,
+            abi: ethereumAbi.abi,
             functionName: 'ownerZombieCount',
             args: [owner as `0x${string}`],
             query: {
@@ -213,18 +208,17 @@ export const useZombiesContract = () => {
         });
     };
 
-    // Utility functions
     const isReady = (readyTime: bigint): boolean => {
         return Number(readyTime) <= Date.now() / 1000;
     };
 
     const getRarityColor = (rarity: number): string => {
         const colors = {
-            1: '#8B4513', // Common - Brown
-            2: '#C0C0C0', // Uncommon - Silver
-            3: '#FFD700', // Rare - Gold
-            4: '#FF69B4', // Epic - Hot Pink
-            5: '#8A2BE2', // Legendary - Blue Violet
+            1: '#8B4513',
+            2: '#C0C0C0',
+            3: '#FFD700',
+            4: '#FF69B4',
+            5: '#8A2BE2',
         };
         return colors[rarity as keyof typeof colors] || '#8B4513';
     };
@@ -241,42 +235,35 @@ export const useZombiesContract = () => {
     };
 
     return {
-        // Account info
         address,
         isConnected,
 
-        // Contract state
-        zombies,
-        zombieIds,
-        isLoading: isZombiesLoading,
-        contractError: zombiesError,
+        pets,
+        petIds,
+        isLoading: isPetsLoading,
+        contractError: petsError,
 
-        // Write functions
-        createRandomZombie,
+        createRandomPet,
         levelUp,
         changeName,
-        battleZombies,
-        createZombieFromDNA,
+        battlePets,
+        createPetFromDNA,
         attack,
         changeDna,
-        transferZombie,
+        transferPet,
 
-        // Read functions
-        getZombie,
-        getZombieStats,
+        getPet,
+        getPetStats,
         getBattleStats,
-        getTotalZombiesCount,
-        getOwnerZombieCount,
+        getTotalPetsCount,
+        getOwnerPetCount,
 
-        // Transaction state
         hash,
         isPending,
         writeError,
 
-        // Refetch functions
-        refetchZombieIds,
+        refetchPetIds,
 
-        // Utility functions
         isReady,
         getRarityColor,
         getRarityName,

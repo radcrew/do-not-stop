@@ -1,0 +1,192 @@
+/* Tokens: frontend/src/styles/variables.css — modal-only overrides below */
+
+.modal-overlay {
+    --modal-max-width: min(500px, 100%);
+    --modal-max-height: 90vh;
+    --close-button-size: 32px;
+    --modal-backdrop: rgb(0 0 0 / 0.5);
+    --modal-elevated-shadow: 0 20px 40px rgb(0 0 0 / 0.3);
+    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+
+    position: fixed;
+    inset: 0;
+    background: var(--modal-backdrop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    padding: var(--spacing-lg);
+}
+
+.modal-content {
+    background: var(--color-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--modal-elevated-shadow);
+    max-width: var(--modal-max-width);
+    width: 100%;
+    max-height: var(--modal-max-height);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
+    border-block-end: 1px solid var(--color-border);
+    background: var(--gradient-primary);
+    color: var(--cp-white, #fff);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    width: 100%;
+
+    & h2 {
+        margin: 0;
+        font-size: var(--font-size-2xl);
+        font-weight: 700;
+        color: inherit;
+    }
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: color-mix(in srgb, var(--cp-white, #fff) 80%, transparent);
+    cursor: pointer;
+    padding: 0;
+    width: var(--close-button-size);
+    height: var(--close-button-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition-fast);
+
+    &:hover {
+        background: color-mix(in srgb, var(--cp-white, #fff) 20%, transparent);
+        color: var(--cp-white, #fff);
+    }
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    flex: 1;
+
+    & p {
+        margin: 0 0 var(--spacing-xl);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-base);
+        line-height: 1.5;
+    }
+}
+
+.creator-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+
+    & label {
+        font-weight: 600;
+        font-size: var(--font-size-sm);
+        color: var(--color-text);
+    }
+
+    & input {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 2px solid var(--color-border);
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-base);
+        background: var(--color-background);
+        color: var(--color-text);
+        transition: var(--transition);
+        outline: none;
+
+        &:focus {
+            border-color: var(--color-primary);
+            box-shadow: var(--focus-ring);
+        }
+
+        &::placeholder {
+            color: var(--color-text-light);
+        }
+    }
+}
+
+.create-button {
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: var(--gradient-primary);
+    color: var(--cp-white, #fff);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px var(--color-shadow-button);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px var(--color-shadow-button-hover);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: var(--spacing-sm);
+    }
+
+    .modal-header {
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+
+        & h2 {
+            font-size: var(--font-size-xl);
+        }
+    }
+
+    .modal-body {
+        padding: var(--spacing-lg);
+    }
+
+    .input-group input {
+        padding: var(--spacing-sm);
+        font-size: var(--font-size-sm);
+    }
+
+    .create-button {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-sm);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .create-button {
+        transition: none;
+
+        &:hover:not(:disabled) {
+            transform: none;
+        }
+    }
+}

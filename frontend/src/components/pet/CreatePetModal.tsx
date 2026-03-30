@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import TransactionStatus from '../ui/TransactionStatus';
-import { useZombiesContract } from '../../hooks/useZombiesContract';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import { parseContractError } from '../../utils/errorParser';
-import './CreateZombieModal.css';
+import './CreatePetModal.css';
 
-interface CreateZombieModalProps {
+interface CreatePetModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }) => {
-    const { isConnected, createRandomZombie, hash, isPending, writeError, refetchZombieIds } = useZombiesContract();
-    const [zombieName, setZombieName] = useState('');
+const CreatePetModal: React.FC<CreatePetModalProps> = ({ isOpen, onClose }) => {
+    const { isConnected, createRandomPet, hash, isPending, writeError, refetchPetIds } = usePetsContract();
+    const [petName, setPetName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [isUserRejection, setIsUserRejection] = useState(false);
     const [isContractError, setIsContractError] = useState(false);
     const [txHash, setTxHash] = useState<string | undefined>(undefined);
 
-    const handleCreateZombie = async () => {
+    const handleCreatePet = async () => {
         if (!isConnected) {
             setError('Please connect your wallet first');
             return;
         }
 
-        if (!zombieName.trim()) {
-            setError('Please enter a zombie name');
+        if (!petName.trim()) {
+            setError('Please enter a pet name');
             return;
         }
 
@@ -35,27 +35,27 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         setIsContractError(false);
 
         try {
-            await createRandomZombie(zombieName.trim());
+            await createRandomPet(petName.trim());
         } catch (err) {
-            setError('Failed to create zombie. Please try again.');
-            console.error('Error creating zombie:', err);
+            setError('Failed to create pet. Please try again.');
+            console.error('Error creating pet:', err);
         }
     };
 
     const handleSuccess = () => {
-        setSuccess(`Zombie "${zombieName}" created successfully!`);
-        setZombieName('');
+        setSuccess(`Pet "${petName}" created successfully!`);
+        setPetName('');
     };
 
     const handleTransactionComplete = async () => {
         handleSuccess();
         onClose();
         setTxHash(undefined);
-        await refetchZombieIds();
+        await refetchPetIds();
     };
 
     const handleClose = () => {
-        setZombieName('');
+        setPetName('');
         setError(null);
         setSuccess(null);
         setIsUserRejection(false);
@@ -85,35 +85,35 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
         <div className="modal-overlay" onClick={handleClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>🧟‍♂️ Create Your First Zombie</h2>
+                    <h2>🐾 Create Your First Pet</h2>
                     <button className="close-button" onClick={handleClose}>
                         ×
                     </button>
                 </div>
 
                 <div className="modal-body">
-                    <p>Give your zombie a unique name and bring it to life! You can only create one zombie initially - breed it to create more!</p>
+                    <p>Give your pet a unique name and bring it to life! You can only create one pet initially — breed to grow your collection!</p>
 
                     <div className="creator-form">
                         <div className="input-group">
-                            <label htmlFor="zombieName">Zombie Name</label>
+                            <label htmlFor="petName">Pet Name</label>
                             <input
-                                id="zombieName"
+                                id="petName"
                                 type="text"
-                                value={zombieName}
-                                onChange={(e) => setZombieName(e.target.value)}
-                                placeholder="Enter zombie name..."
+                                value={petName}
+                                onChange={(e) => setPetName(e.target.value)}
+                                placeholder="Enter pet name..."
                                 maxLength={20}
                                 disabled={isPending}
                             />
                         </div>
 
                         <button
-                            onClick={handleCreateZombie}
-                            disabled={isPending || !zombieName.trim() || !isConnected}
+                            onClick={handleCreatePet}
+                            disabled={isPending || !petName.trim() || !isConnected}
                             className="create-button"
                         >
-                            {isPending ? 'Creating...' : 'Create Zombie'}
+                            {isPending ? 'Creating...' : 'Create Pet'}
                         </button>
                     </div>
 
@@ -143,4 +143,4 @@ const CreateZombieModal: React.FC<CreateZombieModalProps> = ({ isOpen, onClose }
     );
 };
 
-export default CreateZombieModal;
+export default CreatePetModal;

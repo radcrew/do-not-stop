@@ -1,4 +1,4 @@
-/* Modal Overlay: match CreateZombieModal */
+/* Modal overlay — aligned with create pet modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -61,7 +61,7 @@
     /* max-width: 100%; -- removed, let modal-limit control it */
 }
 
-.zombie-preview {
+.pet-preview {
     background: var(--color-background-light, #f8f9fa);
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -70,13 +70,13 @@
     box-sizing: border-box;
 }
 
-.zombie-preview h3 {
+.pet-preview h3 {
     margin: 0 0 12px 0;
     color: #333;
     font-size: 1.25rem;
 }
 
-.zombie-details {
+.pet-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -84,7 +84,7 @@
     box-sizing: border-box;
 }
 
-.zombie-details p {
+.pet-details p {
     margin: 0;
     color: #555;
     font-size: 0.95rem;
@@ -133,21 +133,6 @@
 .recipient-input input:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-}
-
-.error-message {
-    background: rgba(220, 53, 69, 0.1);
-    border: 1px solid rgba(220, 53, 69, 0.3);
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin-block-start: 1rem;
-    color: #dc3545;
-    font-size: 0.9rem;
-    font-weight: 500;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
 }
 
 .error-container {

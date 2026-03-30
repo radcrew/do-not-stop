@@ -76,25 +76,25 @@ export function parseContractError(error: any): ParsedError {
 function extractRevertReason(errorMessage: string): string {
   // Try to extract revert reason from various error formats
 
-  // Format: "The contract function "createRandomZombie" reverted with the following reason: Internal JSON-RPC error."
+  // Format: viem-style "reverted with the following reason: …"
   const viemRevertMatch = errorMessage.match(/reverted with the following reason:\s*(.+?)(?:\s*Contract Call:|$)/i);
   if (viemRevertMatch) {
     return viemRevertMatch[1].trim();
   }
 
-  // Format: "execution reverted: You already have a zombie!"
+  // Format: "execution reverted: <reason>"
   const revertMatch = errorMessage.match(/execution reverted:?\s*(.+)/i);
   if (revertMatch) {
     return revertMatch[1].trim();
   }
 
-  // Format: "revert You already have a zombie!"
+  // Format: "revert <reason>"
   const revertMatch2 = errorMessage.match(/revert\s+(.+)/i);
   if (revertMatch2) {
     return revertMatch2[1].trim();
   }
 
-  // Format: "VM Exception while processing transaction: revert You already have a zombie!"
+  // Format: VM exception + revert reason
   const vmExceptionMatch = errorMessage.match(/VM Exception.*?revert\s+(.+)/i);
   if (vmExceptionMatch) {
     return vmExceptionMatch[1].trim();
@@ -114,8 +114,9 @@ function mapRevertReasonToFriendlyMessage(revertReason: string): string {
   }
 
   // Handle the most common contract revert reasons
-  if (reason.includes('you already have a zombie')) {
-    return '🧟‍♂️ You already have a zombie! Create a new one by breeding or battling.';
+  // On-chain revert text from deployed contract (legacy wording).
+  if (reason.includes('you already have a zombie') || reason.includes('you already have a pet')) {
+    return '🐾 You already have a pet! Create a new one by breeding or battling.';
   }
 
   if (reason.includes('insufficient funds')) {

@@ -64,7 +64,7 @@ const TransactionStatus: React.FC<TransactionStatusProps> = ({
         }
     };
 
-    const getStatusText = () => {
+    const getStatusText = (): string => {
         switch (status) {
             case 'pending':
                 return 'Transaction pending...';
