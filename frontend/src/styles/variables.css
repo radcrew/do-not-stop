@@ -77,7 +77,16 @@
   --z-header: 50;
   --z-modal: 1000;
 
+  /* Space reserved for fixed `.main-header` (row: title + wallet; must cover wrap height on small screens) */
+  --main-header-offset: 100px;
+
   --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --main-header-offset: 128px;
+  }
 }
 
 /* =============================================================================

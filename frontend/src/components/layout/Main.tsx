@@ -8,45 +8,13 @@ import AccountDropdown from '../wallet/AccountDropdown';
 import SolanaWalletTrigger from '../wallet/SolanaWalletTrigger';
 import PetGallery from '../pet/PetGallery';
 import { NeonButton, NeonCard } from '../common';
-import lionImage from '../../assets/images/pets/lion.png';
-import catImage from '../../assets/images/pets/cat.png';
-import dinosaurImage from '../../assets/images/pets/dinosaur.png';
-import dogImage from '../../assets/images/pets/dog.png';
-import elephantImage from '../../assets/images/pets/elephant.png';
-import owlImage from '../../assets/images/pets/owl.png';
-import breedIcon from '../../assets/images/icons/breed.png';
+import {
+  LANDING_COMMUNITY_CARDS,
+  LANDING_FEATURE_CARDS,
+  LANDING_FEATURED_PETS,
+} from '../../constants/landingContent';
 import { isInteractionRoute } from '../../constants/interactionRoutes';
 import './Main.css';
-
-type FeatureCard = {
-  title: string;
-  text: string;
-  icon?: string;
-  iconImage?: string;
-};
-
-const FEATURE_CARDS: FeatureCard[] = [
-  { title: 'Breed Unique Pets', text: 'Combine rare DNA traits and hatch powerful new companions.', iconImage: breedIcon },
-  { title: 'Epic Battles', text: 'Challenge rivals and climb the leaderboard with tactical fights.', icon: '⚔️' },
-  { title: 'Power Growth', text: 'Level up, optimize stats, and unlock advanced abilities.', icon: '📈' },
-  { title: 'Trade & Earn', text: 'Collect, showcase, and trade your best CryptoPets.', icon: '💰' },
-];
-
-const FEATURED_PETS = [
-  { name: 'Golden Lion', level: 99, rarity: 'Legendary', image: lionImage },
-  { name: 'Frost Dragon', level: 37, rarity: 'Epic', image: dinosaurImage },
-  { name: 'Thunder Pup', level: 96, rarity: 'Rare', image: dogImage },
-  { name: 'Crystal Trunk', level: 62, rarity: 'Epic', image: elephantImage },
-  { name: 'Shadow Cat', level: 83, rarity: 'Rare', image: catImage },
-  { name: 'Mystic Owl', level: 71, rarity: 'Legendary', image: owlImage },
-];
-
-const COMMUNITY_CARDS = [
-  { name: 'Discord', members: '150k+ Members', color: 'discord', icon: '💬' },
-  { name: 'Twitter', members: '250k+ Followers', color: 'twitter', icon: '🐦' },
-  { name: 'Telegram', members: '120k+ Members', color: 'telegram', icon: '✈️' },
-  { name: 'YouTube', members: '180k+ Members', color: 'youtube', icon: '▶️' },
-];
 
 const Main: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -84,17 +52,12 @@ const Main: React.FC = () => {
                   <NeonButton tone="azure">Watch Trailer</NeonButton>
                 </div>
               </div>
-              <div className="hero-art">
-                <div className="pet-orb">
-                  <img src={lionImage} alt="Lion pet" className="pet-orb-image" />
-                </div>
-              </div>
             </section>
 
             <section className="landing-section">
               <h3 className="section-title">Pet Interactions</h3>
               <div className="feature-grid">
-                {FEATURE_CARDS.map((feature) => (
+                {LANDING_FEATURE_CARDS.map((feature) => (
                   <NeonCard key={feature.title} className="feature-card feature-card-media-left">
                     <div className="feature-icon" aria-hidden="true">
                       {feature.iconImage ? (
@@ -115,7 +78,7 @@ const Main: React.FC = () => {
             <section className="landing-section featured-pets">
               <h3 className="section-title">PETS</h3>
               <div className="pet-showcase-grid">
-                {FEATURED_PETS.map((pet) => (
+                {LANDING_FEATURED_PETS.map((pet) => (
                   <NeonCard key={pet.name} className="pet-showcase-card">
                     <div className="pet-avatar">
                       <img src={pet.image} alt={pet.name} className="pet-avatar-image" />
@@ -138,7 +101,7 @@ const Main: React.FC = () => {
             <section className="landing-section">
               <h3 className="section-title">Join Our Community</h3>
               <div className="community-grid">
-                {COMMUNITY_CARDS.map((community) => (
+                {LANDING_COMMUNITY_CARDS.map((community) => (
                   <NeonCard key={community.name} className={`community-card ${community.color}`}>
                     <div className="community-icon" aria-hidden="true">{community.icon}</div>
                     <h4>{community.name}</h4>

@@ -45,15 +45,21 @@
   position: fixed;
   inset-block-start: 0;
   inset-inline: 0;
+  width: 100%;
   background: rgb(5 8 18 / 94%);
   border-block-end: 1px solid rgb(101 131 255 / 25%);
-  padding: 16px 28px;
   z-index: var(--z-header);
   box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
+  box-sizing: border-box;
+  min-height: var(--main-header-offset);
+  padding-inline: clamp(20px, 5vw, 42px);
+  padding-block: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 
   & h1 {
     font-family: var(--title-font);
@@ -71,16 +77,19 @@
 .header-title-row {
   display: block;
   position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: start;
 }
 
 .header-title-row::after {
   content: '';
   position: absolute;
-  left: 50%;
-  top: 52%;
+  left: 0;
+  top: 50%;
   width: clamp(140px, 22vw, 260px);
   height: 42px;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
   background: radial-gradient(ellipse at center, rgb(138 98 255 / 35%) 0%, rgb(74 128 255 / 16%) 48%, transparent 78%);
   filter: blur(8px);
   pointer-events: none;
@@ -98,21 +107,40 @@
 
 .wallet-section {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  flex: 0 0 auto;
   gap: 8px;
-  margin-top: 8px;
   flex-wrap: wrap;
+}
+
+.main-header .account-dropdown-container {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: auto;
+  max-width: 100%;
 }
 
 .main-content {
   flex: 1;
-  margin-block-start: 108px;
+  margin-block-start: var(--main-header-offset);
   width: 100%;
   box-sizing: border-box;
   margin-inline: 0;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Landing: padding under fixed header paints the gap so the hero can fill one full viewport height. */
+.main-content:has(.landing) {
+  margin-block-start: 0;
+  padding-block-start: var(--main-header-offset);
+  background-color: #070a14;
 }
 
 .main-content.authenticated {
@@ -144,14 +172,24 @@
 }
 
 .landing-hero {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  box-sizing: border-box;
   gap: 28px;
-  align-items: center;
-  padding-block: 68px;
+  padding-block: clamp(32px, 6vh, 68px);
   padding-inline: var(--landing-gutter);
-  min-height: 540px;
-  background: linear-gradient(180deg, rgb(87 57 230 / 12%) 0%, rgb(10 12 24 / 80%) 100%);
+  min-height: calc(100vh - var(--main-header-offset));
+  min-height: calc(100dvh - var(--main-header-offset));
+  background-color: #070a14;
+  background-image:
+    linear-gradient(105deg, rgb(6 9 20 / 90%) 0%, rgb(6 9 20 / 48%) 40%, rgb(10 12 24 / 22%) 62%, transparent 82%),
+    linear-gradient(180deg, rgb(87 57 230 / 14%) 0%, rgb(10 12 24 / 76%) 100%),
+    url('../../assets/images/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   border-bottom: 1px solid rgb(94 117 255 / 25%);
 }
@@ -264,11 +302,13 @@
 }
 
 .feature-card {
-  border-radius: 2px;
   padding: 28px;
   color: #e7efff;
   text-align: left;
-  box-shadow: inset 0 0 26px rgb(67 85 180 / 10%);
+  box-shadow:
+    inset 0 0 26px rgb(67 85 180 / 10%),
+    0 8px 22px rgb(0 0 0 / 38%),
+    0 3px 8px rgb(0 0 0 / 22%);
   background: linear-gradient(180deg, rgb(8 12 26 / 90%) 0%, rgb(7 10 20 / 92%) 100%);
   border: none;
   position: relative;
@@ -283,6 +323,7 @@
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   border-left: 3px solid rgb(86 111 255 / 80%);
 }
 
@@ -375,7 +416,6 @@
 .pet-showcase-card {
   background: linear-gradient(180deg, rgb(10 14 28 / 95%) 0%, rgb(7 11 24 / 95%) 100%);
   border: 1px solid rgb(100 132 255 / 20%);
-  border-radius: 2px;
   padding: 22px;
   text-align: left;
   color: #eaf0ff;
@@ -455,7 +495,6 @@
 }
 
 .community-card {
-  border-radius: 2px;
   padding: 28px;
   text-align: center;
   color: #eef5ff;
@@ -559,7 +598,6 @@
   }
 
   .landing-hero {
-    grid-template-columns: 1fr;
     text-align: center;
   }
 
@@ -598,7 +636,10 @@
 
 @media (max-width: 768px) {
   .main-header {
-    padding: 12px 14px;
+    padding-inline: clamp(14px, 4vw, 22px);
+    padding-block: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
   .main-header h1 {
@@ -610,13 +651,8 @@
     justify-content: center;
   }
 
-  .main-content {
-    margin-block-start: 98px;
-  }
-
   .landing-hero {
     padding: 38px 18px;
-    min-height: 420px;
   }
 
   .landing-section {
