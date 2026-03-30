@@ -10,7 +10,9 @@ import {
     getPetElement,
     getPetProperties,
 } from '../../utils/petCard';
+import { getTimeUntilReady, isPetReady } from '../../utils/petReadyTime';
 import CreatePetModal from './CreatePetModal';
+import PetCollectionLayout from './PetCollectionLayout';
 import SendPetModal from './SendPetModal';
 import './PetGallery.css';
 
@@ -25,26 +27,6 @@ const PetGallery: React.FC = () => {
         setLoading(isLoading);
     }, [isLoading]);
 
-    const isReady = (readyTime: bigint): boolean => {
-        return Date.now() / 1000 >= Number(readyTime);
-    };
-
-    const getTimeUntilReady = (readyTime: bigint): string => {
-        const now = Date.now() / 1000;
-        const ready = Number(readyTime);
-        const diff = ready - now;
-
-        if (diff <= 0) return 'Ready!';
-
-        const hours = Math.floor(diff / 3600);
-        const minutes = Math.floor((diff % 3600) / 60);
-        const seconds = Math.floor(diff % 60);
-
-        if (hours > 0) return `${hours}h ${minutes}m`;
-        if (minutes > 0) return `${minutes}m ${seconds}s`;
-        return `${seconds}s`;
-    };
-
     const handleSendClick = (pet: any, id: bigint) => {
         setSendSelection({ pet, petId: id });
         setSendModalOpen(true);
@@ -57,32 +39,29 @@ const PetGallery: React.FC = () => {
 
     if (!isConnected) {
         return (
-            <div className="pet-gallery">
-                <div className="gallery-card">
-                    <div className="card-header">
-                        <h2>🐾 Your Pet Collection</h2>
-                        <p>Connect your wallet to view your pets</p>
-                    </div>
-                </div>
-            </div>
+            <PetCollectionLayout
+                title="🐾 Your Pet Collection"
+                description="Connect your wallet to view your pets"
+            />
         );
     }
 
     return (
-        <div className="pet-gallery">
-            <div className="gallery-card">
-                <div className="card-header">
-                    <h2>🐾 Your Pets</h2>
+        <>
+            <PetCollectionLayout
+                title="🐾 Your Pets"
+                actions={
                     <button
+                        type="button"
                         onClick={() => refetchPetIds()}
-                        className="refresh-button"
+                        className="refresh"
                         disabled={loading}
                         title={loading ? 'Loading...' : 'Refresh'}
                     >
                         {loading ? '⟳' : '↻'}
                     </button>
-                </div>
-
+                }
+            >
                 {loading && (
                     <div className="loading-container">
                         <div className="loading-spinner"></div>
@@ -93,7 +72,7 @@ const PetGallery: React.FC = () => {
                 {contractError && (
                     <div className="error-container">
                         <p>❌ {contractError?.message || 'Failed to load pet data'}</p>
-                        <button onClick={() => refetchPetIds()} className="retry-button">
+                        <button type="button" onClick={() => refetchPetIds()} className="retry-button">
                             Try Again
                         </button>
                     </div>
@@ -109,6 +88,7 @@ const PetGallery: React.FC = () => {
                 {!loading && !contractError && pets.length === 0 && (
                     <div className="create-button-container">
                         <button
+                            type="button"
                             className="create-first-pet-button"
                             onClick={() => setCreateModalOpen(true)}
                         >
@@ -136,7 +116,9 @@ const PetGallery: React.FC = () => {
                                 <div className="pet-main-info">
                                     <div className="pet-header">
                                         <h3>{pet.name}</h3>
-                                        <span className="pet-dna">{getPetClass(pet.dna)} · Gen {getGeneration(pet.dna)}</span>
+                                        <span className="pet-dna">
+                                            {getPetClass(pet.dna)} · Gen {getGeneration(pet.dna)}
+                                        </span>
                                     </div>
                                     <div className="xp-row">
                                         <span className="xp-label">XP</span>
@@ -161,15 +143,18 @@ const PetGallery: React.FC = () => {
                                 </div>
 
                                 <div className="pet-status">
-                                    {isReady(pet.readyTime) ? (
+                                    {isPetReady(pet.readyTime) ? (
                                         <div className="status ready">✅ Ready for action!</div>
                                     ) : (
-                                        <div className="status cooldown">⏰ Ready in {getTimeUntilReady(pet.readyTime)}</div>
+                                        <div className="status cooldown">
+                                            ⏰ Ready in {getTimeUntilReady(pet.readyTime)}
+                                        </div>
                                     )}
                                 </div>
 
                                 <div className="pet-actions">
                                     <button
+                                        type="button"
                                         className="send-button"
                                         onClick={() => handleSendClick(pet, petIds[index])}
                                     >
@@ -180,7 +165,7 @@ const PetGallery: React.FC = () => {
                         ))}
                     </div>
                 )}
-            </div>
+            </PetCollectionLayout>
 
             {sendModalOpen && sendSelection && (
                 <SendPetModal
@@ -191,11 +176,8 @@ const PetGallery: React.FC = () => {
                 />
             )}
 
-            <CreatePetModal
-                isOpen={createModalOpen}
-                onClose={() => setCreateModalOpen(false)}
-            />
-        </div>
+            <CreatePetModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
+        </>
     );
 };
 

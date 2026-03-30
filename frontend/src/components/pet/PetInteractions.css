@@ -54,6 +54,23 @@
     flex-direction: column;
 }
 
+/* Title row inside interaction cards (matches dashboard pet collection header rhythm) */
+.interactions-card .card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block-end: var(--spacing-lg);
+    position: relative;
+}
+
+.interactions-card .card-header h3 {
+    margin: 0;
+    font-size: var(--font-size-2xl, 1.5rem);
+    font-weight: 700;
+    color: var(--zi-text);
+    text-align: center;
+}
+
 .interactions-card p {
     margin: 0 0 20px 0;
     color: var(--zi-text-muted);

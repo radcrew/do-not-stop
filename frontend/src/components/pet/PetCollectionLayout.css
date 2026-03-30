@@ -1,0 +1,163 @@
+/* Scoped scale + shadows for the dashboard pet collection shell (see variables.css for app tokens). */
+
+@keyframes refresh-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.pet-collection {
+    --spacing-xs: clamp(0.125rem, 0.25rem, 0.375rem);
+    --spacing-sm: clamp(0.25rem, 0.5rem, 0.75rem);
+    --spacing-md: clamp(0.5rem, 1rem, 1.25rem);
+    --spacing-lg: clamp(0.75rem, 1.5rem, 2rem);
+    --spacing-xl: clamp(1rem, 2rem, 2.5rem);
+    --spacing-2xl: clamp(1.5rem, 2.5rem, 3rem);
+    --spacing-3xl: clamp(2rem, 3rem, 3.5rem);
+    --border-radius: 1rem;
+    --border-radius-sm: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --font-size-xs: clamp(0.625rem, 0.75rem, 0.875rem);
+    --font-size-sm: clamp(0.75rem, 0.875rem, 1rem);
+    --font-size-base: clamp(0.875rem, 1rem, 1.125rem);
+    --font-size-lg: clamp(1rem, 1.125rem, 1.25rem);
+    --font-size-xl: clamp(1.125rem, 1.25rem, 1.375rem);
+    --font-size-2xl: clamp(1.25rem, 1.5rem, 1.75rem);
+    --font-size-3xl: clamp(1.5rem, 1.75rem, 2rem);
+    --font-size-4xl: clamp(1.75rem, 2rem, 2.25rem);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --refresh-size: 36px;
+    --shadow-elevation-1: 0 1px 3px rgb(0 0 0 / 0.12), 0 1px 2px rgb(0 0 0 / 0.24);
+    --shadow-elevation-2: 0 3px 6px rgb(0 0 0 / 0.16), 0 3px 6px rgb(0 0 0 / 0.23);
+    --shadow-elevation-3: 0 10px 20px rgb(0 0 0 / 0.19), 0 6px 6px rgb(0 0 0 / 0.23);
+
+    padding: 0;
+    max-width: none;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    container-type: inline-size;
+    container-name: pet-collection;
+
+    @media (max-width: 480px) {
+        padding: 16px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .refresh {
+            transition: none;
+            transform: none;
+        }
+
+        .refresh:disabled {
+            animation: none;
+        }
+    }
+
+    .surface {
+        background: var(--color-background);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-elevation-1);
+        border: 1px solid var(--color-border);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(102, 126, 234, 0.02) 100%);
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            padding: 20px;
+        }
+
+        @media (prefers-contrast: more) {
+            border: 2px solid var(--color-text);
+        }
+
+        .title-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-block-end: var(--spacing-2xl);
+            position: relative;
+
+            @media (max-width: 480px) {
+                margin-block-end: var(--spacing-sm);
+            }
+
+            .intro {
+                width: 100%;
+                text-align: center;
+
+                .heading {
+                    margin: 0;
+                    font-size: var(--font-size-3xl);
+                    font-weight: 700;
+                    color: var(--color-text);
+
+                    @media (max-width: 480px) {
+                        font-size: var(--font-size-xl);
+                    }
+                }
+
+                .caption {
+                    margin: var(--spacing-sm) 0 0;
+                    font-size: var(--font-size-base);
+                    font-weight: 400;
+                    color: var(--color-text-muted);
+                }
+            }
+
+            .actions {
+                .refresh {
+                    background: var(--color-background-light);
+                    color: var(--color-text-muted);
+                    border: 1px solid var(--color-border);
+                    border-radius: var(--border-radius-sm);
+                    padding: var(--spacing-sm);
+                    font-size: var(--font-size-lg);
+                    cursor: pointer;
+                    transition: var(--transition);
+                    width: var(--refresh-size);
+                    height: var(--refresh-size);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    inset-block-start: 0;
+                    inset-inline-end: 0;
+                }
+
+                .refresh:hover:not(:disabled) {
+                    background: var(--color-background-hover);
+                    color: var(--color-text);
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 8px var(--color-shadow);
+                }
+
+                .refresh:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    transform: none;
+                    animation: refresh-spin 1s linear infinite;
+                }
+            }
+        }
+    }
+}
