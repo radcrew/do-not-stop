@@ -7,25 +7,38 @@ import { useDynamicContext } from '../../contexts/dynamic';
 import AccountDropdown from '../wallet/AccountDropdown';
 import SolanaWalletTrigger from '../wallet/SolanaWalletTrigger';
 import PetGallery from '../pet/PetGallery';
-import { NeonButton } from '../common';
+import { NeonButton, NeonCard } from '../common';
 import lionImage from '../../assets/images/pets/lion.png';
+import catImage from '../../assets/images/pets/cat.png';
+import dinosaurImage from '../../assets/images/pets/dinosaur.png';
+import dogImage from '../../assets/images/pets/dog.png';
+import elephantImage from '../../assets/images/pets/elephant.png';
+import owlImage from '../../assets/images/pets/owl.png';
+import breedIcon from '../../assets/images/icons/breed.png';
 import { isInteractionRoute } from '../../constants/interactionRoutes';
 import './Main.css';
 
-const FEATURE_CARDS = [
-  { title: 'Breed Unique Pets', text: 'Combine rare DNA traits and hatch powerful new companions.', icon: '🧬' },
+type FeatureCard = {
+  title: string;
+  text: string;
+  icon?: string;
+  iconImage?: string;
+};
+
+const FEATURE_CARDS: FeatureCard[] = [
+  { title: 'Breed Unique Pets', text: 'Combine rare DNA traits and hatch powerful new companions.', iconImage: breedIcon },
   { title: 'Epic Battles', text: 'Challenge rivals and climb the leaderboard with tactical fights.', icon: '⚔️' },
   { title: 'Power Growth', text: 'Level up, optimize stats, and unlock advanced abilities.', icon: '📈' },
   { title: 'Trade & Earn', text: 'Collect, showcase, and trade your best CryptoPets.', icon: '💰' },
 ];
 
 const FEATURED_PETS = [
-  { name: 'Phoenix Blaze', level: 99, rarity: 'Legendary', emoji: '🔥' },
-  { name: 'Frost Dragon', level: 37, rarity: 'Epic', emoji: '❄️' },
-  { name: 'Thunder Wolf', level: 96, rarity: 'Rare', emoji: '⚡' },
-  { name: 'Crystal Guardian', level: 62, rarity: 'Epic', emoji: '💎' },
-  { name: 'Shadow Panther', level: 83, rarity: 'Rare', emoji: '🌑' },
-  { name: 'Mystic Owl', level: 71, rarity: 'Legendary', emoji: '🦉' },
+  { name: 'Golden Lion', level: 99, rarity: 'Legendary', image: lionImage },
+  { name: 'Frost Dragon', level: 37, rarity: 'Epic', image: dinosaurImage },
+  { name: 'Thunder Pup', level: 96, rarity: 'Rare', image: dogImage },
+  { name: 'Crystal Trunk', level: 62, rarity: 'Epic', image: elephantImage },
+  { name: 'Shadow Cat', level: 83, rarity: 'Rare', image: catImage },
+  { name: 'Mystic Owl', level: 71, rarity: 'Legendary', image: owlImage },
 ];
 
 const COMMUNITY_CARDS = [
@@ -82,25 +95,35 @@ const Main: React.FC = () => {
               <h3 className="section-title">Pet Interactions</h3>
               <div className="feature-grid">
                 {FEATURE_CARDS.map((feature) => (
-                  <article key={feature.title} className="feature-card">
-                    <div className="feature-icon" aria-hidden="true">{feature.icon}</div>
-                    <h4>{feature.title}</h4>
-                    <p>{feature.text}</p>
-                  </article>
+                  <NeonCard key={feature.title} className="feature-card feature-card-media-left">
+                    <div className="feature-icon" aria-hidden="true">
+                      {feature.iconImage ? (
+                        <img src={feature.iconImage} alt="" className="feature-icon-image" />
+                      ) : (
+                        feature.icon
+                      )}
+                    </div>
+                    <div className="feature-copy">
+                      <h4>{feature.title}</h4>
+                      <p>{feature.text}</p>
+                    </div>
+                  </NeonCard>
                 ))}
               </div>
             </section>
 
             <section className="landing-section featured-pets">
-              <h3 className="section-title">Your Pets</h3>
+              <h3 className="section-title">PETS</h3>
               <div className="pet-showcase-grid">
                 {FEATURED_PETS.map((pet) => (
-                  <article key={pet.name} className="pet-showcase-card">
-                    <div className="pet-avatar">{pet.emoji}</div>
+                  <NeonCard key={pet.name} className="pet-showcase-card">
+                    <div className="pet-avatar">
+                      <img src={pet.image} alt={pet.name} className="pet-avatar-image" />
+                    </div>
                     <h4>{pet.name}</h4>
                     <p>Lv. {pet.level} · {pet.rarity}</p>
                     <NeonButton tone="amber" size="sm">Send</NeonButton>
-                  </article>
+                  </NeonCard>
                 ))}
               </div>
             </section>
@@ -116,12 +139,12 @@ const Main: React.FC = () => {
               <h3 className="section-title">Join Our Community</h3>
               <div className="community-grid">
                 {COMMUNITY_CARDS.map((community) => (
-                  <article key={community.name} className={`community-card ${community.color}`}>
+                  <NeonCard key={community.name} className={`community-card ${community.color}`}>
                     <div className="community-icon" aria-hidden="true">{community.icon}</div>
                     <h4>{community.name}</h4>
                     <p>{community.members}</p>
                     <NeonButton tone="cyan" size="sm">Join Now</NeonButton>
-                  </article>
+                  </NeonCard>
                 ))}
               </div>
             </section>

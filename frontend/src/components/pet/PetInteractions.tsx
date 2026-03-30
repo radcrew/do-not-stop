@@ -124,7 +124,7 @@ const PetInteractions: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="center">
-                                    <div className="icon">⚔️</div>
+                                    <div className="icon">⚔️download discord</div>
                                     <div className="vs">VS</div>
                                 </div>
                                 <div className="pet-item">

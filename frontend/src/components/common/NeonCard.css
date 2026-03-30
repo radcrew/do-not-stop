@@ -1,0 +1,5 @@
+.neon-card {
+  position: relative;
+  border-radius: 2px;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}

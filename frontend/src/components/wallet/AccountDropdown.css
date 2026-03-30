@@ -18,28 +18,14 @@
 
 /* Connect Wallet Button (when not connected) */
 .connect-wallet-btn {
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-width: 140px;
     white-space: nowrap;
+}
 
-    &:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+/* Keep NeonButton visual style and inner glow for wallet trigger */
+.connect-wallet-btn.neon-btn {
+    min-width: 140px;
+    justify-content: center;
 }
 
 /* Wallet Options */
