@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import TransactionStatus from '../ui/TransactionStatus';
-import { usePetsContract, type Pet } from '../../hooks/usePetsContract';
-import { parseContractError } from '../../utils/errorParser';
+import { usePetsContract } from '../../hooks/usePetsContract';
 import { getLifePercent } from '../../utils/petCard';
 import {
     BATTLE_PATH,
@@ -11,6 +9,11 @@ import {
     LEVELUP_PATH,
     RENAME_PATH,
 } from '../../constants/interactionRoutes';
+import BattlePanel from './interactions/BattlePanel';
+import BreedPanel from './interactions/BreedPanel';
+import LevelUpPanel from './interactions/LevelUpPanel';
+import RenamePanel from './interactions/RenamePanel';
+import { getReadyPets } from '../../utils/readyPets';
 import './PetInteractions.css';
 
 type InteractionAction = 'breed' | 'battle' | 'levelup' | 'changename';
@@ -45,37 +48,14 @@ const PetInteractions: React.FC = () => {
     const { action: actionParam } = useParams<{ action?: string }>();
     const standaloneAction = useMemo(() => parseStandalonePath(location.pathname), [location.pathname]);
     const isStandaloneView = standaloneAction !== null;
-    const {
-        isConnected,
-        pets,
-        petIds,
-        isLoading,
-        createPetFromDNA,
-        battlePets,
-        levelUp,
-        changeName,
-        hash,
-        isPending,
-        writeError,
-        refetchPetIds,
-        isReady
-    } = usePetsContract();
-
-    const [selectedPet1, setSelectedPet1] = useState<bigint | null>(null);
-    const [selectedPet2, setSelectedPet2] = useState<bigint | null>(null);
-    const [newPetName, setNewPetName] = useState('');
-    const [selectedPet, setSelectedPet] = useState<bigint | null>(null);
-    const [newName, setNewName] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
-    const [isUserRejection, setIsUserRejection] = useState(false);
-    const [isContractError, setIsContractError] = useState(false);
+    const { isConnected, pets, petIds, isLoading, isReady } = usePetsContract();
 
     const action = useMemo((): InteractionAction | null => {
         if (standaloneAction) return standaloneAction;
         return parseActionParam(actionParam);
     }, [actionParam, standaloneAction]);
+
+    const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
 
     // Unknown interaction path → dashboard hub
     useEffect(() => {
@@ -84,142 +64,6 @@ const PetInteractions: React.FC = () => {
             navigate(DASHBOARD_HOME, { replace: true });
         }
     }, [actionParam, action, navigate, isStandaloneView]);
-
-    // Set loading state
-    useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading]);
-
-    const getReadyPets = (): { id: bigint; pet: Pet }[] => {
-        return petIds
-            .map((id, index) => ({ id, pet: pets[index] }))
-            .filter(({ pet }) => pet && isReady(pet.readyTime));
-    };
-
-    const handleBreed = async () => {
-        if (!selectedPet1 || !selectedPet2 || !newPetName.trim()) {
-            setError('Please select two pets and enter a name for the offspring');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
-        setIsUserRejection(false);
-        setIsContractError(false);
-
-        try {
-            await createPetFromDNA(selectedPet1, selectedPet2, newPetName.trim());
-        } catch (err) {
-            setError('Failed to breed pets. Please try again.');
-            console.error('Error breeding pets:', err);
-        }
-    };
-
-    const handleBattle = async () => {
-        if (!selectedPet1 || !selectedPet2) {
-            setError('Please select two pets to battle');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
-        setIsUserRejection(false);
-        setIsContractError(false);
-
-        try {
-            await battlePets(selectedPet1, selectedPet2);
-        } catch (err) {
-            setError('Failed to start battle. Please try again.');
-            console.error('Error starting battle:', err);
-        }
-    };
-
-    const handleLevelUp = async () => {
-        if (!selectedPet) {
-            setError('Please select a pet to level up');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
-        setIsUserRejection(false);
-        setIsContractError(false);
-
-        try {
-            await levelUp(selectedPet);
-        } catch (err) {
-            setError('Failed to level up pet. Please try again.');
-            console.error('Error leveling up pet:', err);
-        }
-    };
-
-    const handleChangeName = async () => {
-        if (!selectedPet || !newName.trim()) {
-            setError('Please select a pet and enter a new name');
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
-        setIsUserRejection(false);
-        setIsContractError(false);
-
-        try {
-            await changeName(selectedPet, newName.trim());
-        } catch (err) {
-            setError('Failed to change pet name. Please try again.');
-            console.error('Error changing pet name:', err);
-        }
-    };
-
-    const clearFormState = () => {
-        setSelectedPet1(null);
-        setSelectedPet2(null);
-        setSelectedPet(null);
-        setNewPetName('');
-        setNewName('');
-        setError(null);
-        setIsUserRejection(false);
-        setIsContractError(false);
-    };
-
-    const goToInteractionsHub = () => {
-        clearFormState();
-        navigate(DASHBOARD_HOME);
-    };
-
-    const cancelInteraction = () => {
-        setSuccess(null);
-        goToInteractionsHub();
-    };
-
-    const handleTransactionComplete = () => {
-        if (action === 'breed') {
-            setSuccess(`Pet "${newPetName}" created successfully!`);
-        } else if (action === 'battle') {
-            setSuccess('Battle completed! Check your pets for level ups.');
-        } else if (action === 'levelup') {
-            setSuccess('Pet leveled up successfully!');
-        } else if (action === 'changename') {
-            setSuccess(`Pet name changed to "${newName}"!`);
-        }
-        clearFormState();
-        navigate(DASHBOARD_HOME);
-        refetchPetIds();
-    };
-
-    useEffect(() => {
-        if (writeError) {
-            const parsedError = parseContractError(writeError);
-            setError(parsedError.message);
-            setIsUserRejection(parsedError.isUserRejection);
-            setIsContractError(parsedError.isContractError);
-        }
-    }, [writeError]);
 
     if (!isConnected) {
         return (
@@ -234,7 +78,7 @@ const PetInteractions: React.FC = () => {
         );
     }
 
-    if (loading && pets.length === 0) {
+    if (isLoading && pets.length === 0) {
         return (
             <div className="pet-interactions">
                 <div className="loading-container">
@@ -279,7 +123,6 @@ const PetInteractions: React.FC = () => {
         );
     }
 
-    const readyPets = getReadyPets();
     const previewParentA = readyPets[0]?.pet;
     const previewParentB = readyPets[1]?.pet;
     const availableBattles = Math.min(3, readyPets.length > 1 ? 3 : 0);
@@ -395,229 +238,13 @@ const PetInteractions: React.FC = () => {
                     </div>
                 )}
 
-                {action === 'breed' && (
-                    <div className="breed-interface">
-                        {!isStandaloneView && (
-                            <>
-                                <h4>🧬 Breed Pets</h4>
-                                <p>Select two pets to create a new one</p>
-                            </>
-                        )}
+                {action === 'breed' && <BreedPanel isStandaloneView={isStandaloneView} />}
 
-                        <div className="pet-selection">
-                            <div className="selection-group">
-                                <label>First Parent</label>
-                                <select
-                                    value={selectedPet1?.toString() || ''}
-                                    onChange={(e) => setSelectedPet1(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets.map(({ id, pet }) => (
-                                        <option key={id.toString()} value={id.toString()}>
-                                            {pet.name} (Level {pet.level})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+                {action === 'battle' && <BattlePanel isStandaloneView={isStandaloneView} />}
 
-                            <div className="selection-group">
-                                <label>Second Parent</label>
-                                <select
-                                    value={selectedPet2?.toString() || ''}
-                                    onChange={(e) => setSelectedPet2(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets
-                                        .filter(({ id }) => id !== selectedPet1)
-                                        .map(({ id, pet }) => (
-                                            <option key={id.toString()} value={id.toString()}>
-                                                {pet.name} (Level {pet.level})
-                                            </option>
-                                        ))}
-                                </select>
-                            </div>
-                        </div>
+                {action === 'levelup' && <LevelUpPanel isStandaloneView={isStandaloneView} />}
 
-                        <div className="name-input">
-                            <label>Offspring Name</label>
-                            <input
-                                type="text"
-                                value={newPetName}
-                                onChange={(e) => setNewPetName(e.target.value)}
-                                placeholder="Enter name for the new pet..."
-                                maxLength={20}
-                            />
-                        </div>
-
-                        <div className="action-controls">
-                            <button onClick={handleBreed} disabled={isPending || !selectedPet1 || !selectedPet2 || !newPetName.trim()}>
-                                {isPending ? 'Breeding...' : 'Breed Pets'}
-                            </button>
-                            <button type="button" onClick={cancelInteraction} className="cancel-button">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {action === 'battle' && (
-                    <div className="battle-interface">
-                        {!isStandaloneView && (
-                            <>
-                                <h4>⚔️ Battle Pets</h4>
-                                <p>Select two pets to battle</p>
-                            </>
-                        )}
-
-                        <div className="pet-selection">
-                            <div className="selection-group">
-                                <label>First Fighter</label>
-                                <select
-                                    value={selectedPet1?.toString() || ''}
-                                    onChange={(e) => setSelectedPet1(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets.map(({ id, pet }) => (
-                                        <option key={id.toString()} value={id.toString()}>
-                                            {pet.name} (Level {pet.level})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="selection-group">
-                                <label>Second Fighter</label>
-                                <select
-                                    value={selectedPet2?.toString() || ''}
-                                    onChange={(e) => setSelectedPet2(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets
-                                        .filter(({ id }) => id !== selectedPet1)
-                                        .map(({ id, pet }) => (
-                                            <option key={id.toString()} value={id.toString()}>
-                                                {pet.name} (Level {pet.level})
-                                            </option>
-                                        ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="action-controls">
-                            <button onClick={handleBattle} disabled={isPending || !selectedPet1 || !selectedPet2}>
-                                {isPending ? 'Starting Battle...' : 'Start Battle'}
-                            </button>
-                            <button type="button" onClick={cancelInteraction} className="cancel-button">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {action === 'levelup' && (
-                    <div className="levelup-interface">
-                        {!isStandaloneView && (
-                            <>
-                                <h4>⬆️ Level Up Pet</h4>
-                                <p>Pay 0.001 ETH to level up your pet</p>
-                            </>
-                        )}
-
-                        <div className="pet-selection">
-                            <div className="selection-group">
-                                <label>Select Pet</label>
-                                <select
-                                    value={selectedPet?.toString() || ''}
-                                    onChange={(e) => setSelectedPet(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets.map(({ id, pet }) => (
-                                        <option key={id.toString()} value={id.toString()}>
-                                            {pet.name} (Level {pet.level})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="action-controls">
-                            <button onClick={handleLevelUp} disabled={isPending || !selectedPet}>
-                                {isPending ? 'Leveling Up...' : 'Level Up (0.001 ETH)'}
-                            </button>
-                            <button type="button" onClick={cancelInteraction} className="cancel-button">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {action === 'changename' && (
-                    <div className="changename-interface">
-                        {!isStandaloneView && (
-                            <>
-                                <h4>✏️ Change Pet Name</h4>
-                                <p>Change your pet&apos;s name (requires level 2+)</p>
-                            </>
-                        )}
-
-                        <div className="pet-selection">
-                            <div className="selection-group">
-                                <label>Select Pet</label>
-                                <select
-                                    value={selectedPet?.toString() || ''}
-                                    onChange={(e) => setSelectedPet(e.target.value ? BigInt(e.target.value) : null)}
-                                >
-                                    <option value="">Select pet...</option>
-                                    {readyPets
-                                        .filter(({ pet }) => pet.level >= 2)
-                                        .map(({ id, pet }) => (
-                                            <option key={id.toString()} value={id.toString()}>
-                                                {pet.name} (Level {pet.level})
-                                            </option>
-                                        ))}
-                                </select>
-                            </div>
-
-                            <div className="selection-group">
-                                <label>New Name</label>
-                                <input
-                                    type="text"
-                                    value={newName}
-                                    onChange={(e) => setNewName(e.target.value)}
-                                    placeholder="Enter new name..."
-                                    maxLength={20}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="action-controls">
-                            <button onClick={handleChangeName} disabled={isPending || !selectedPet || !newName.trim()}>
-                                {isPending ? 'Changing Name...' : 'Change Name'}
-                            </button>
-                            <button type="button" onClick={cancelInteraction} className="cancel-button">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {error && (
-                    <div className={`error-message ${isUserRejection ? 'user-rejection' : ''} ${isContractError ? 'contract-error' : ''}`}>
-                        {isUserRejection ? '⏸️' : isContractError ? '⚠️' : '❌'} {error}
-                    </div>
-                )}
-
-                {success && (
-                    <div className="success-message">
-                        ✅ {success}
-                    </div>
-                )}
-
-                <TransactionStatus
-                    hash={hash}
-                    onComplete={handleTransactionComplete}
-                    onError={(error) => setError(error.message)}
-                />
+                {action === 'changename' && <RenamePanel isStandaloneView={isStandaloneView} />}
             </div>
         </div>
     );
