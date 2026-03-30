@@ -1,6 +1,16 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
+
+/** Public fallback so `url` is never empty (Hardhat HHE15). Prefer SEPOLIA_URL or INFURA_PROJECT_ID in env. */
+const SEPOLIA_PUBLIC_RPC = "https://rpc.sepolia.org";
+
+const sepoliaRpcUrl =
+  process.env.SEPOLIA_URL ||
+  (process.env.INFURA_PROJECT_ID
+    ? `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
+    : SEPOLIA_PUBLIC_RPC);
+
 const config: HardhatUserConfig = {
   plugins: [hardhatToolboxViemPlugin],
   solidity: {
@@ -32,12 +42,7 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       type: "http",
-      // Full RPC URL (any provider), or omit and set INFURA_PROJECT_ID for Infura Sepolia.
-      url:
-        process.env.SEPOLIA_URL ||
-        (process.env.INFURA_PROJECT_ID
-          ? `https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`
-          : ""),
+      url: sepoliaRpcUrl,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
     },
   },
