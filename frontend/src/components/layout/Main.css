@@ -310,8 +310,20 @@
     0 8px 22px rgb(0 0 0 / 38%),
     0 3px 8px rgb(0 0 0 / 22%);
   background: linear-gradient(180deg, rgb(8 12 26 / 90%) 0%, rgb(7 10 20 / 92%) 100%);
-  border: none;
+  border: 1px solid rgb(145 93 255 / 58%);
   position: relative;
+}
+
+.feature-card:nth-child(2) {
+  border-color: rgb(255 90 125 / 58%);
+}
+
+.feature-card:nth-child(3) {
+  border-color: rgb(41 168 255 / 58%);
+}
+
+.feature-card:nth-child(4) {
+  border-color: rgb(6 223 209 / 58%);
 }
 
 .feature-copy {

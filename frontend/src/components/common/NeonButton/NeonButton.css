@@ -1,100 +1,108 @@
+/* Base palette = azure (default tone; no .tone-azure rule needed) */
 .neon-btn {
   --btn-text: #8ed1ff;
   --btn-border: rgb(30 157 255 / 50%);
   --btn-glow: rgb(30 157 255 / 24%);
   --btn-inner: rgb(30 157 255 / 14%);
+  --btn-highlight: rgb(255 255 255 / 3%);
 
-  border: 1px solid var(--btn-border);
-  background: linear-gradient(180deg, rgb(5 13 30 / 92%), rgb(4 8 22 / 95%));
-  color: var(--btn-text);
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.95px;
-  font-weight: 700;
-  cursor: pointer;
   position: relative;
   isolation: isolate;
-  transition: box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
+  border: 1px solid var(--btn-border);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgb(5 13 30 / 92%), rgb(4 8 22 / 95%));
+  color: var(--btn-text);
+  font-weight: 700;
+  letter-spacing: 0.95px;
+  text-transform: uppercase;
+  cursor: pointer;
   box-shadow:
     inset 0 0 12px var(--btn-inner),
-    inset 0 0 24px rgb(255 255 255 / 3%),
+    inset 0 0 24px var(--btn-highlight),
     0 0 12px var(--btn-glow);
-}
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 
-.neon-btn .label {
-  position: relative;
-  z-index: 1;
-}
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 6%), transparent);
+  }
 
-.neon-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 6%), transparent);
-}
+  & .label {
+    position: relative;
+    z-index: 1;
+  }
 
-.neon-btn:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    inset 0 0 16px var(--btn-inner),
-    inset 0 0 30px rgb(255 255 255 / 4%),
-    0 0 16px var(--btn-glow),
-    0 0 30px var(--btn-glow);
-}
+  &:hover {
+    --btn-highlight: rgb(255 255 255 / 4%);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 0 16px var(--btn-inner),
+      inset 0 0 30px var(--btn-highlight),
+      0 0 16px var(--btn-glow),
+      0 0 30px var(--btn-glow);
+  }
 
-.neon-btn:active {
-  transform: translateY(0);
-}
+  &:active {
+    transform: translateY(0);
+  }
 
-.neon-btn:focus,
-.neon-btn:focus-visible {
-  outline: none;
-}
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
 
-.neon-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+  &:focus-visible {
+    outline: 2px solid var(--btn-border);
+    outline-offset: 2px;
+  }
 
-.neon-btn.size-md {
-  padding: 12px 18px;
-  font-size: 0.92rem;
-}
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 
-.neon-btn.size-sm {
-  padding: 8px 13px;
-  font-size: 0.82rem;
-}
+  &.size-md {
+    padding: 12px 18px;
+    font-size: 0.92rem;
+  }
 
-.neon-btn.full-width {
-  width: 100%;
-}
+  &.size-sm {
+    padding: 8px 13px;
+    font-size: 0.82rem;
+  }
 
-.neon-btn.tone-emerald {
-  --btn-text: #9effd4;
-  --btn-border: rgb(0 255 157 / 48%);
-  --btn-glow: rgb(0 255 157 / 24%);
-  --btn-inner: rgb(0 255 157 / 14%);
-}
+  &.full-width {
+    width: 100%;
+  }
 
-.neon-btn.tone-azure {
-  --btn-text: #8ed1ff;
-  --btn-border: rgb(30 157 255 / 50%);
-  --btn-glow: rgb(30 157 255 / 24%);
-  --btn-inner: rgb(30 157 255 / 14%);
-}
+  &.tone-emerald {
+    --btn-text: #9effd4;
+    --btn-border: rgb(0 255 157 / 48%);
+    --btn-glow: rgb(0 255 157 / 24%);
+    --btn-inner: rgb(0 255 157 / 14%);
+  }
 
-.neon-btn.tone-amber {
-  --btn-text: #ffd07b;
-  --btn-border: rgb(255 181 67 / 44%);
-  --btn-glow: rgb(255 181 67 / 22%);
-  --btn-inner: rgb(255 181 67 / 12%);
-}
+  &.tone-amber {
+    --btn-text: #ffd07b;
+    --btn-border: rgb(255 181 67 / 44%);
+    --btn-glow: rgb(255 181 67 / 22%);
+    --btn-inner: rgb(255 181 67 / 12%);
+  }
 
-.neon-btn.tone-cyan {
-  --btn-text: #86ebff;
-  --btn-border: rgb(0 247 255 / 36%);
-  --btn-glow: rgb(0 247 255 / 18%);
-  --btn-inner: rgb(0 247 255 / 10%);
+  &.tone-cyan {
+    --btn-text: #86ebff;
+    --btn-border: rgb(0 247 255 / 36%);
+    --btn-glow: rgb(0 247 255 / 18%);
+    --btn-inner: rgb(0 247 255 / 10%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 }

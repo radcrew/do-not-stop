@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 import './NeonCard.css';
 
@@ -13,7 +14,7 @@ const NeonCard: React.FC<NeonCardProps> = ({
   ...props
 }) => {
   const Tag = as;
-  const classes = ['neon-card', className ?? ''].filter(Boolean).join(' ');
+  const classes = clsx('neon-card', className);
 
   return (
     <Tag className={classes} {...props}>

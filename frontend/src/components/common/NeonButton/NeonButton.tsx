@@ -1,40 +1,37 @@
-import React from 'react';
+import type { ButtonHTMLAttributes } from 'react';
+import clsx from 'clsx';
 
 import './NeonButton.css';
 
-type NeonButtonTone = 'emerald' | 'azure' | 'amber' | 'cyan';
-type NeonButtonSize = 'md' | 'sm';
+export type NeonButtonTone = 'emerald' | 'azure' | 'amber' | 'cyan';
+export type NeonButtonSize = 'md' | 'sm';
 
-type NeonButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type NeonButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   tone?: NeonButtonTone;
   size?: NeonButtonSize;
   fullWidth?: boolean;
 };
 
-const NeonButton: React.FC<NeonButtonProps> = ({
+export default function NeonButton({
   tone = 'azure',
   size = 'md',
   fullWidth = false,
   className,
   type = 'button',
   children,
-  ...props
-}) => {
-  const buttonClass = [
+  ...rest
+}: NeonButtonProps) {
+  const classString = clsx(
     'neon-btn',
     `tone-${tone}`,
     `size-${size}`,
-    fullWidth ? 'full-width' : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+    fullWidth && 'full-width',
+    className,
+  );
 
   return (
-    <button type={type} className={buttonClass} {...props}>
+    <button type={type} className={classString} {...rest}>
       <span className="label">{children}</span>
     </button>
   );
-};
-
-export default NeonButton;
+}
