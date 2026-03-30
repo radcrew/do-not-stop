@@ -57,69 +57,6 @@
   flex-wrap: wrap;
 }
 
-.theme-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: transparent;
-  border: 0;
-  color: var(--color-text-muted);
-  padding: 0;
-  cursor: pointer;
-  transform: none;
-
-  .label {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-  }
-
-  .track {
-    position: relative;
-    inline-size: 46px;
-    block-size: 26px;
-    border-radius: 999px;
-    background: var(--cp-switch-track);
-    border: 1px solid var(--color-border);
-    transition: var(--transition-fast);
-    box-shadow: 0 2px 4px var(--color-shadow);
-  }
-
-  .thumb {
-    position: absolute;
-    inset-block-start: 2px;
-    inset-inline-start: 2px;
-    inline-size: 20px;
-    block-size: 20px;
-    border-radius: 50%;
-    background: var(--cp-white);
-    box-shadow: 0 1px 3px var(--cp-shadow-25);
-    transition: var(--transition-fast);
-  }
-
-  &.dark {
-    .track {
-      background: var(--color-primary);
-    }
-
-    .thumb {
-      inset-inline-start: 22px;
-    }
-  }
-
-  &:hover .track {
-    box-shadow: 0 4px 10px var(--color-shadow-hover);
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-}
-
 /* Main Content */
 .main-content {
   flex: 1;

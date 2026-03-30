@@ -6,20 +6,14 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light;
-  color: var(--cp-body-text-light);
-  background-color: var(--cp-body-bg-light);
+  color-scheme: dark;
+  color: var(--cp-body-text-dark);
+  background-color: var(--cp-body-bg-dark);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  color: var(--cp-body-text-dark);
-  background-color: var(--cp-body-bg-dark);
 }
 
 a {

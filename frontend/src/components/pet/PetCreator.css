@@ -12,8 +12,8 @@
     --creator-muted-text: color-mix(in srgb, var(--creator-text) 90%, transparent);
     --creator-edge: color-mix(in srgb, var(--creator-text) 20%, transparent);
     --creator-input-bg: color-mix(in srgb, var(--creator-text) 90%, transparent);
-    --creator-input-text: var(--cp-text-body-light, #333);
-    --creator-input-placeholder: var(--cp-text-muted-light, #666);
+    --creator-input-text: var(--cp-text-body-dark, #f3f4f6);
+    --creator-input-placeholder: var(--cp-text-muted-dark, #c7ccd4);
     --creator-cta-gradient: linear-gradient(45deg, #ff6b6b, #ee5a24);
     --creator-cta-shadow: 0 4px 15px rgb(255 107 107 / 0.3);
     --creator-cta-shadow-hover: 0 6px 20px rgb(255 107 107 / 0.4);

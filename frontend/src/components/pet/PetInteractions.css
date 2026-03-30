@@ -1,12 +1,4 @@
 .pet-interactions {
-    --zi-card-bg: #ffffff;
-    --zi-surface-bg: #f8f9fa;
-    --zi-text: #333;
-    --zi-text-muted: #666;
-    --zi-border: #e0e0e0;
-}
-
-:root[data-theme='dark'] .pet-interactions {
     --zi-card-bg: #141923;
     --zi-surface-bg: #1d2430;
     --zi-text: #f3f4f6;

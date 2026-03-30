@@ -1,16 +1,8 @@
 /* =============================================================================
-   Palette primitives — single source for hex/rgba (theme + components)
+   Palette primitives — single source for hex/rgba (dark-only theme + components)
    ============================================================================= */
 :root {
   --cp-white: #ffffff;
-  --cp-text-body-light: #333333;
-  --cp-text-muted-light: #666666;
-  --cp-text-light: #999999;
-  --cp-border-light: #e0e0e0;
-  --cp-bg-light: #ffffff;
-  --cp-bg-muted-light: #f8f9fa;
-  --cp-bg-hover-light: #e9ecef;
-
   --cp-text-body-dark: #f3f4f6;
   --cp-text-muted-dark: #c7ccd4;
   --cp-text-light-dark: #9ca3af;
@@ -27,11 +19,8 @@
 
   --cp-brand-primary: #667eea;
   --cp-brand-secondary: #764ba2;
-  --cp-switch-track: #c9d0dd;
 
   /* Splash / index root (slightly different from card `--color-background`) */
-  --cp-body-text-light: #111827;
-  --cp-body-bg-light: #f4f6fb;
   --cp-body-text-dark: #e5e7eb;
   --cp-body-bg-dark: #0f1117;
   --cp-link: #646cff;
@@ -44,24 +33,9 @@
 /* =============================================================================
    Semantic tokens (layout shell, gallery, modals)
    ============================================================================= */
-:root,
-:root[data-theme='light'] {
+:root {
   --color-primary: var(--cp-brand-primary);
   --color-secondary: var(--cp-brand-secondary);
-  --color-text: var(--cp-text-body-light);
-  --color-text-muted: var(--cp-text-muted-light);
-  --color-text-light: var(--cp-text-light);
-  --color-border: var(--cp-border-light);
-  --color-background: var(--cp-bg-light);
-  --color-background-light: var(--cp-bg-muted-light);
-  --color-background-hover: var(--cp-bg-hover-light);
-  --color-shadow: var(--cp-shadow-10);
-  --color-shadow-hover: var(--cp-shadow-15);
-  --color-shadow-button: var(--cp-shadow-button);
-  --color-shadow-button-hover: var(--cp-shadow-button-hover);
-}
-
-:root[data-theme='dark'] {
   --color-text: var(--cp-text-body-dark);
   --color-text-muted: var(--cp-text-muted-dark);
   --color-text-light: var(--cp-text-light-dark);
@@ -71,6 +45,8 @@
   --color-background-hover: var(--cp-bg-hover-dark);
   --color-shadow: var(--cp-shadow-35);
   --color-shadow-hover: var(--cp-shadow-50);
+  --color-shadow-button: var(--cp-shadow-button);
+  --color-shadow-button-hover: var(--cp-shadow-button-hover);
 }
 
 /* =============================================================================
