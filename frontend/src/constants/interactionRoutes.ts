@@ -15,15 +15,15 @@ export const INTERACTION_ROUTES: readonly string[] = [
   RENAME_PATH,
 ];
 
-export function isInteractionRoute(pathname: string): boolean {
-  const p = pathname.replace(/\/$/, '') || '/';
-  return INTERACTION_ROUTES.includes(p);
-}
-
 /** Nested interactions under dashboard (legacy / bookmarked URLs). */
 export const DASHBOARD_INTERACTIONS = '/dashboard/interactions';
 
 export type InteractionSlug = 'breed' | 'battle' | 'levelup' | 'rename';
+
+export function isInteractionRoute(pathname: string): boolean {
+  const p = pathname.replace(/\/$/, '') || '/';
+  return INTERACTION_ROUTES.includes(p);
+}
 
 export function interactionPath(slug: InteractionSlug): string {
   return `${DASHBOARD_INTERACTIONS}/${slug}`;
