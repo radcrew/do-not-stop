@@ -12,7 +12,7 @@ use instructions::{
     unpause::*,
 };
 
-declare_id!("BJ6fL2BsUqkRbqXEeQ4mQ6HLens4jYEqmwQg3yFkbSrF");
+declare_id!("DVqmS2WV2epdEncuweNryuqyhbzLXtEQhnxDgQt7ccC6");
 
 #[program]
 pub mod cryptozombies {

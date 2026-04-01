@@ -6,13 +6,13 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-cryptozombies = "BJ6fL2BsUqkRbqXEeQ4mQ6HLens4jYEqmwQg3yFkbSrF"
+cryptozombies = "DVqmS2WV2epdEncuweNryuqyhbzLXtEQhnxDgQt7ccC6"
 
-[registry]
-url = "https://api.apr.dev"
+[programs.devnet]
+cryptozombies = "DVqmS2WV2epdEncuweNryuqyhbzLXtEQhnxDgQt7ccC6"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
