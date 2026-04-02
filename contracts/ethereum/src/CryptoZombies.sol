@@ -3,7 +3,6 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./data/ZombieData.sol";
@@ -16,7 +15,7 @@ import "./utils/ZombieUtils.sol";
  * @dev Main contract using composition instead of deep inheritance
  * @author Your Name
  */
-contract CryptoZombies is ERC721, ReentrancyGuard, Ownable {
+contract CryptoZombies is ERC721, Ownable {
     // Events
     event ZombieTransferred(uint256 zombieId, address from, address to);
     event ZombieBred(uint256 zombieId1, uint256 zombieId2, uint256 newZombieId);

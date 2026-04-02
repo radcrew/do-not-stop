@@ -35,7 +35,7 @@ ZombieFactory ← Data + creation + ownership tracking
 ### Modern Composition Structure
 ```
 CryptoZombies (Main Contract)
-├── Inherits: ERC721, ReentrancyGuard, Ownable
+├── Inherits: ERC721, Ownable
 ├── Contains: All state variables
 ├── Composes:
 │   ├── ZombieData ← Centralized data management
