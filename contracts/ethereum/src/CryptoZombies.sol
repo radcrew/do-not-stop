@@ -34,16 +34,10 @@ contract CryptoZombies is ERC721, Ownable {
 
     constructor() ERC721("CryptoZombies", "ZOMBIE") Ownable(msg.sender) {
         // Deploy dependencies
-        zombieData = ZombieData(address(new ZombieData()));
-        zombieUtils = ZombieUtils(address(new ZombieUtils()));
-        zombieBattle = ZombieBattle(
-            address(new ZombieBattle(address(zombieData), address(zombieUtils)))
-        );
-        zombieBreeding = ZombieBreeding(
-            address(
-                new ZombieBreeding(address(zombieData), address(zombieUtils))
-            )
-        );
+        zombieData = new ZombieData();
+        zombieUtils = new ZombieUtils();
+        zombieBattle = new ZombieBattle(zombieData, zombieUtils);
+        zombieBreeding = new ZombieBreeding(zombieData, zombieUtils);
 
         // Authorize the breeding contract to create zombies
         zombieData.authorizeCaller(address(zombieBreeding));
