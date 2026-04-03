@@ -77,14 +77,18 @@ The main contract implements a zombie game with the following features:
 
 ### Key Functions
 
-- `createRandomZombie(string memory _name)` - Create a new zombie
-- `battleZombies(uint256 _zombieId1, uint256 _zombieId2)` - Battle two zombies
+- `createRandom(string memory _name)` - Create a new zombie
+- `battle(uint256 _zombieId1, uint256 _zombieId2)` - Battle two zombies
 - `attack(uint256 _zombieId, uint256 _targetId)` - Attack another zombie
-- `createZombieFromDNA(uint256 _zombieId1, uint256 _zombieId2, string memory _name)` - Breed zombies
+- `createFromDNA(uint256 _zombieId1, uint256 _zombieId2, string memory _name)` - Breed zombies
 - `levelUp(uint256 _zombieId)` - Level up a zombie (requires fee)
 - `changeName(uint256 _zombieId, string memory _newName)` - Change zombie name
 - `changeDna(uint256 _zombieId, uint256 _newDna)` - Change zombie DNA
-- `getZombiesByOwner(address _owner)` - Get zombies owned by address
+- `getById(uint256 _zombieId)` - Full zombie struct
+- `getTotalCount()` - Number of zombies minted in data layer
+- `getStats(uint256 _zombieId)` - Level, wins, losses, rarity
+- `getBattleStats(uint256 _zombieId)` - Battle summary for a zombie
+- `getByOwner(address _owner)` - Token IDs owned by address
 
 ## 🌐 Networks
 

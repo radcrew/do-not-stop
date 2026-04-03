@@ -36,8 +36,8 @@ contract CryptoZombies is ERC721, Ownable {
         // Deploy dependencies
         zombieData = new ZombieData();
         zombieUtils = new ZombieUtils();
-        zombieBattle = new ZombieBattle(zombieData, zombieUtils);
-        zombieBreeding = new ZombieBreeding(zombieData, zombieUtils);
+        zombieBattle = new ZombieBattle(address(zombieData), address(zombieUtils));
+        zombieBreeding = new ZombieBreeding(address(zombieData), address(zombieUtils));
 
         // Authorize the breeding contract to create zombies
         zombieData.authorizeCaller(address(zombieBreeding));
@@ -97,8 +97,8 @@ contract CryptoZombies is ERC721, Ownable {
             );
     }
 
-    // Zombie Creation
-    function createRandomZombie(string memory _name) public {
+    // Creation
+    function createRandom(string memory _name) public {
         require(
             ownerZombieCount[msg.sender] == 0,
             "You already have a zombie!"
@@ -112,8 +112,8 @@ contract CryptoZombies is ERC721, Ownable {
         ownerZombieCount[msg.sender]++;
     }
 
-    // Battle Functions
-    function battleZombies(uint256 _zombieId1, uint256 _zombieId2) public {
+    // Battle
+    function battle(uint256 _zombieId1, uint256 _zombieId2) public {
         zombieBattle.battleZombies(_zombieId1, _zombieId2);
     }
 
@@ -121,8 +121,8 @@ contract CryptoZombies is ERC721, Ownable {
         zombieBattle.attack(_zombieId, _targetId);
     }
 
-    // Breeding Functions
-    function createZombieFromDNA(
+    // Breeding
+    function createFromDNA(
         uint256 _zombieId1,
         uint256 _zombieId2,
         string memory _name
@@ -168,18 +168,18 @@ contract CryptoZombies is ERC721, Ownable {
         zombieData.changeZombieDna(_zombieId, _newDna);
     }
 
-    // View Functions
-    function getZombie(
+    // Views
+    function getById(
         uint256 _zombieId
     ) public view returns (ZombieData.Zombie memory) {
         return zombieData.getZombie(_zombieId);
     }
 
-    function getTotalZombiesCount() public view returns (uint256) {
+    function getTotalCount() public view returns (uint256) {
         return zombieData.getTotalZombiesCount();
     }
 
-    function getZombieStats(
+    function getStats(
         uint256 _zombieId
     ) public view returns (uint32, uint16, uint16, uint8) {
         return zombieData.getZombieStats(_zombieId);
@@ -191,13 +191,13 @@ contract CryptoZombies is ERC721, Ownable {
         return zombieBattle.getBattleStats(_zombieId);
     }
 
-    function getZombiesByOwner(
+    function getByOwner(
         address owner
     ) public view returns (uint256[] memory) {
         uint256[] memory result = new uint256[](balanceOf(owner));
         uint256 counter = 0;
 
-        for (uint256 i = 1; i <= getTotalZombiesCount(); i++) {
+        for (uint256 i = 1; i <= getTotalCount(); i++) {
             if (_ownerOf(i) == owner) {
                 result[counter] = i;
                 counter++;

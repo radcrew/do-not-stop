@@ -18,9 +18,9 @@ describe("CryptoZombies", async function () {
         const cryptoZombies = await viem.deployContract("CryptoZombies");
         const [owner, addr1] = await viem.getWalletClients();
 
-        await cryptoZombies.write.createRandomZombie(["TestZombie"], { account: addr1.account });
+        await cryptoZombies.write.createRandom(["TestZombie"], { account: addr1.account });
 
-        assert.equal(await cryptoZombies.read.getTotalZombiesCount(), 1n);
+        assert.equal(await cryptoZombies.read.getTotalCount(), 1n);
         assert.equal(await cryptoZombies.read.balanceOf([addr1.account.address]), 1n);
         assert.equal(await cryptoZombies.read.ownerZombieCount([addr1.account.address]), 1n);
     });
@@ -29,10 +29,10 @@ describe("CryptoZombies", async function () {
         const cryptoZombies = await viem.deployContract("CryptoZombies");
         const [owner, addr1] = await viem.getWalletClients();
 
-        await cryptoZombies.write.createRandomZombie(["TestZombie1"], { account: addr1.account });
+        await cryptoZombies.write.createRandom(["TestZombie1"], { account: addr1.account });
 
         try {
-            await cryptoZombies.write.createRandomZombie(["TestZombie2"], { account: addr1.account });
+            await cryptoZombies.write.createRandom(["TestZombie2"], { account: addr1.account });
             assert.fail("Expected transaction to revert");
         } catch (error: any) {
             assert(error.message.includes("You already have a zombie!"));
@@ -43,9 +43,9 @@ describe("CryptoZombies", async function () {
         const cryptoZombies = await viem.deployContract("CryptoZombies");
         const [owner, addr1] = await viem.getWalletClients();
 
-        await cryptoZombies.write.createRandomZombie(["TestZombie"], { account: addr1.account });
+        await cryptoZombies.write.createRandom(["TestZombie"], { account: addr1.account });
 
-        const zombie = await cryptoZombies.read.getZombie([1n]);
+        const zombie = await cryptoZombies.read.getById([1n]);
 
         assert.equal(zombie.name, "TestZombie");
         assert.equal(zombie.level, 1);
@@ -57,7 +57,7 @@ describe("CryptoZombies", async function () {
         const cryptoZombies = await viem.deployContract("CryptoZombies");
         const [owner, addr1] = await viem.getWalletClients();
 
-        await cryptoZombies.write.createRandomZombie(["TestZombie"], { account: addr1.account });
+        await cryptoZombies.write.createRandom(["TestZombie"], { account: addr1.account });
 
         const levelUpFee = await cryptoZombies.read.LEVEL_UP_FEE();
 
@@ -66,7 +66,7 @@ describe("CryptoZombies", async function () {
             value: levelUpFee
         });
 
-        const [level] = await cryptoZombies.read.getZombieStats([1n]);
+        const [level] = await cryptoZombies.read.getStats([1n]);
         assert.equal(level, 2);
     });
 
@@ -74,7 +74,7 @@ describe("CryptoZombies", async function () {
         const cryptoZombies = await viem.deployContract("CryptoZombies");
         const [owner, addr1] = await viem.getWalletClients();
 
-        await cryptoZombies.write.createRandomZombie(["TestZombie"], { account: addr1.account });
+        await cryptoZombies.write.createRandom(["TestZombie"], { account: addr1.account });
 
         try {
             await cryptoZombies.write.levelUp([1n], {

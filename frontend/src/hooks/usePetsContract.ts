@@ -2,7 +2,7 @@ import { useAccount, useWriteContract, useReadContract, useReadContracts } from 
 import { CONTRACT_ADDRESS } from '../config';
 import ethereumAbi from '../contracts/ethereumAbi.json';
 
-/** Pet entity returned from the contract reader (on-chain names in ABI remain historical). */
+/** Pet entity returned from the contract reader (`getById`). */
 export interface Pet {
     name: string;
     dna: bigint;
@@ -33,7 +33,7 @@ export const usePetsContract = () => {
     const { data: petIdsData, refetch: refetchPetIds } = useReadContract({
         address: CONTRACT_ADDRESS,
         abi: ethereumAbi.abi,
-        functionName: 'getZombiesByOwner',
+        functionName: 'getByOwner',
         args: address ? [address] : undefined,
         query: {
             enabled: !!address,
@@ -43,7 +43,7 @@ export const usePetsContract = () => {
     const petReadContracts = (petIdsData as bigint[])?.map((petId: bigint) => ({
         address: CONTRACT_ADDRESS as `0x${string}`,
         abi: ethereumAbi.abi as any,
-        functionName: 'getZombie' as const,
+        functionName: 'getById' as const,
         args: [petId],
     })) || [];
 
@@ -75,7 +75,7 @@ export const usePetsContract = () => {
         return writeContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'createRandomZombie',
+            functionName: 'createRandom',
             args: [name],
             gas: 500000n,
         });
@@ -106,7 +106,7 @@ export const usePetsContract = () => {
         return writeContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'battleZombies',
+            functionName: 'battle',
             args: [petId1, petId2],
             gas: 300000n,
         });
@@ -116,7 +116,7 @@ export const usePetsContract = () => {
         return writeContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'createZombieFromDNA',
+            functionName: 'createFromDNA',
             args: [parentId1, parentId2, name],
             gas: 500000n,
         });
@@ -156,7 +156,7 @@ export const usePetsContract = () => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'getZombie',
+            functionName: 'getById',
             args: [petId],
             query: {
                 enabled: !!petId,
@@ -168,7 +168,7 @@ export const usePetsContract = () => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'getZombieStats',
+            functionName: 'getStats',
             args: [petId],
             query: {
                 enabled: !!petId,
@@ -192,7 +192,7 @@ export const usePetsContract = () => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'getTotalZombiesCount',
+            functionName: 'getTotalCount',
         });
     };
 

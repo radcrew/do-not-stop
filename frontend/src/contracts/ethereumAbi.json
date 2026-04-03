@@ -381,7 +381,7 @@
           "type": "uint256"
         }
       ],
-      "name": "battleZombies",
+      "name": "battle",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -430,7 +430,7 @@
           "type": "string"
         }
       ],
-      "name": "createRandomZombie",
+      "name": "createRandom",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -453,7 +453,7 @@
           "type": "string"
         }
       ],
-      "name": "createZombieFromDNA",
+      "name": "createFromDNA",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -508,7 +508,7 @@
     },
     {
       "inputs": [],
-      "name": "getTotalZombiesCount",
+      "name": "getTotalCount",
       "outputs": [
         {
           "internalType": "uint256",
@@ -527,7 +527,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getZombie",
+      "name": "getById",
       "outputs": [
         {
           "components": [
@@ -583,7 +583,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getZombieStats",
+      "name": "getStats",
       "outputs": [
         {
           "internalType": "uint32",
@@ -617,7 +617,7 @@
           "type": "address"
         }
       ],
-      "name": "getZombiesByOwner",
+      "name": "getByOwner",
       "outputs": [
         {
           "internalType": "uint256[]",
