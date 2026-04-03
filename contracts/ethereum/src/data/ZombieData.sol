@@ -36,7 +36,7 @@ contract ZombieData is Ownable {
     mapping(address => bool) public authorizedCallers;
 
     // Modifiers
-    modifier onlyZombieOwner(uint256 _zombieId) {
+    modifier zombieExists(uint256 _zombieId) {
         require(
             _zombieId > 0 && _zombieId <= _zombieCount,
             "Zombie doesn't exist"
@@ -117,7 +117,7 @@ contract ZombieData is Ownable {
     )
         external
         view
-        onlyZombieOwner(_zombieId)
+        zombieExists(_zombieId)
         returns (uint32, uint16, uint16, uint8)
     {
         Zombie memory zombie = zombies[_zombieId];
@@ -129,7 +129,7 @@ contract ZombieData is Ownable {
      */
     function isZombieReady(
         uint256 _zombieId
-    ) external view onlyZombieOwner(_zombieId) returns (bool) {
+    ) external view zombieExists(_zombieId) returns (bool) {
         return block.timestamp >= zombies[_zombieId].readyTime;
     }
 
@@ -138,7 +138,7 @@ contract ZombieData is Ownable {
      */
     function levelUpZombie(
         uint256 _zombieId
-    ) external onlyAuthorized onlyZombieOwner(_zombieId) {
+    ) external onlyAuthorized zombieExists(_zombieId) {
         zombies[_zombieId].level++;
         emit ZombieLevelUp(_zombieId, zombies[_zombieId].level);
     }
@@ -149,7 +149,7 @@ contract ZombieData is Ownable {
     function changeZombieName(
         uint256 _zombieId,
         string memory _newName
-    ) external onlyOwner onlyZombieOwner(_zombieId) {
+    ) external onlyOwner zombieExists(_zombieId) {
         zombies[_zombieId].name = _newName;
         emit ZombieNameChanged(_zombieId, _newName);
     }
@@ -160,7 +160,7 @@ contract ZombieData is Ownable {
     function changeZombieDna(
         uint256 _zombieId,
         uint256 _newDna
-    ) external onlyOwner onlyZombieOwner(_zombieId) {
+    ) external onlyOwner zombieExists(_zombieId) {
         zombies[_zombieId].dna = _newDna;
         emit ZombieDnaChanged(_zombieId, _newDna);
     }
@@ -170,7 +170,7 @@ contract ZombieData is Ownable {
      */
     function triggerCooldown(
         uint256 _zombieId
-    ) external onlyAuthorized onlyZombieOwner(_zombieId) {
+    ) external onlyAuthorized zombieExists(_zombieId) {
         zombies[_zombieId].readyTime = uint32(
             block.timestamp + BATTLE_COOLDOWN
         );
@@ -182,7 +182,7 @@ contract ZombieData is Ownable {
     function updateBattleStats(
         uint256 _zombieId,
         bool won
-    ) external onlyAuthorized onlyZombieOwner(_zombieId) {
+    ) external onlyAuthorized zombieExists(_zombieId) {
         if (won) {
             zombies[_zombieId].winCount++;
         } else {
