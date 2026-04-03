@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 
 const CONTRACTS_DIR = path.join(__dirname, '..');
 const FRONTEND_DIR = path.join(__dirname, '..', '..', '..', 'frontend', 'src', 'contracts');
-const CONTRACT_NAME = 'CryptoZombies';
+const CONTRACT_NAME = 'CryptoPets';
 
 function syncABI() {
     try {
@@ -30,7 +30,7 @@ function syncABI() {
         );
 
         // Path to the frontend ABI file
-        const frontendAbiPath = path.join(FRONTEND_DIR, `${CONTRACT_NAME}.json`);
+        const frontendAbiPath = path.join(FRONTEND_DIR, 'ethereumAbi.json');
 
         // Check if contract JSON exists
         if (!fs.existsSync(contractJsonPath)) {

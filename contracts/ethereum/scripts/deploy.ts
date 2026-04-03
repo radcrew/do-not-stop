@@ -31,10 +31,10 @@ async function injectContractAddress(): Promise<void> {
         }
 
         const deployedAddresses = JSON.parse(readFileSync(deployedAddressesPath, 'utf8'));
-        const contractAddress = deployedAddresses['CryptoZombiesModule#CryptoZombies'];
+        const contractAddress = deployedAddresses['CryptoPetsModule#CryptoPets'];
 
         if (!contractAddress) {
-            console.error('❌ CryptoZombies contract address not found');
+            console.error('❌ CryptoPets contract address not found');
             return;
         }
 

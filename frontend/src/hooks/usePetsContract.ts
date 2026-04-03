@@ -200,7 +200,7 @@ export const usePetsContract = () => {
         return useReadContract({
             address: CONTRACT_ADDRESS,
             abi: ethereumAbi.abi,
-            functionName: 'ownerZombieCount',
+            functionName: 'ownerPetCount',
             args: [owner as `0x${string}`],
             query: {
                 enabled: !!owner,

@@ -34,14 +34,14 @@ ZombieFactory ← Data + creation + ownership tracking
 
 ### Modern Composition Structure
 ```
-CryptoZombies (Main Contract)
+CryptoPets (Main Contract)
 ├── Inherits: ERC721, Ownable
 ├── Contains: All state variables
 ├── Composes:
-│   ├── ZombieData ← Centralized data management
-│   ├── ZombieBattle ← Pure battle logic
-│   ├── ZombieBreeding ← Pure breeding logic
-│   └── ZombieUtils ← Pure utility functions
+│   ├── Inventory ← Centralized data management
+│   ├── Battle ← Pure battle logic
+│   ├── Breeding ← Pure breeding logic
+│   └── Utils ← Pure utility functions
 └── Implements: All public functions
 ```
 
@@ -59,23 +59,23 @@ CryptoZombies (Main Contract)
 
 ### 1. Data Management
 **Original Course:** Data scattered across multiple contracts (`ZombieFactory`, `ZombieOwnership`, etc.)
-**Improved:** All data centralized in `ZombieData` contract
+**Improved:** All data centralized in `Inventory` contract
 
 ### 2. Feature Separation
 **Original Course:** Mixed responsibilities in each contract (e.g., `ZombieAttack` handles both battles AND zombie creation)
 **Improved:** Clear separation:
-- `ZombieData` - State management only
-- `ZombieBattle` - Battle logic only
-- `ZombieBreeding` - Breeding logic only
-- `ZombieUtils` - Pure utility functions
+- `Inventory` - State management only
+- `Battle` - Battle logic only
+- `Breeding` - Breeding logic only
+- `Utils` - Pure utility functions
 
 ### 3. Interface Design
 **Original Course:** No clear interfaces, direct inheritance
 **Improved:** Clean interfaces for each feature:
-- `IZombieData`
-- `IZombieBattle`
-- `IZombieBreeding`
-- `IZombieUtils`
+- `IInventory`
+- `IBattle`
+- `IBreeding`
+- `IUtils`
 
 ### 4. Testing
 **Original Course:** Hard to test individual features due to deep inheritance
