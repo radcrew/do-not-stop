@@ -2,7 +2,8 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true
   },
   "include": [
     "**/*.ts",

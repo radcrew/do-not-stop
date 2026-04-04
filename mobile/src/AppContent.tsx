@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet, useColorScheme, ScrollView, View, Text } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
 import { useAuth } from '@do-not-stop/shared-auth';
 import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
+import PetList from './components/PetList';
+import { usePetsRead } from './hooks/usePetsRead';
 
 function AppRoot() {
     const isDarkMode = useColorScheme() === 'dark';
@@ -20,7 +22,18 @@ function AppRoot() {
 function AppContent() {
     const { isAuthenticated } = useAuth();
     const { isConnected } = useAccount();
+    const petsRead = usePetsRead();
+    const [refreshing, setRefreshing] = useState(false);
     const insets = useSafeAreaInsets();
+
+    const onRefreshPets = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await petsRead.refetchPetIds();
+        } finally {
+            setRefreshing(false);
+        }
+    }, [petsRead.refetchPetIds]);
 
     return (
         <View style={styles.mainContainer}>
@@ -34,28 +47,49 @@ function AppContent() {
                 )}
             </View>
 
-            {/* Main Content */}
-            <ScrollView
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
-            >
-                {isAuthenticated || isConnected ? (
-                    <View style={styles.authenticatedContent}>
+            {/* Main: avoid nesting ScrollView with PetList’s own scroll + pull-to-refresh */}
+            {isAuthenticated || isConnected ? (
+                isConnected ? (
+                    <View style={styles.authenticatedMain}>
                         <Text style={styles.authenticatedText}>Welcome back!</Text>
-                        {/* TODO: Add ZombieGallery and ZombieInteractions components */}
+                        <PetList
+                            pets={petsRead.pets}
+                            petIds={petsRead.petIds}
+                            isLoading={petsRead.isLoading}
+                            contractError={petsRead.contractError}
+                            isContractConfigured={petsRead.isContractConfigured}
+                            onRefresh={onRefreshPets}
+                            refreshing={refreshing}
+                            getRarityName={petsRead.getRarityName}
+                            getRarityColor={petsRead.getRarityColor}
+                        />
                     </View>
                 ) : (
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollContent}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <Text style={styles.authenticatedText}>Welcome back!</Text>
+                        <Text style={styles.walletHint}>Connect a wallet to load your on-chain pets.</Text>
+                    </ScrollView>
+                )
+            ) : (
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.welcomeSection}>
                         <Text style={styles.welcomeText}>
-                            Connect your wallet to start creating and managing your zombie collection!
+                            Connect your wallet to start creating and managing your CryptoPets collection!
                         </Text>
                         <View style={styles.features}>
                             <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>🧟‍♂️ Create Zombies</Text>
+                                <Text style={styles.featureTitle}>🐾 Create pets</Text>
                             </View>
                             <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>⚔️ Battle System</Text>
+                                <Text style={styles.featureTitle}>⚔️ Battles</Text>
                             </View>
                             <View style={styles.feature}>
                                 <Text style={styles.featureTitle}>🧬 Breeding</Text>
@@ -65,8 +99,8 @@ function AppContent() {
                             <ConnectButton />
                         </View>
                     </View>
-                )}
-            </ScrollView>
+                </ScrollView>
+            )}
 
             {/* AppKit UI component for wallet connection */}
             <AppKit />
@@ -146,11 +180,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8,
     },
-    authenticatedContent: {
+    authenticatedMain: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 400,
+        paddingHorizontal: 16,
+        paddingTop: 24,
+        paddingBottom: 16,
+        width: '100%',
+    },
+    walletHint: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#666',
+        textAlign: 'center',
     },
     authenticatedText: {
         fontSize: 24,
