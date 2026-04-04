@@ -8,7 +8,7 @@
         "compile:only": "pnpm hh compile --force",
         "compile": "pnpm compile:only && node scripts/sync-abi.js",
         "test": "pnpm hh test",
-        "node": "pnpm hh node",
+        "node": "pnpm hh node --hostname 0.0.0.0",
         "deploy:local": "pnpm hh ignition deploy ignition/modules/CryptoPets.ts --network localhost",
         "deploy:sepolia": "pnpm hh ignition deploy ignition/modules/CryptoPets.ts --network sepolia",
         "deploy:status": "pnpm hh ignition status",

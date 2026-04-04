@@ -3,4 +3,9 @@ declare module '@env' {
     export const API_URL: string;
     /** Deployed CryptoPets contract (same as frontend VITE_CONTRACT_ADDRESS). */
     export const CONTRACT_ADDRESS: string;
+    /**
+     * Optional Hardhat/Anvil JSON-RPC URL for chain 31337 (e.g. `http://192.168.1.5:8545` on a physical device).
+     * If unset: Android emulator uses `10.0.2.2`; iOS simulator uses `127.0.0.1`.
+     */
+    export const HARDHAT_RPC_URL: string | undefined;
 }

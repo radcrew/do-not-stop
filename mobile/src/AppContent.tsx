@@ -5,6 +5,7 @@ import { AppKit } from '@reown/appkit-react-native';
 import { useAuth } from '@do-not-stop/shared-auth';
 import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
+import EthereumNetworkSwitcher from './components/EthereumNetworkSwitcher';
 import PetList from './components/PetList';
 import { usePetsRead } from './hooks/usePetsRead';
 
@@ -42,7 +43,10 @@ function AppContent() {
                 <Text style={styles.headerTitle}>Do Not Stop</Text>
                 {(isAuthenticated || isConnected) && (
                     <View style={styles.walletSection}>
-                        <ConnectButton compact={true} />
+                        <View style={styles.walletRow}>
+                            {isConnected ? <EthereumNetworkSwitcher /> : null}
+                            <ConnectButton compact={true} />
+                        </View>
                     </View>
                 )}
             </View>
@@ -134,6 +138,12 @@ const styles = StyleSheet.create({
     walletSection: {
         marginTop: 12,
         alignItems: 'center',
+    },
+    walletRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
     },
     scrollView: {
         flex: 1,
