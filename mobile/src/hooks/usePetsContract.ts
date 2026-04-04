@@ -1,4 +1,5 @@
-import { useAccount, useReadContract, useReadContracts } from 'wagmi';
+import { useCallback, useEffect } from 'react';
+import { useAccount, useReadContract, useReadContracts, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { CONTRACT_ADDRESS, isContractConfigured } from '../contractConfig';
 import ethereumAbi from '../contracts/ethereumAbi.json';
 
@@ -13,12 +14,15 @@ export interface Pet {
     rarity: number;
 }
 
-/**
- * Read-only: wallet’s pets via `getByOwner` + `getById`.
- * Next steps: add writes (create, battle, …) in the same style as `frontend/src/hooks/usePetsContract.ts`.
- */
-export function usePetsRead() {
+export function usePetsContract() {
     const { address } = useAccount();
+    const {
+        writeContract,
+        data: hash,
+        isPending: isWritePending,
+        error: writeError,
+        reset,
+    } = useWriteContract();
 
     const readsEnabled = !!address && isContractConfigured && !!CONTRACT_ADDRESS;
 
@@ -107,6 +111,40 @@ export function usePetsRead() {
     const isLoading =
         readsEnabled && (isLoadingIds || (petReadContracts.length > 0 && isPetsLoading));
 
+    const createRandomPet = useCallback(
+        (name: string) => {
+            if (!CONTRACT_ADDRESS || !isContractConfigured) {
+                return;
+            }
+            writeContract({
+                address: CONTRACT_ADDRESS,
+                abi: ethereumAbi.abi,
+                functionName: 'createRandom',
+                args: [name],
+                gas: 500000n,
+            });
+        },
+        [writeContract],
+    );
+
+    const {
+        isLoading: isConfirming,
+        isSuccess: isConfirmed,
+    } = useWaitForTransactionReceipt({
+        hash,
+        query: {
+            enabled: !!hash,
+        },
+    });
+
+    useEffect(() => {
+        if (!isConfirmed) {
+            return;
+        }
+        void refetchPetIds();
+        reset();
+    }, [isConfirmed, refetchPetIds, reset]);
+
     return {
         pets,
         petIds,
@@ -116,5 +154,10 @@ export function usePetsRead() {
         getRarityName,
         getRarityColor,
         isContractConfigured,
+        createRandomPet,
+        isWritePending,
+        writeError,
+        isConfirming,
+        txHash: hash,
     };
 }

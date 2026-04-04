@@ -7,7 +7,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import type { Pet } from '../hooks/usePetsRead';
+import type { Pet } from '../hooks/usePetsContract';
 
 type Props = {
     pets: Pet[];
@@ -74,7 +74,9 @@ export default function PetList({
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
                 <Text style={styles.emptyTitle}>No pets yet</Text>
-                <Text style={styles.hintBody}>Create a pet from the web app first, or wait for “create” on mobile.</Text>
+                <Text style={styles.hintBody}>
+                    Tap Create to mint a pet, or use Refresh / pull down to reload from the chain.
+                </Text>
             </ScrollView>
         );
     }
