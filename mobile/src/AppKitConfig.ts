@@ -29,13 +29,13 @@ export const appKit = createAppKit({
     adapters: [wagmiAdapter, solanaAdapter],
     storage,
     metadata: {
-        name: 'CryptoZombies',
-        description: 'CryptoZombies Mobile App',
-        url: 'https://cryptozombies.app',
+        name: 'CryptoPets',
+        description: 'CryptoPets Mobile App',
+        url: 'https://cryptopets.app',
         icons: ['https://avatars.githubusercontent.com/u/179229932'],
         redirect: {
-            native: "cryptozombies://",
-            universal: "cryptozombies.app",
+            native: "cryptopets://",
+            universal: "cryptopets.app",
         },
     },
     features: {
