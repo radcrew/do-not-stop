@@ -42,11 +42,11 @@ pub mod cryptozombies {
         rename_zombie::handler(ctx, name)
     }
 
-        pub fn pause(ctx: Context<Pause>) -> Result<()> {
-            pause::handler(ctx)
-        }
+    pub fn pause(ctx: Context<Pause>) -> Result<()> {
+        pause::handler(ctx)
+    }
 
-        pub fn unpause(ctx: Context<Unpause>) -> Result<()> {
-            unpause::handler(ctx)
-        }
+    pub fn unpause(ctx: Context<Unpause>) -> Result<()> {
+        unpause::handler(ctx)
+    }
 }
