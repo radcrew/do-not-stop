@@ -48,12 +48,20 @@ const customSolanaNetworks = SOLANA_NETWORKS.map(network => ({
     vanityName: network.name,
 }));
 
+/** Hides Dynamic's sandbox environment chip on the wallet connect modal (see SandboxIndicatorWrapper). */
+const dynamicCssOverrides = `
+  [data-testid="sandbox-indicator"] {
+    display: none !important;
+  }
+`;
+
 export const DynamicProvider: React.FC<DynamicProviderProps> = ({ children }) => {
     return (
         <DynamicContextProvider
             settings={{
                 environmentId: import.meta.env.VITE_DYNAMIC_ENVIRONMENT_ID,
                 walletConnectors: [EthereumWalletConnectors, SolanaWalletConnectors],
+                cssOverrides: dynamicCssOverrides,
                 overrides: {
                     evmNetworks: customEvmNetworks,
                     solNetworks: customSolanaNetworks,
