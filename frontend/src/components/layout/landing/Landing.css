@@ -1,161 +1,3 @@
-/* Theme + layout tokens: frontend/src/styles/variables.css */
-
-@font-face {
-  font-family: 'DragonHunter';
-  src: url('../../assets/fonts/DragonHunter-9Ynxj.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Swansea';
-  src: url('../../assets/fonts/Swansea-q3pd.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'RobotTraffic';
-  src: url('../../assets/fonts/RobotTrafficDemo-BLPlw.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-.main-container {
-  --title-font: 'RobotTraffic', 'DragonHunter', 'Orbitron', 'Eurostile', 'Bank Gothic', 'Arial Black', system-ui, sans-serif;
-  --content-font: 'Swansea', 'Inter', 'Segoe UI', system-ui, sans-serif;
-  width: 100%;
-  height: 100vh;
-  font-family: var(--content-font);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background:
-    radial-gradient(circle at 20% 0%, rgb(87 57 230 / 30%) 0%, transparent 38%),
-    radial-gradient(circle at 80% 20%, rgb(32 163 255 / 14%) 0%, transparent 44%),
-    #050812;
-  color: var(--color-text);
-}
-
-.main-header {
-  position: fixed;
-  inset-block-start: 0;
-  inset-inline: 0;
-  width: 100%;
-  background: rgb(5 8 18 / 94%);
-  border-block-end: 1px solid rgb(101 131 255 / 25%);
-  z-index: var(--z-header);
-  box-shadow: 0 10px 26px rgb(0 0 0 / 45%);
-  box-sizing: border-box;
-  min-height: var(--main-header-offset);
-  padding-inline: clamp(20px, 5vw, 42px);
-  padding-block: 10px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-
-  & h1 {
-    font-family: var(--title-font);
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    line-height: 1.2;
-    margin: 0;
-    color: #f4f2ff;
-    letter-spacing: 1.2px;
-    font-weight: 700;
-    text-transform: uppercase;
-    text-shadow: 0 0 12px rgb(181 152 255 / 40%);
-  }
-}
-
-.header-title-row {
-  display: block;
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
-  text-align: start;
-}
-
-.header-title-row::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: clamp(140px, 22vw, 260px);
-  height: 42px;
-  transform: translateY(-50%);
-  background: radial-gradient(ellipse at center, rgb(138 98 255 / 35%) 0%, rgb(74 128 255 / 16%) 48%, transparent 78%);
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.header-title-row h1 {
-  position: relative;
-  z-index: 1;
-  text-shadow:
-    0 0 10px rgb(185 160 255 / 50%),
-    0 0 22px rgb(125 141 255 / 38%),
-    0 0 44px rgb(108 72 255 / 26%);
-}
-
-.wallet-section {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.main-header .account-dropdown-container {
-  position: relative;
-  top: auto;
-  right: auto;
-  left: auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: auto;
-  max-width: 100%;
-}
-
-.main-content {
-  flex: 1;
-  margin-block-start: var(--main-header-offset);
-  width: 100%;
-  box-sizing: border-box;
-  margin-inline: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* Landing: padding under fixed header paints the gap so the hero can fill one full viewport height. */
-.main-content:has(.landing) {
-  margin-block-start: 0;
-  padding-block-start: var(--main-header-offset);
-  background-color: #070a14;
-}
-
-.main-content.authenticated {
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2xl);
-  text-align: start;
-
-  &>* {
-    width: 100%;
-    max-width: none;
-  }
-}
-
 .landing {
   --landing-gutter: clamp(44px, 7vw, 108px);
   display: flex;
@@ -186,7 +28,7 @@
   background-image:
     linear-gradient(105deg, rgb(6 9 20 / 90%) 0%, rgb(6 9 20 / 48%) 40%, rgb(10 12 24 / 22%) 62%, transparent 82%),
     linear-gradient(180deg, rgb(87 57 230 / 14%) 0%, rgb(10 12 24 / 76%) 100%),
-    url('../../assets/images/background.png');
+    url('../../../assets/images/background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -604,11 +446,6 @@
 }
 
 @media (max-width: 1024px) {
-  .main-content.authenticated {
-    display: block;
-    text-align: center;
-  }
-
   .landing-hero {
     text-align: center;
   }
@@ -647,22 +484,6 @@
 }
 
 @media (max-width: 768px) {
-  .main-header {
-    padding-inline: clamp(14px, 4vw, 22px);
-    padding-block: 10px;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .main-header h1 {
-    font-size: 1.3rem;
-  }
-
-  .wallet-section {
-    max-width: 100%;
-    justify-content: center;
-  }
-
   .landing-hero {
     padding: 38px 18px;
   }

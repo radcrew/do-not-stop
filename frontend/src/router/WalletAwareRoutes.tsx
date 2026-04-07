@@ -2,7 +2,9 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from '@do-not-stop/shared-auth';
 
-import Main from '../components/layout/Main';
+import { useDynamicContext } from '../contexts/dynamic';
+import Main from '../components/layout/main/Main';
+import Landing from '../components/layout/landing/Landing';
 import PetInteractions from '../components/pet/PetInteractions';
 import BattleRoute from './BattleRoute';
 import BreedRoute from './BreedRoute';
@@ -14,12 +16,13 @@ import RenameRoute from './RenameRoute';
  */
 const WalletAwareRoutes: React.FC = () => {
     const { isAuthenticated } = useAuth();
-    const isLoggedIn = Boolean(isAuthenticated);
+    const { user, primaryWallet } = useDynamicContext();
+    const isLoggedIn = Boolean(isAuthenticated || user || primaryWallet);
 
     return (
         <Routes>
-            <Route path="/landing" element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Main />} />
-            <Route path="/dashboard" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
+            <Route path="/landing" element={isLoggedIn ? <Navigate to="/main" replace /> : <Landing />} />
+            <Route path="/main" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
                 <Route index element={<PetInteractions />} />
             </Route>
             <Route path="/breed" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
@@ -34,7 +37,7 @@ const WalletAwareRoutes: React.FC = () => {
             <Route path="/rename" element={isLoggedIn ? <Main /> : <Navigate to="/landing" replace />}>
                 <Route index element={<RenameRoute />} />
             </Route>
-            <Route path="*" element={<Navigate to={isLoggedIn ? '/dashboard' : '/landing'} replace />} />
+            <Route path="*" element={<Navigate to={isLoggedIn ? '/main' : '/landing'} replace />} />
         </Routes>
     );
 };
