@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TransactionStatus from '../../ui/TransactionStatus';
-import { usePetsContract } from '../../../hooks/usePetsContract';
+import { usePetsContract } from '@do-not-stop/shared-auth';
+import { petsContractParams } from '../../../petsContractParams';
 import { DASHBOARD_HOME } from '../../../constants/interactionRoutes';
 import { getReadyPets } from '../../../utils/readyPets';
 import { useWriteContractErrorState } from '../../../hooks/useWriteContractErrorState';
@@ -12,7 +13,8 @@ export type BattlePanelProps = {
 
 const BattlePanel: React.FC<BattlePanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
-    const { battlePets, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } = usePetsContract();
+    const { battlePets, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } =
+        usePetsContract(petsContractParams);
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
     const { error, setError, isUserRejection, isContractError, resetError } = useWriteContractErrorState(writeError);
 

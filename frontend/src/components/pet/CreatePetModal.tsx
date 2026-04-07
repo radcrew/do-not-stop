@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TransactionStatus from '../ui/TransactionStatus';
-import { usePetsContract } from '../../hooks/usePetsContract';
+import { usePetsContract } from '@do-not-stop/shared-auth';
+import { petsContractParams } from '../../petsContractParams';
 import { parseContractError } from '../../utils/errorParser';
 import './CreatePetModal.css';
 
@@ -10,7 +11,8 @@ interface CreatePetModalProps {
 }
 
 const CreatePetModal: React.FC<CreatePetModalProps> = ({ isOpen, onClose }) => {
-    const { isConnected, createRandomPet, hash, isPending, writeError, refetchPetIds } = usePetsContract();
+    const { isConnected, createRandomPet, hash, isPending, writeError, refetchPetIds } =
+        usePetsContract(petsContractParams);
     const [petName, setPetName] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);

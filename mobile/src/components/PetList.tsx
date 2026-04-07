@@ -7,7 +7,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import type { Pet } from '../hooks/usePetsContract';
+import type { Pet } from '@do-not-stop/shared-auth';
 
 type Props = {
     pets: Pet[];

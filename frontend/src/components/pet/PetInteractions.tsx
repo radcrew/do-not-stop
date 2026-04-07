@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePetsContract } from '../../hooks/usePetsContract';
+import { usePetsContract } from '@do-not-stop/shared-auth';
+import { petsContractParams } from '../../petsContractParams';
 import { getLifePercent } from '../../utils/petCard';
 import type { InteractionAction } from '../../constants/interactionRoutes';
 import {
@@ -33,7 +34,7 @@ function parseActionParam(raw: string | undefined): InteractionAction | null {
 const PetInteractions: React.FC = () => {
     const navigate = useNavigate();
     const { action: actionParam } = useParams<{ action?: string }>();
-    const { isConnected, pets, petIds, isLoading, isReady } = usePetsContract();
+    const { isConnected, pets, petIds, isLoading, isReady } = usePetsContract(petsContractParams);
 
     const action = useMemo(() => parseActionParam(actionParam), [actionParam]);
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
