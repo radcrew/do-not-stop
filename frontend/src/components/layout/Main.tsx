@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@do-not-stop/shared-auth';
 import { useDynamicContext } from '../../contexts/dynamic';
@@ -18,11 +18,20 @@ import './Main.css';
 
 const Main: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const { user, primaryWallet } = useDynamicContext();
+  const navigate = useNavigate();
+  const { user, primaryWallet, setShowAuthFlow } = useDynamicContext();
   const isLoggedIn = Boolean(user || primaryWallet);
   const location = useLocation();
   /** Full-page interaction routes hide the pet collection. */
   const isGalleryHidden = isInteractionRoute(location.pathname);
+
+  const handleStartPlaying = () => {
+    if (user || primaryWallet) {
+      navigate('/dashboard');
+    } else {
+      setShowAuthFlow(true);
+    }
+  };
 
   return (
     <div className="main-container">
@@ -48,7 +57,9 @@ const Main: React.FC = () => {
                 <h2>Collect, Battle &amp; Breed Your Dream Pets!</h2>
                 <p>10K+ handcrafted digital pets in the ultimate on-chain adventure.</p>
                 <div className="hero-actions">
-                  <NeonButton tone="emerald">Start Playing</NeonButton>
+                  <NeonButton type="button" tone="emerald" onClick={handleStartPlaying}>
+                    Start Playing
+                  </NeonButton>
                   <NeonButton tone="azure">Watch Trailer</NeonButton>
                 </div>
               </div>
