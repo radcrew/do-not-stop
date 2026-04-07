@@ -5,7 +5,7 @@ import { Storage } from '@reown/appkit-react-native';
 export const storage: Storage = {
     async getKeys(): Promise<string[]> {
         try {
-            return await AsyncStorage.getAllKeys();
+            return [...(await AsyncStorage.getAllKeys())];
         } catch (error) {
             console.error('Error getting storage keys:', error);
             return [];

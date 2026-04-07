@@ -8,11 +8,11 @@
         "compile:only": "pnpm hh compile --force",
         "compile": "pnpm compile:only && node scripts/sync-abi.js",
         "test": "pnpm hh test",
-        "node": "pnpm hh node",
-        "deploy:local": "pnpm hh ignition deploy ignition/modules/CryptoZombies.ts --network localhost",
-        "deploy:sepolia": "pnpm hh ignition deploy ignition/modules/CryptoZombies.ts --network sepolia",
+        "node": "pnpm hh node --hostname 0.0.0.0",
+        "deploy:local": "pnpm hh ignition deploy ignition/modules/CryptoPets.ts --network localhost",
+        "deploy:sepolia": "pnpm hh ignition deploy ignition/modules/CryptoPets.ts --network sepolia",
         "deploy:status": "pnpm hh ignition status",
-        "deploy:visualize": "pnpm hh ignition visualize ignition/modules/CryptoZombies.ts",
+        "deploy:visualize": "pnpm hh ignition visualize ignition/modules/CryptoPets.ts",
         "deploy:inject": "tsx scripts/deploy.ts"
     },
     "devDependencies": {

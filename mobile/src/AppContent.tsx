@@ -1,10 +1,23 @@
-import React from 'react';
-import { StatusBar, StyleSheet, useColorScheme, ScrollView, View, Text } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {
+    ActivityIndicator,
+    StatusBar,
+    StyleSheet,
+    useColorScheme,
+    ScrollView,
+    View,
+    Text,
+    TouchableOpacity,
+} from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
 import { useAuth } from '@do-not-stop/shared-auth';
 import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
+import EthereumNetworkSwitcher from './components/EthereumNetworkSwitcher';
+import CreatePetModal from './components/CreatePetModal';
+import PetList from './components/PetList';
+import { usePetsContract } from './hooks/usePetsContract';
 
 function AppRoot() {
     const isDarkMode = useColorScheme() === 'dark';
@@ -20,7 +33,23 @@ function AppRoot() {
 function AppContent() {
     const { isAuthenticated } = useAuth();
     const { isConnected } = useAccount();
+    const pets = usePetsContract();
+    const [refreshing, setRefreshing] = useState(false);
+    const [createModalVisible, setCreateModalVisible] = useState(false);
     const insets = useSafeAreaInsets();
+
+    const onRefreshPets = useCallback(async () => {
+        setRefreshing(true);
+        try {
+            await pets.refetchPetIds();
+        } finally {
+            setRefreshing(false);
+        }
+    }, [pets.refetchPetIds]);
+
+    const closeCreateModal = useCallback(() => {
+        setCreateModalVisible(false);
+    }, []);
 
     return (
         <View style={styles.mainContainer}>
@@ -29,33 +58,90 @@ function AppContent() {
                 <Text style={styles.headerTitle}>Do Not Stop</Text>
                 {(isAuthenticated || isConnected) && (
                     <View style={styles.walletSection}>
-                        <ConnectButton compact={true} />
+                        <View style={styles.walletRow}>
+                            {isConnected ? <EthereumNetworkSwitcher /> : null}
+                            <ConnectButton compact={true} />
+                        </View>
                     </View>
                 )}
             </View>
 
-            {/* Main Content */}
-            <ScrollView
-                style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
-            >
-                {isAuthenticated || isConnected ? (
-                    <View style={styles.authenticatedContent}>
+            {/* Main: avoid nesting ScrollView with PetList’s own scroll + pull-to-refresh */}
+            {isAuthenticated || isConnected ? (
+                isConnected ? (
+                    <View style={styles.authenticatedMain}>
                         <Text style={styles.authenticatedText}>Welcome back!</Text>
-                        {/* TODO: Add ZombieGallery and ZombieInteractions components */}
+                        {pets.isContractConfigured ? (
+                            <View style={styles.actionsRow}>
+                                <TouchableOpacity
+                                    style={styles.createBtn}
+                                    onPress={() => setCreateModalVisible(true)}
+                                    activeOpacity={0.85}
+                                >
+                                    <Text style={styles.createBtnText}>Create</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[styles.refreshBtn, refreshing && styles.refreshBtnDisabled]}
+                                    onPress={onRefreshPets}
+                                    disabled={refreshing}
+                                    activeOpacity={0.85}
+                                >
+                                    {refreshing ? (
+                                        <ActivityIndicator size="small" color="#667eea" />
+                                    ) : (
+                                        <Text style={styles.refreshBtnText}>Refresh</Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        ) : null}
+                        <CreatePetModal
+                            visible={createModalVisible && pets.isContractConfigured}
+                            onClose={closeCreateModal}
+                            isContractConfigured={pets.isContractConfigured}
+                            createRandomPet={pets.createRandomPet}
+                            isWritePending={pets.isWritePending}
+                            writeError={pets.writeError}
+                            isConfirming={pets.isConfirming}
+                            txHash={pets.txHash}
+                        />
+                        <PetList
+                            pets={pets.pets}
+                            petIds={pets.petIds}
+                            isLoading={pets.isLoading}
+                            contractError={pets.contractError}
+                            isContractConfigured={pets.isContractConfigured}
+                            onRefresh={onRefreshPets}
+                            refreshing={refreshing}
+                            getRarityName={pets.getRarityName}
+                            getRarityColor={pets.getRarityColor}
+                        />
                     </View>
                 ) : (
+                    <ScrollView
+                        style={styles.scrollView}
+                        contentContainerStyle={styles.scrollContent}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <Text style={styles.authenticatedText}>Welcome back!</Text>
+                        <Text style={styles.walletHint}>Connect a wallet to load your on-chain pets.</Text>
+                    </ScrollView>
+                )
+            ) : (
+                <ScrollView
+                    style={styles.scrollView}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                >
                     <View style={styles.welcomeSection}>
                         <Text style={styles.welcomeText}>
-                            Connect your wallet to start creating and managing your zombie collection!
+                            Connect your wallet to start creating and managing your CryptoPets collection!
                         </Text>
                         <View style={styles.features}>
                             <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>🧟‍♂️ Create Zombies</Text>
+                                <Text style={styles.featureTitle}>🐾 Create pets</Text>
                             </View>
                             <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>⚔️ Battle System</Text>
+                                <Text style={styles.featureTitle}>⚔️ Battles</Text>
                             </View>
                             <View style={styles.feature}>
                                 <Text style={styles.featureTitle}>🧬 Breeding</Text>
@@ -65,8 +151,8 @@ function AppContent() {
                             <ConnectButton />
                         </View>
                     </View>
-                )}
-            </ScrollView>
+                </ScrollView>
+            )}
 
             {/* AppKit UI component for wallet connection */}
             <AppKit />
@@ -100,6 +186,12 @@ const styles = StyleSheet.create({
     walletSection: {
         marginTop: 12,
         alignItems: 'center',
+    },
+    walletRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
     },
     scrollView: {
         flex: 1,
@@ -146,16 +238,66 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8,
     },
-    authenticatedContent: {
+    authenticatedMain: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 400,
+        paddingHorizontal: 16,
+        paddingTop: 24,
+        paddingBottom: 16,
+        width: '100%',
+    },
+    walletHint: {
+        marginTop: 16,
+        fontSize: 16,
+        color: '#666',
+        textAlign: 'center',
     },
     authenticatedText: {
         fontSize: 24,
         fontWeight: '600',
         color: '#333',
+    },
+    actionsRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 16,
+        flexWrap: 'wrap',
+    },
+    createBtn: {
+        backgroundColor: '#667eea',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 12,
+        marginRight: 12,
+        marginBottom: 4,
+        minWidth: 100,
+        alignItems: 'center',
+    },
+    createBtnText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    refreshBtn: {
+        borderWidth: 1,
+        borderColor: '#667eea',
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 12,
+        marginBottom: 4,
+        minWidth: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: 42,
+    },
+    refreshBtnDisabled: {
+        opacity: 0.6,
+    },
+    refreshBtnText: {
+        color: '#667eea',
+        fontSize: 16,
+        fontWeight: '600',
     },
 });
 

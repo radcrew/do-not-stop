@@ -1,4 +1,4 @@
-# Smart Contracts - CryptoZombies
+# Smart Contracts - CryptoPets
 
 This directory contains the Hardhat project with Solidity smart contracts for the Do Not Stop Web3 application.
 
@@ -6,22 +6,19 @@ This directory contains the Hardhat project with Solidity smart contracts for th
 
 ```
 contracts/
-├── src/                    # Solidity source files
-│   ├── CryptoZombies.sol   # Main contract
-│   ├── data/               # Data management
-│   │   └── ZombieData.sol
-│   ├── features/           # Feature contracts
-│   │   ├── ZombieBattle.sol
-│   │   └── ZombieBreeding.sol
-│   └── utils/              # Utility functions
-│       └── ZombieUtils.sol
+├── src/                    # Solidity sources (flat)
+│   ├── CryptoPets.sol
+│   ├── Inventory.sol
+│   ├── Battle.sol
+│   ├── Breeding.sol
+│   └── Utils.sol
 ├── test/                   # Contract tests
-│   └── CryptoZombies.test.ts
+│   └── CryptoPets.test.ts
 ├── artifacts/              # Compiled contracts
 ├── cache/                  # Hardhat cache
 ├── ignition/               # Deployment scripts
 │   └── modules/
-│       └── CryptoZombies.ts
+│       └── CryptoPets.ts
 ├── hardhat.config.ts       # Hardhat configuration
 ├── tsconfig.json           # TypeScript configuration
 └── package.json            # Contract dependencies
@@ -64,27 +61,29 @@ pnpm dev
 | `pnpm node` | Start Hardhat local network |
 | `pnpm clean` | Clean build artifacts |
 
-## 🧟‍♂️ CryptoZombies Contract
+## CryptoPets contract
 
-The main contract implements a zombie game with the following features:
+The main contract implements pet collection and gameplay with the following features:
 
-- **Create Zombies**: Users can create zombies with random DNA
-- **Zombie Breeding**: Two zombies can breed to create a new zombie
-- **Zombie Battles**: Zombies can battle each other
-- **Level System**: Zombies can level up and gain abilities
-- **ERC-721 Compatible**: NFT standard for zombie ownership
-- **Clean Architecture**: Uses composition instead of deep inheritance
+- **Create pets**: Starter pet with random DNA
+- **Breeding**: Two pets can breed to create a new one
+- **Battles**: Pets can battle each other
+- **Levels**: Pay to level up; name/DNA changes at higher levels
+- **ERC-721**: NFT standard for ownership (collection name **CryptoPets**, symbol **PETS**)
+- **Composition**: `Inventory`, `Battle`, `Breeding`, `Utils`
 
 ### Key Functions
 
-- `createRandomZombie(string memory _name)` - Create a new zombie
-- `battleZombies(uint256 _zombieId1, uint256 _zombieId2)` - Battle two zombies
-- `attack(uint256 _zombieId, uint256 _targetId)` - Attack another zombie
-- `createZombieFromDNA(uint256 _zombieId1, uint256 _zombieId2, string memory _name)` - Breed zombies
-- `levelUp(uint256 _zombieId)` - Level up a zombie (requires fee)
-- `changeName(uint256 _zombieId, string memory _newName)` - Change zombie name
-- `changeDna(uint256 _zombieId, uint256 _newDna)` - Change zombie DNA
-- `getZombiesByOwner(address _owner)` - Get zombies owned by address
+- `createRandom(string memory _name)` - Create starter pet
+- `battle(uint256 _id1, uint256 _id2)` - Battle two pets
+- `attack(uint256 _petId, uint256 _targetId)` - Attack another pet
+- `createFromDNA(...)` - Breed
+- `levelUp(uint256 _tokenId)` - Level up (fee)
+- `changeName` / `changeDna` - Cosmetic upgrades above level thresholds
+- `getById` - Full on-chain struct
+- `getTotalCount` - Total pets in data layer
+- `getStats` / `getBattleStats` - Views
+- `getByOwner` - Token IDs for an address
 
 ## 🌐 Networks
 
@@ -120,7 +119,7 @@ pnpm test
 pnpm test --gas-report
 
 # Run specific test file
-npx hardhat test test/CryptoZombies.test.ts
+pnpm hh test test/CryptoPets.test.ts
 ```
 
 ## 📦 Deployment
@@ -138,7 +137,7 @@ pnpm node
 ## 🔍 Contract Addresses
 
 After deployment, contract addresses are stored in:
-- `ignition/deployments/chain-31337/deployed_addresses.json` (local)
+- `ignition/deployments/chain-31337/deployed_addresses.json` (local; key `CryptoPetsModule#CryptoPets`)
 - Contract address is automatically injected into `frontend/.env.local`
 
 ## 📚 Learn More
