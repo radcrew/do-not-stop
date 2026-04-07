@@ -2,6 +2,6 @@ packages:
   - 'frontend'
   - 'backend'
   - 'mobile'
+  - 'shared'
   - 'contracts/ethereum'
   - 'contracts/solana/cryptozombies'
-  - 'packages/*'

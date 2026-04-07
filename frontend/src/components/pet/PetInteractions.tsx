@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePetsContract } from '@do-not-stop/shared-auth';
+import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../petsContractParams';
 import { getLifePercent } from '../../utils/petCard';
 import type { InteractionAction } from '../../constants/interactionRoutes';

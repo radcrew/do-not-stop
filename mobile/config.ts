@@ -1,4 +1,4 @@
-import { setTokenSuccessCallback, setStorageAdapter } from '@do-not-stop/shared-auth';
+import { setTokenSuccessCallback, setStorageAdapter } from '@shared/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { API_URL as ENV_API_URL } from '@env';

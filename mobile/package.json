@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "@do-not-stop/shared-auth": "workspace:*",
+    "@shared/core": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/netinfo": "^11.4.1",
     "@reown/appkit-react-native": "^2.0.1",

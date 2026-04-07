@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TransactionStatus from '../ui/TransactionStatus';
-import { usePetsContract } from '@do-not-stop/shared-auth';
+import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../petsContractParams';
 import { parseContractError } from '../../utils/errorParser';
 import './CreatePetModal.css';

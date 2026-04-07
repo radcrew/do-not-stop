@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
-import { useAuth, usePetsContract } from '@do-not-stop/shared-auth';
+import { useAuth, usePetsContract } from '@shared/core';
 import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
 import EthereumNetworkSwitcher from './components/EthereumNetworkSwitcher';

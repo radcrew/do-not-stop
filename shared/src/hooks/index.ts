@@ -3,4 +3,3 @@ export { useVerifySignature, setTokenSuccessCallback } from './useVerifySignatur
 export { useUserProfile } from './useUserProfile';
 export { usePetsContract } from './usePetsContract';
 export type { Pet, PetStats, BattleStats } from './usePetsContract';
-

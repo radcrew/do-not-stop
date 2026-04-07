@@ -5,7 +5,7 @@ import { http } from 'viem';
 import { createConfig, WagmiProvider } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 
-import { ApiClientProvider, AuthProvider, queryClient } from '@do-not-stop/shared-auth';
+import { ApiClientProvider, AuthProvider, queryClient } from '@shared/core';
 import { API_URL } from './config';
 import { CHAINS } from './constants/chains';
 import { SolanaWalletProvider } from './contexts';

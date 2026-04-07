@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TransactionStatus from '../../ui/TransactionStatus';
-import { usePetsContract } from '@do-not-stop/shared-auth';
+import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../../petsContractParams';
 import { DASHBOARD_HOME } from '../../../constants/interactionRoutes';
 import { getReadyPets } from '../../../utils/readyPets';

@@ -1,5 +1,5 @@
 {
-    "name": "@do-not-stop/shared-auth",
+    "name": "@shared/core",
     "version": "0.0.1",
     "description": "Shared authentication hooks for frontend and mobile",
     "main": "src/index.ts",

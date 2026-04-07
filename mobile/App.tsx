@@ -2,7 +2,7 @@ import React from 'react';
 import { AppKitProvider } from '@reown/appkit-react-native';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient, ApiClientProvider, AuthProvider } from '@do-not-stop/shared-auth';
+import { queryClient, ApiClientProvider, AuthProvider } from '@shared/core';
 
 import { appKit, wagmiConfig } from './src/AppKitConfig';
 import AppRoot from './src/AppContent.tsx';

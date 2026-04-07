@@ -1,4 +1,4 @@
-import type { Pet } from '@do-not-stop/shared-auth';
+import type { Pet } from '@shared/core';
 
 /** Pet id + record, only for pets that are ready for interaction. */
 export type ReadyPetOption = { id: bigint; pet: Pet };

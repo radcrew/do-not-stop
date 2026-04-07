@@ -1,7 +1,7 @@
 import React from 'react';
 import type { InteractionAction } from '../../constants/interactionRoutes';
 import { STANDALONE_INTERACTION_HEADERS } from '../../constants/interactionRoutes';
-import { usePetsContract } from '@do-not-stop/shared-auth';
+import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../petsContractParams';
 import StateCard from './interactions/StateCard';
 import './PetInteractions.css';

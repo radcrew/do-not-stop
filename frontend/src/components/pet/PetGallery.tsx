@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { usePetsContract } from '@do-not-stop/shared-auth';
+import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../petsContractParams';
 import {
     getGeneration,
