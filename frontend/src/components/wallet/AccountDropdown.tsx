@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useAccount, usePublicClient } from 'wagmi';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
-import { useAuth } from '@do-not-stop/shared-auth';
+import { useAuth } from '@shared/core';
 import { getPopularTokens } from '../../constants/tokens';
 import { NeonButton } from '../common';
 import { EthereumNetworkSwitcher, SolanaNetworkSwitcher } from './NetworkSwitcher';
