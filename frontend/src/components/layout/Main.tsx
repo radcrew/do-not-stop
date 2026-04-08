@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@do-not-stop/shared-auth';
+import { useAuth } from '@shared/core';
 import { useDynamicContext } from '../../contexts/dynamic';
 
 import AccountDropdown from '../wallet/AccountDropdown';

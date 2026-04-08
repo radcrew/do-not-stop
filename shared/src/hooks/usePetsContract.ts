@@ -1,8 +1,5 @@
 import { useAccount, useWriteContract, useReadContract, useReadContracts } from 'wagmi';
-import { CONTRACT_ADDRESS } from '../config';
-import ethereumAbi from '../contracts/ethereumAbi.json';
 
-/** Pet entity returned from the contract reader (`getById`). */
 export interface Pet {
     name: string;
     dna: bigint;
@@ -26,55 +23,70 @@ export interface BattleStats {
     readyTime: bigint;
 }
 
-export const usePetsContract = () => {
+type UsePetsContractParams = {
+    contractAddress?: `0x${string}`;
+    abi: readonly unknown[];
+    enabled?: boolean;
+};
+
+export const usePetsContract = ({
+    contractAddress,
+    abi,
+    enabled = true,
+}: UsePetsContractParams) => {
     const { address, isConnected } = useAccount();
     const { writeContract, data: hash, isPending, error: writeError } = useWriteContract();
+    const isContractConfigured = Boolean(contractAddress);
+    const canRead = Boolean(address && contractAddress && enabled);
+    const safeAddress = (contractAddress ?? '0x0000000000000000000000000000000000000000') as `0x${string}`;
 
-    const { data: petIdsData, refetch: refetchPetIds } = useReadContract({
-        address: CONTRACT_ADDRESS,
-        abi: ethereumAbi.abi,
+    const { data: petIdsData, refetch: refetchPetIds, error: petIdsError } = useReadContract({
+        address: safeAddress,
+        abi,
         functionName: 'getByOwner',
         args: address ? [address] : undefined,
         query: {
-            enabled: !!address,
+            enabled: canRead,
         },
     });
 
-    const petReadContracts = (petIdsData as bigint[])?.map((petId: bigint) => ({
-        address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: ethereumAbi.abi as any,
-        functionName: 'getById' as const,
-        args: [petId],
-    })) || [];
+    const petReadContracts =
+        ((petIdsData as bigint[] | undefined)?.map((petId: bigint) => ({
+            address: safeAddress,
+            abi: abi as never,
+            functionName: 'getById' as const,
+            args: [petId],
+        }))) ?? [];
 
     const { data: petsData, isLoading: isPetsLoading, error: petsError } = useReadContracts({
         contracts: petReadContracts,
         query: {
-            enabled: petReadContracts.length > 0,
+            enabled: canRead && petReadContracts.length > 0,
         },
     });
 
-    const pets: Pet[] = petsData
-        ?.filter((result: any) => result.status === 'success' && result.result)
-        .map((result: any) => {
-            const raw = result.result as any;
-            return {
-                name: raw.name,
-                dna: BigInt(raw.dna),
-                level: Number(raw.level),
-                readyTime: BigInt(raw.readyTime),
-                winCount: Number(raw.winCount),
-                lossCount: Number(raw.lossCount),
-                rarity: Number(raw.rarity),
-            } as Pet;
-        }) || [];
+    const pets: Pet[] =
+        (petsData as { status: string; result?: unknown }[] | undefined)
+            ?.filter((result) => result.status === 'success' && result.result)
+            .map((result) => {
+                const raw = result.result as Pet;
+                return {
+                    name: raw.name,
+                    dna: BigInt(raw.dna),
+                    level: Number(raw.level),
+                    readyTime: BigInt(raw.readyTime),
+                    winCount: Number(raw.winCount),
+                    lossCount: Number(raw.lossCount),
+                    rarity: Number(raw.rarity),
+                };
+            }) || [];
 
     const petIds: bigint[] = (petIdsData as bigint[]) || [];
 
     const createRandomPet = (name: string) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'createRandom',
             args: [name],
             gas: 500000n,
@@ -83,8 +95,8 @@ export const usePetsContract = () => {
 
     const levelUp = (petId: bigint) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'levelUp',
             args: [petId],
             value: 1000000000000000n,
@@ -94,8 +106,8 @@ export const usePetsContract = () => {
 
     const changeName = (petId: bigint, newName: string) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'changeName',
             args: [petId, newName],
             gas: 100000n,
@@ -104,8 +116,8 @@ export const usePetsContract = () => {
 
     const battlePets = (petId1: bigint, petId2: bigint) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'battle',
             args: [petId1, petId2],
             gas: 300000n,
@@ -114,8 +126,8 @@ export const usePetsContract = () => {
 
     const createPetFromDNA = (parentId1: bigint, parentId2: bigint, name: string) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'createFromDNA',
             args: [parentId1, parentId2, name],
             gas: 500000n,
@@ -124,8 +136,8 @@ export const usePetsContract = () => {
 
     const attack = (petId: bigint, targetId: bigint) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'attack',
             args: [petId, targetId],
             gas: 300000n,
@@ -134,8 +146,8 @@ export const usePetsContract = () => {
 
     const changeDna = (petId: bigint, newDna: bigint) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'changeDna',
             args: [petId, newDna],
             gas: 100000n,
@@ -144,8 +156,8 @@ export const usePetsContract = () => {
 
     const transferPet = (to: string, petId: bigint) => {
         return writeContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'transferFrom',
             args: [address, to as `0x${string}`, petId],
             gas: 200000n,
@@ -154,56 +166,59 @@ export const usePetsContract = () => {
 
     const getPet = (petId: bigint) => {
         return useReadContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'getById',
             args: [petId],
             query: {
-                enabled: !!petId,
+                enabled: !!petId && canRead,
             },
         });
     };
 
     const getPetStats = (petId: bigint) => {
         return useReadContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'getStats',
             args: [petId],
             query: {
-                enabled: !!petId,
+                enabled: !!petId && canRead,
             },
         });
     };
 
     const getBattleStats = (petId: bigint) => {
         return useReadContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'getBattleStats',
             args: [petId],
             query: {
-                enabled: !!petId,
+                enabled: !!petId && canRead,
             },
         });
     };
 
     const getTotalPetsCount = () => {
         return useReadContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'getTotalCount',
+            query: {
+                enabled: canRead,
+            },
         });
     };
 
     const getOwnerPetCount = (owner: string) => {
         return useReadContract({
-            address: CONTRACT_ADDRESS,
-            abi: ethereumAbi.abi,
+            address: safeAddress,
+            abi,
             functionName: 'ownerPetCount',
             args: [owner as `0x${string}`],
             query: {
-                enabled: !!owner,
+                enabled: !!owner && canRead,
             },
         });
     };
@@ -237,12 +252,11 @@ export const usePetsContract = () => {
     return {
         address,
         isConnected,
-
+        isContractConfigured,
         pets,
         petIds,
-        isLoading: isPetsLoading,
-        contractError: petsError,
-
+        isLoading: canRead && isPetsLoading,
+        contractError: petIdsError ?? petsError,
         createRandomPet,
         levelUp,
         changeName,
@@ -251,19 +265,18 @@ export const usePetsContract = () => {
         attack,
         changeDna,
         transferPet,
-
         getPet,
         getPetStats,
         getBattleStats,
         getTotalPetsCount,
         getOwnerPetCount,
-
         hash,
+        txHash: hash,
         isPending,
+        isWritePending: isPending,
+        isConfirming: false,
         writeError,
-
         refetchPetIds,
-
         isReady,
         getRarityColor,
         getRarityName,

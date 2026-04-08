@@ -29,7 +29,7 @@ export const getStorageAdapter = (): StorageAdapter | undefined => {
 
 /**
  * Creates an axios instance for auth API calls with the given base URL.
- * One instance per AuthProvider — avoids global singleton / duplicate bundles missing config.
+ * One instance per AuthProvider - avoids global singleton / duplicate bundles missing config.
  */
 export const createAuthApiClient = (baseURL: string): AxiosInstance => {
     const client = axios.create({

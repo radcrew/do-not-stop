@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppKit } from '@reown/appkit-react-native';
-import { useAuth } from '@do-not-stop/shared-auth';
+import { useAuth, usePetsContract } from '@shared/core';
 import { useAccount } from 'wagmi';
 import ConnectButton from './components/ConnectButton';
 import EthereumNetworkSwitcher from './components/EthereumNetworkSwitcher';
 import CreatePetModal from './components/CreatePetModal';
 import PetList from './components/PetList';
-import { usePetsContract } from './hooks/usePetsContract';
+import { petsContractParams } from './petsContractParams';
+import { isContractConfigured } from './contractConfig';
 
 function AppRoot() {
     const isDarkMode = useColorScheme() === 'dark';
@@ -33,7 +34,7 @@ function AppRoot() {
 function AppContent() {
     const { isAuthenticated } = useAuth();
     const { isConnected } = useAccount();
-    const pets = usePetsContract();
+    const pets = usePetsContract(petsContractParams);
     const [refreshing, setRefreshing] = useState(false);
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const insets = useSafeAreaInsets();

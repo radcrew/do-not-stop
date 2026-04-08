@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useAppKit } from '@reown/appkit-react-native';
 import { useAccount } from 'wagmi';
-import { useAuth } from '@do-not-stop/shared-auth';
+import { useAuth } from '@shared/core';
 
 interface ConnectButtonProps {
     compact?: boolean;

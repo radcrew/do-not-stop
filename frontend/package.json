@@ -13,7 +13,7 @@
         "preview": "pnpm vite preview"
     },
     "dependencies": {
-        "@do-not-stop/shared-auth": "workspace:*",
+        "@shared/core": "workspace:*",
         "@dynamic-labs/ethereum": "^4.37.1",
         "@dynamic-labs/sdk-react-core": "^4.37.1",
         "@dynamic-labs/solana": "^4.37.1",

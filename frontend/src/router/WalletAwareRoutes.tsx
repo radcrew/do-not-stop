@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useAuth } from '@do-not-stop/shared-auth';
+import { useAuth } from '@shared/core';
 
 import { useDynamicContext } from '../contexts/dynamic';
 import Main from '../components/layout/main/Main';

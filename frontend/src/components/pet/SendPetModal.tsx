@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { usePetsContract } from '../../hooks/usePetsContract';
+import { usePetsContract } from '@shared/core';
+import { petsContractParams } from '../../petsContractParams';
 import TransactionStatus from '../ui/TransactionStatus';
 import './SendPetModal.css';
 
@@ -25,7 +26,7 @@ const SendPetModal: React.FC<SendPetModalProps> = ({
     const [isConfirming, setIsConfirming] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [txHash, setTxHash] = useState<string | undefined>(undefined);
-    const { transferPet, isPending, writeError, refetchPetIds, hash } = usePetsContract();
+    const { transferPet, isPending, writeError, refetchPetIds, hash } = usePetsContract(petsContractParams);
 
     const validateAddress = (address: string): boolean => {
         return /^0x[a-fA-F0-9]{40}$/.test(address);

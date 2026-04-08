@@ -88,8 +88,8 @@ importers:
   contracts/solana/cryptozombies:
     dependencies:
       '@coral-xyz/anchor':
-        specifier: ^0.31.1
-        version: 0.31.1(typescript@5.8.3)
+        specifier: ^0.32.1
+        version: 0.32.1(typescript@5.8.3)
     devDependencies:
       '@types/bn.js':
         specifier: ^5.1.0
@@ -118,9 +118,6 @@ importers:
 
   frontend:
     dependencies:
-      '@do-not-stop/shared-auth':
-        specifier: workspace:*
-        version: link:../packages/shared-auth
       '@dynamic-labs/ethereum':
         specifier: ^4.37.1
         version: 4.40.1(@react-native-async-storage/async-storage@1.24.0(react-native@0.82.0(@babel/core@7.28.5)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.5))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10)))(@types/react@19.2.2)(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(immer@10.0.2)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.8.3)(use-sync-external-store@1.4.0(react@19.1.1))(utf-8-validate@5.0.10)(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@4.1.12))(zod@4.1.12)
@@ -133,6 +130,9 @@ importers:
       '@dynamic-labs/wagmi-connector':
         specifier: ^4.37.1
         version: 4.40.1(87b1699c8af0f93009d9d21c4bd32ae1)
+      '@shared/core':
+        specifier: workspace:*
+        version: link:../shared
       '@solana/wallet-adapter-base':
         specifier: ^0.9.23
         version: 0.9.27(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))
@@ -236,9 +236,6 @@ importers:
       '@babel/runtime':
         specifier: ^7.28.4
         version: 7.28.4
-      '@do-not-stop/shared-auth':
-        specifier: workspace:*
-        version: link:../packages/shared-auth
       '@react-native-async-storage/async-storage':
         specifier: ^2.2.0
         version: 2.2.0(react-native@0.82.0(@babel/core@7.28.5)(@react-native-community/cli@20.0.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@react-native/metro-config@0.82.0(@babel/core@7.28.5))(@types/react@19.2.2)(bufferutil@4.0.9)(react@19.1.1)(utf-8-validate@5.0.10))
@@ -254,6 +251,9 @@ importers:
       '@reown/appkit-wagmi-react-native':
         specifier: ^2.0.1
         version: 2.0.1(f592b8aa897ba476b7131da4ad921a13)
+      '@shared/core':
+        specifier: workspace:*
+        version: link:../shared
       '@tanstack/react-query':
         specifier: ^5.90.5
         version: 5.90.5(react@19.1.1)
@@ -340,7 +340,7 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  packages/shared-auth:
+  shared:
     dependencies:
       '@tanstack/react-query':
         specifier: ^5.90.5
@@ -1057,8 +1057,8 @@ packages:
     resolution: {integrity: sha512-NhNEku4F3zzUSBtrYz84FzYWm48+9OvmT1Hhnwr6GnPQry2dsEqH/ti/7ASjjpoFTWRnPXrjAIT1qM6Isop+LQ==}
     engines: {node: '>=10'}
 
-  '@coral-xyz/anchor@0.31.1':
-    resolution: {integrity: sha512-QUqpoEK+gi2S6nlYc2atgT2r41TT3caWr/cPUEL8n8Md9437trZ68STknq897b82p5mW0XrTBNOzRbmIRJtfsA==}
+  '@coral-xyz/anchor@0.32.1':
+    resolution: {integrity: sha512-zAyxFtfeje2FbMA1wzgcdVs7Hng/MijPKpRijoySPCicnvcTQs/+dnPZ/cR+LcXM9v9UYSyW81uRNYZtN5G4yg==}
     engines: {node: '>=17'}
 
   '@coral-xyz/borsh@0.31.1':
@@ -2216,11 +2216,6 @@ packages:
     peerDependencies:
       hardhat: ^3.0.0
       viem: ^2.30.0
-
-  '@nomicfoundation/hardhat-zod-utils@3.0.1':
-    resolution: {integrity: sha512-I6/pyYiS9p2lLkzQuedr1ScMocH+ew8l233xTi+LP92gjEiviJDxselpkzgU01MUM0t6BPpfP8yMO958LDEJVg==}
-    peerDependencies:
-      zod: ^3.23.8
 
   '@nomicfoundation/hardhat-zod-utils@3.0.3':
     resolution: {integrity: sha512-WER4/UKLpm7/nz1asvNR7EKZKKBW+48Hw7GOdcd3Rhdr3VTNuTaeIxCJpl6YxTTg+Eq/sPAWX0mr25+USs6KWw==}
@@ -9754,7 +9749,7 @@ snapshots:
 
   '@coral-xyz/anchor-errors@0.31.1': {}
 
-  '@coral-xyz/anchor@0.31.1(typescript@5.8.3)':
+  '@coral-xyz/anchor@0.32.1(typescript@5.8.3)':
     dependencies:
       '@coral-xyz/anchor-errors': 0.31.1
       '@coral-xyz/borsh': 0.31.1(@solana/web3.js@1.98.4(typescript@5.8.3))
@@ -11580,7 +11575,7 @@ snapshots:
 
   '@nomicfoundation/hardhat-ignition-viem@3.0.3(@nomicfoundation/hardhat-ignition@3.0.3(@nomicfoundation/hardhat-verify@3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(bufferutil@4.0.9)(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10))(@nomicfoundation/hardhat-verify@3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(@nomicfoundation/hardhat-viem@3.0.0(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)))(@nomicfoundation/ignition-core@3.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))':
     dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-ignition': 3.0.3(@nomicfoundation/hardhat-verify@3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)))(bufferutil@4.0.9)(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)
       '@nomicfoundation/hardhat-verify': 3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@nomicfoundation/hardhat-viem': 3.0.0(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))
@@ -11611,9 +11606,9 @@ snapshots:
     dependencies:
       '@noble/ciphers': 1.2.1
       '@noble/hashes': 1.7.1
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-utils': 3.0.3
-      '@nomicfoundation/hardhat-zod-utils': 3.0.1(zod@3.25.76)
+      '@nomicfoundation/hardhat-zod-utils': 3.0.3(zod@3.25.76)
       chalk: 5.6.2
       debug: 4.4.3
       hardhat: 3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -11623,7 +11618,7 @@ snapshots:
 
   '@nomicfoundation/hardhat-network-helpers@3.0.1(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-utils': 3.0.3
       hardhat: 3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
@@ -11637,10 +11632,10 @@ snapshots:
 
   '@nomicfoundation/hardhat-node-test-runner@3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-node-test-reporter': 3.0.1
       '@nomicfoundation/hardhat-utils': 3.0.3
-      '@nomicfoundation/hardhat-zod-utils': 3.0.1(zod@3.25.76)
+      '@nomicfoundation/hardhat-zod-utils': 3.0.3(zod@3.25.76)
       hardhat: 3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       tsx: 4.20.6
       zod: 3.25.76
@@ -11692,9 +11687,9 @@ snapshots:
   '@nomicfoundation/hardhat-verify@3.0.4(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@ethersproject/abi': 5.8.0
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-utils': 3.0.3
-      '@nomicfoundation/hardhat-zod-utils': 3.0.1(zod@3.25.76)
+      '@nomicfoundation/hardhat-zod-utils': 3.0.3(zod@3.25.76)
       cbor2: 1.12.0
       chalk: 5.6.2
       debug: 4.4.3
@@ -11706,7 +11701,7 @@ snapshots:
 
   '@nomicfoundation/hardhat-viem-assertions@3.0.2(@nomicfoundation/hardhat-viem@3.0.0(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)))(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))':
     dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-utils': 3.0.3
       '@nomicfoundation/hardhat-viem': 3.0.0(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))
       hardhat: 3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -11716,18 +11711,10 @@ snapshots:
 
   '@nomicfoundation/hardhat-viem@3.0.0(hardhat@3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(viem@2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76))':
     dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
+      '@nomicfoundation/hardhat-errors': 3.0.9
       '@nomicfoundation/hardhat-utils': 3.0.3
       hardhat: 3.2.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       viem: 2.38.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.76)
-    transitivePeerDependencies:
-      - supports-color
-
-  '@nomicfoundation/hardhat-zod-utils@3.0.1(zod@3.25.76)':
-    dependencies:
-      '@nomicfoundation/hardhat-errors': 3.0.3
-      '@nomicfoundation/hardhat-utils': 3.0.3
-      zod: 3.25.76
     transitivePeerDependencies:
       - supports-color
 
@@ -13544,7 +13531,7 @@ snapshots:
   '@solana/buffer-layout-utils@0.2.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@solana/buffer-layout': 4.0.1
-      '@solana/web3.js': 1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@solana/web3.js': 1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       bigint-buffer: 1.1.5
       bignumber.js: 9.3.1
     transitivePeerDependencies:

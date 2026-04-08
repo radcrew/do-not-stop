@@ -1,7 +1,8 @@
 import React from 'react';
 import type { InteractionAction } from '../../constants/interactionRoutes';
 import { STANDALONE_INTERACTION_HEADERS } from '../../constants/interactionRoutes';
-import { usePetsContract } from '../../hooks/usePetsContract';
+import { usePetsContract } from '@shared/core';
+import { petsContractParams } from '../../petsContractParams';
 import StateCard from './interactions/StateCard';
 import './PetInteractions.css';
 
@@ -12,7 +13,7 @@ export type InteractionStandalonePageProps = {
 };
 
 const InteractionStandalonePage: React.FC<InteractionStandalonePageProps> = ({ action, minPets, children }) => {
-    const { isConnected, pets, isLoading } = usePetsContract();
+    const { isConnected, pets, isLoading } = usePetsContract(petsContractParams);
     const header = STANDALONE_INTERACTION_HEADERS[action];
 
     if (!isConnected) {

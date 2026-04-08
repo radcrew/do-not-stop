@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { usePetsContract } from '../../hooks/usePetsContract';
+import { usePetsContract } from '@shared/core';
+import { petsContractParams } from '../../petsContractParams';
 import {
     getGeneration,
     getPropertyEmoji,
@@ -17,7 +18,8 @@ import SendPetModal from './SendPetModal';
 import './PetGallery.css';
 
 const PetGallery: React.FC = () => {
-    const { isConnected, pets, petIds, isLoading, contractError, refetchPetIds, getRarityColor, getRarityName } = usePetsContract();
+    const { isConnected, pets, petIds, isLoading, contractError, refetchPetIds, getRarityColor, getRarityName } =
+        usePetsContract(petsContractParams);
     const [loading, setLoading] = useState(false);
     const [sendModalOpen, setSendModalOpen] = useState(false);
     const [createModalOpen, setCreateModalOpen] = useState(false);
