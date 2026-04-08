@@ -18,8 +18,8 @@ const WalletAwareRoutes: React.FC = () => {
 
     return (
         <Routes>
+            <Route path="/landing" element={isLoggedIn ? <Navigate to="/main" replace /> : <LandingPage />} />
             <Route element={<PrivateRoute />}>
-                <Route path="/landing" element={isLoggedIn ? <Navigate to="/main" replace /> : <LandingPage />} />
                 <Route path="/main" element={<MainPage />}>
                     <Route index element={<PetInteractions />} />
                 </Route>
