@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import Main from '../components/layout/main/Main';
-import Landing from '../components/layout/landing/Landing';
+import MainPage from '../pages/main/MainPage';
+import LandingPage from '../pages/landing/LandingPage';
 import PetInteractions from '../components/pet/PetInteractions';
 import BattleRoute from './BattleRoute';
 import BreedRoute from './BreedRoute';
@@ -18,21 +18,21 @@ const WalletAwareRoutes: React.FC = () => {
 
     return (
         <Routes>
-            <Route path="/landing" element={isLoggedIn ? <Navigate to="/main" replace /> : <Landing />} />
+            <Route path="/landing" element={isLoggedIn ? <Navigate to="/main" replace /> : <LandingPage />} />
             <Route element={<PrivateRoute />}>
-                <Route path="/main" element={<Main />}>
+                <Route path="/main" element={<MainPage />}>
                     <Route index element={<PetInteractions />} />
                 </Route>
-                <Route path="/breed" element={<Main />}>
+                <Route path="/breed" element={<MainPage />}>
                     <Route index element={<BreedRoute />} />
                 </Route>
-                <Route path="/battle" element={<Main />}>
+                <Route path="/battle" element={<MainPage />}>
                     <Route index element={<BattleRoute />} />
                 </Route>
-                <Route path="/levelup" element={<Main />}>
+                <Route path="/levelup" element={<MainPage />}>
                     <Route index element={<LevelUpRoute />} />
                 </Route>
-                <Route path="/rename" element={<Main />}>
+                <Route path="/rename" element={<MainPage />}>
                     <Route index element={<RenameRoute />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/main" replace />} />

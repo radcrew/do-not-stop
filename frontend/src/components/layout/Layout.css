@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'DragonHunter';
-  src: url('../../../assets/fonts/DragonHunter-9Ynxj.otf') format('opentype');
+  src: url('../../assets/fonts/DragonHunter-9Ynxj.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'Swansea';
-  src: url('../../../assets/fonts/Swansea-q3pd.ttf') format('truetype');
+  src: url('../../assets/fonts/Swansea-q3pd.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'RobotTraffic';
-  src: url('../../../assets/fonts/RobotTrafficDemo-BLPlw.ttf') format('truetype');
+  src: url('../../assets/fonts/RobotTrafficDemo-BLPlw.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -96,20 +96,6 @@
   z-index: 0;
 }
 
-.header-title-row::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: clamp(140px, 22vw, 260px);
-  height: 42px;
-  transform: translateY(-50%);
-  background: radial-gradient(ellipse at center, rgb(138 98 255 / 35%) 0%, rgb(74 128 255 / 16%) 48%, transparent 78%);
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .header-title-row h1 {
   position: relative;
   z-index: 1;
@@ -150,30 +136,10 @@
   overflow-x: hidden;
 }
 
-/* Landing: padding under fixed header paints the gap so the hero can fill one full viewport height. */
+/* Landing: gap under fixed header can be painted by hero section. */
 .main-content:has(.landing) {
   margin-block-start: 0;
   background-color: #070a14;
-}
-
-.main-content.authenticated {
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2xl);
-  text-align: start;
-
-  &>* {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-@media (max-width: 1024px) {
-  .main-content.authenticated {
-    display: block;
-    text-align: center;
-  }
 }
 
 @media (max-width: 768px) {

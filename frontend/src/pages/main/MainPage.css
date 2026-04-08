@@ -1,0 +1,19 @@
+.main-content.authenticated {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+  text-align: start;
+
+  & > * {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-content.authenticated {
+    display: block;
+    text-align: center;
+  }
+}
