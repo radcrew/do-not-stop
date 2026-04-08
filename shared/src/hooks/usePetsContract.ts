@@ -10,19 +10,6 @@ export interface Pet {
     rarity: number;
 }
 
-export interface PetStats {
-    level: number;
-    winCount: number;
-    lossCount: number;
-    rarity: number;
-}
-
-export interface BattleStats {
-    winCount: number;
-    lossCount: number;
-    readyTime: bigint;
-}
-
 type UsePetsContractParams = {
     contractAddress?: `0x${string}`;
     abi: readonly unknown[];
