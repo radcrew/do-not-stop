@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <div className={containerClass}>
       <div className="main-header">
-        <div className="header-title-row">
+        <div className="title">
           <h1>{title}</h1>
         </div>
         <div className="wallet-section">

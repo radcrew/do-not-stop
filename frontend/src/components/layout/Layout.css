@@ -74,35 +74,37 @@
   }
 }
 
-.header-title-row {
-  display: block;
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
-  text-align: start;
-}
+.main-header {
+  & .title {
+    display: block;
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: start;
+  }
 
-.header-title-row::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: clamp(140px, 22vw, 260px);
-  height: 42px;
-  transform: translateY(-50%);
-  background: radial-gradient(ellipse at center, rgb(138 98 255 / 35%) 0%, rgb(74 128 255 / 16%) 48%, transparent 78%);
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 0;
-}
+  & .title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: clamp(140px, 22vw, 260px);
+    height: 42px;
+    transform: translateY(-50%);
+    background: radial-gradient(ellipse at center, rgb(138 98 255 / 35%) 0%, rgb(74 128 255 / 16%) 48%, transparent 78%);
+    filter: blur(8px);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.header-title-row h1 {
-  position: relative;
-  z-index: 1;
-  text-shadow:
-    0 0 10px rgb(185 160 255 / 50%),
-    0 0 22px rgb(125 141 255 / 38%),
-    0 0 44px rgb(108 72 255 / 26%);
+  & .title h1 {
+    position: relative;
+    z-index: 1;
+    text-shadow:
+      0 0 10px rgb(185 160 255 / 50%),
+      0 0 22px rgb(125 141 255 / 38%),
+      0 0 44px rgb(108 72 255 / 26%);
+  }
 }
 
 .wallet-section {
