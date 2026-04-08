@@ -1,3 +1,11 @@
+/* Landing-only: lighter header chrome so the hero shows through */
+.landing-layout .main-header {
+  background: rgb(5 8 18 / 42%);
+  border-block-end-color: rgb(101 131 255 / 16%);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 22%);
+  backdrop-filter: blur(10px);
+}
+
 .landing {
   --landing-gutter: clamp(44px, 7vw, 108px);
   display: flex;
@@ -18,7 +26,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  box-sizing: border-box;
   gap: 28px;
   padding-block: clamp(32px, 6vh, 68px);
   padding-inline: var(--landing-gutter);

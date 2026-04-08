@@ -38,7 +38,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="main-container">
+    <div className="main-container landing-layout">
       <div className="main-header">
         <div className="header-title-row">
           <h1>Crypto Pets</h1>
