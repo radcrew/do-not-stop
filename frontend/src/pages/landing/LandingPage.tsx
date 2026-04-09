@@ -14,16 +14,8 @@ import './LandingPage.css';
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
   const { user, primaryWallet, setShowAuthFlow } = useDynamicContext();
   const walletConnected = Boolean(user || primaryWallet);
-  const mayEnterApp = Boolean(isAuthenticated || walletConnected);
-
-  useEffect(() => {
-    if (mayEnterApp) {
-      navigate('/main', { replace: true });
-    }
-  }, [mayEnterApp, navigate]);
 
   const handleStartPlaying = () => {
     if (walletConnected) {

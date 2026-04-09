@@ -21,6 +21,7 @@ export type PrivateRouteProps = {
 
 export function PrivateRoute({ children }: PrivateRouteProps) {
   const isLoggedIn = useAppLoggedIn();
+
   if (!isLoggedIn) {
     return <Navigate to="/landing" replace />;
   }
