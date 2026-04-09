@@ -3,8 +3,8 @@
     align-items: center;
     justify-content: center;
     padding: 8px 12px;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: linear-gradient(180deg, rgb(8 20 46 / 86%), rgb(6 14 30 / 90%));
+    border: 1px solid rgb(30 157 255 / 34%);
     border-radius: 6px;
     font-size: 14px;
     min-height: 40px;
@@ -17,7 +17,7 @@
 
     .balance-amount {
         font-weight: 600;
-        color: #333;
+        color: #b7e4ff;
         font-family: 'Courier New', monospace;
         font-size: 14px;
         line-height: 1;
@@ -25,7 +25,7 @@
 
     .balance-symbol {
         font-weight: 500;
-        color: #666;
+        color: #86ebff;
         font-size: 12px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -38,7 +38,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        color: #666;
+        color: #8ed1ff;
         font-size: 12px;
         height: 20px;
         line-height: 1;
@@ -46,8 +46,8 @@
         .loading-spinner {
             width: 6px !important;
             height: 6px !important;
-            border: 1px solid #e9ecef !important;
-            border-top: 1px solid #007bff !important;
+            border: 1px solid rgb(30 157 255 / 36%) !important;
+            border-top: 1px solid #8ed1ff !important;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             flex-shrink: 0;
@@ -60,7 +60,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        color: #dc3545;
+        color: #ffd07b;
         font-size: 12px;
         font-weight: 500;
     }

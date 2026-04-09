@@ -4,7 +4,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useAuth } from '@shared/core';
 import { getPopularTokens } from '../../constants/tokens';
-import { NeonButton } from '../common';
+import { NeonButton, NeonCard } from '../common';
 import { EthereumNetworkSwitcher, SolanaNetworkSwitcher } from './NetworkSwitcher';
 import TokenBalance from './TokenBalance';
 import NativeBalance from './NativeBalance';
@@ -196,7 +196,7 @@ const AccountDropdown: React.FC = () => {
                 </NeonButton>
 
                 {isOpen && (
-                    <div className="user-dropdown-menu">
+                    <NeonCard as="section" className="user-dropdown-menu">
                         <div className="dropdown-header">
                             <div className="user-details">
                                 {address && (
@@ -233,23 +233,23 @@ const AccountDropdown: React.FC = () => {
                         <div className="dropdown-content">
                             {/* Ethereum/EVM Balance Section */}
                             {isConnected && address && (
-                                <div className="balance-section">
+                                <NeonCard as="div" className="balance-section">
                                     <div className="balance-label">Ethereum Balance</div>
                                     <NativeBalance type="ethereum" />
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* Solana Balance Section */}
                             {solanaConnected && solanaPublicKey && (
-                                <div className="balance-section">
+                                <NeonCard as="div" className="balance-section">
                                     <div className="balance-label">Solana Balance</div>
                                     <NativeBalance type="solana" />
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* ERC-20 Tokens Section */}
                             {popularTokens.length > 0 && (
-                                <div className="tokens-section">
+                                <NeonCard as="div" className="tokens-section">
                                     <div className="tokens-label">Token Balances</div>
                                     <div className="tokens-list">
                                         {popularTokens.map((token) => (
@@ -270,7 +270,7 @@ const AccountDropdown: React.FC = () => {
                                                 </div>
                                             )}
                                     </div>
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* Action Buttons */}
@@ -328,7 +328,7 @@ const AccountDropdown: React.FC = () => {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </NeonCard>
                 )}
             </div>
         </div>
