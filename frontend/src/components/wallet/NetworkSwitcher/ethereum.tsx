@@ -71,20 +71,23 @@ const EthereumNetworkSwitcher: React.FC<EthereumNetworkSwitcherProps> = ({ class
             >
                 <div className="network-list">
                     {visibleChains.map(({ chain: chainConfig, name, symbol, isTestnet }) => (
-                        <button
+                        <NeonButton
                             key={chainConfig.id}
                             className={`network-option ${chain.id === chainConfig.id ? 'active' : ''} ${isTestnet ? 'testnet' : ''}`}
                             onClick={() => handleNetworkSelect(chainConfig.id)}
                             disabled={isPending}
+                            tone="azure"
+                            size="sm"
+                            fullWidth
                         >
-                            <div className="network-option-info">
+                            <span className="network-option-info">
                                 <span className="network-option-name">{name}</span>
                                 <span className="network-option-symbol">{symbol}</span>
-                            </div>
+                            </span>
                             {chain.id === chainConfig.id && (
-                                <div className="network-check">✓</div>
+                                <span className="network-check">✓</span>
                             )}
-                        </button>
+                        </NeonButton>
                     ))}
                 </div>
             </NeonModal>

@@ -210,57 +210,49 @@
 
 .network-option {
     width: 100%;
-    padding: 16px;
-    border: 1px solid rgb(30 157 255 / 40%);
-    border-radius: 8px;
-    background: linear-gradient(180deg, rgb(8 20 46 / 86%), rgb(6 14 30 / 90%));
-    color: #b7e4ff;
     font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: left;
+    text-transform: none;
 }
 
-.network-option:hover {
-    border-color: rgb(0 247 255 / 40%);
-    background: linear-gradient(180deg, rgb(10 26 54 / 88%), rgb(8 20 42 / 92%));
-    transform: translateY(-1px);
-    box-shadow: 0 0 16px rgb(30 157 255 / 18%);
+.network-option.neon-btn {
+    border-radius: 8px;
+    padding: 12px 14px;
+    letter-spacing: 0.25px;
+}
+
+.network-option.neon-btn .label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .network-option.active {
-    border-color: rgb(0 247 255 / 52%);
-    background: linear-gradient(180deg, rgb(7 29 54 / 90%), rgb(6 24 45 / 94%));
-    color: #86ebff;
+    box-shadow:
+        inset 0 0 18px rgb(0 255 157 / 18%),
+        0 0 18px rgb(0 255 157 / 26%);
 }
 
 .network-option.testnet {
-    border-color: rgb(255 181 67 / 52%);
-    color: #ffd07b;
-}
-
-.network-option.testnet:hover {
-    border-color: rgb(255 181 67 / 66%);
-    background: linear-gradient(180deg, rgb(46 30 8 / 84%), rgb(31 19 4 / 90%));
-}
-
-.network-option.testnet.active {
-    background: linear-gradient(180deg, rgb(52 35 10 / 88%), rgb(38 24 6 / 92%));
-    color: #ffd07b;
+    opacity: 0.96;
 }
 
 .network-option-info {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex: 1;
+    min-width: 0;
 }
 
 .network-option-name {
     font-weight: 600;
     font-size: 16px;
+    line-height: 1.2;
 }
 
 .network-option-status {
@@ -279,6 +271,7 @@
     color: #9effd4;
     font-weight: bold;
     font-size: 18px;
+    margin-left: 10px;
 }
 
 /* Responsive */
