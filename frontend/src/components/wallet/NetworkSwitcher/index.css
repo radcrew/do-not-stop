@@ -178,65 +178,13 @@
     }
 }
 
-/* Modal Overlay */
-.network-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 20px;
+/* Neon modal adjustments for network switcher */
+.network-neon-modal {
+    width: min(100%, 430px);
 }
 
-/* Modal */
-.network-modal {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-    max-height: 80vh;
-    overflow: hidden;
-    animation: modalSlideIn 0.2s ease-out;
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-.network-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #f8f9fa;
-}
-
-.network-modal-controls {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.network-modal-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+.network-neon-modal-content {
+    padding-top: 12px;
 }
 
 .testnet-toggle {
@@ -244,40 +192,14 @@
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #666;
+    color: #8ed1ff;
     cursor: pointer;
 }
 
 .testnet-toggle input[type="checkbox"] {
     margin: 0;
     cursor: pointer;
-}
-
-.network-modal-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #666;
-    cursor: pointer;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.network-modal-close:hover {
-    background-color: #e9ecef;
-    color: #333;
-}
-
-.network-modal-content {
-    padding: 16px;
-    max-height: 60vh;
-    overflow-y: auto;
+    accent-color: #1e9dff;
 }
 
 .network-list {
@@ -289,10 +211,10 @@
 .network-option {
     width: 100%;
     padding: 16px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgb(30 157 255 / 40%);
     border-radius: 8px;
-    background-color: white;
-    color: #333;
+    background: linear-gradient(180deg, rgb(8 20 46 / 86%), rgb(6 14 30 / 90%));
+    color: #b7e4ff;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -303,31 +225,31 @@
 }
 
 .network-option:hover {
-    border-color: #9945ff;
-    background-color: #f8f9ff;
+    border-color: rgb(0 247 255 / 40%);
+    background: linear-gradient(180deg, rgb(10 26 54 / 88%), rgb(8 20 42 / 92%));
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(153, 69, 255, 0.1);
+    box-shadow: 0 0 16px rgb(30 157 255 / 18%);
 }
 
 .network-option.active {
-    border-color: #9945ff;
-    background-color: #e3f2fd;
-    color: #1976d2;
+    border-color: rgb(0 247 255 / 52%);
+    background: linear-gradient(180deg, rgb(7 29 54 / 90%), rgb(6 24 45 / 94%));
+    color: #86ebff;
 }
 
 .network-option.testnet {
-    border-color: #ff9800;
-    color: #e65100;
+    border-color: rgb(255 181 67 / 52%);
+    color: #ffd07b;
 }
 
 .network-option.testnet:hover {
-    border-color: #ff9800;
-    background-color: #fff3e0;
+    border-color: rgb(255 181 67 / 66%);
+    background: linear-gradient(180deg, rgb(46 30 8 / 84%), rgb(31 19 4 / 90%));
 }
 
 .network-option.testnet.active {
-    background-color: #fff3e0;
-    color: #e65100;
+    background: linear-gradient(180deg, rgb(52 35 10 / 88%), rgb(38 24 6 / 92%));
+    color: #ffd07b;
 }
 
 .network-option-info {
@@ -337,7 +259,7 @@
 }
 
 .network-option-name {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 16px;
 }
 
@@ -354,7 +276,7 @@
 }
 
 .network-check {
-    color: #4caf50;
+    color: #9effd4;
     font-weight: bold;
     font-size: 18px;
 }
@@ -399,17 +321,8 @@
         padding: 4px 8px;
     }
 
-    .network-modal {
-        margin: 10px;
-        max-width: none;
-    }
-
-    .network-modal-header {
-        padding: 16px 20px;
-    }
-
-    .network-modal-content {
-        padding: 12px;
+    .network-neon-modal {
+        width: 100%;
     }
 
     .network-option {
