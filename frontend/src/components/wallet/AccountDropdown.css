@@ -142,30 +142,10 @@
     border-color: #ccc;
 }
 
-/* User Trigger Button (when connected) */
-.user-trigger {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* User trigger uses NeonButton visuals; keep only layout constraints */
+.wallet-trigger-btn.neon-btn {
     min-width: 140px;
-
-    &:hover {
-        border-color: #007bff;
-        background-color: #f8f9ff;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
-
-        .dropdown-arrow {
-            transform: translateY(1px);
-        }
-    }
+    justify-content: center;
 }
 
 .user-info {
@@ -413,55 +393,10 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
 
-    .action-btn {
-        padding: 12px 16px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: center;
-
-        &.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-
-            &:hover:not(:disabled) {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-            }
-        }
-
-        &.secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #e0e0e0;
-
-            &:hover {
-                background: #e9ecef;
-                border-color: #ccc;
-            }
-        }
-
-        &.danger {
-            background: #fff5f5;
-            color: #dc3545;
-            border: 1px solid #fecaca;
-
-            &:hover {
-                background: #fee;
-                border-color: #fca5a5;
-            }
-        }
-
-        &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-    }
+.dropdown-actions .dropdown-neon-btn.neon-btn {
+    justify-content: center;
 }
 
 /* Responsive Design */
@@ -472,13 +407,8 @@
         gap: 8px;
     }
 
-    .user-trigger {
-        padding: 6px 10px;
+    .wallet-trigger-btn.neon-btn {
         min-width: 120px;
-
-        .user-address {
-            font-size: 12px;
-        }
     }
 
     .user-dropdown-menu {
@@ -496,8 +426,7 @@
         font-size: 16px;
     }
 
-    .dropdown-actions .action-btn {
-        padding: 10px 14px;
+    .dropdown-actions .dropdown-neon-btn.neon-btn {
         font-size: 13px;
     }
 }
@@ -526,7 +455,7 @@
         min-width: 140px;
     }
 
-    .user-trigger {
+    .wallet-trigger-btn.neon-btn {
         width: auto;
         min-width: 120px;
         justify-content: center;
@@ -588,7 +517,7 @@
         flex-shrink: 0;
     }
 
-    .user-trigger {
+    .wallet-trigger-btn.neon-btn {
         flex-shrink: 0;
     }
 }

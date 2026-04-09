@@ -183,18 +183,17 @@ const AccountDropdown: React.FC = () => {
             {isConnected && <EthereumNetworkSwitcher />}
             {solanaConnected && <SolanaNetworkSwitcher />}
             <div className="account-dropdown" ref={dropdownRef}>
-                <button
-                    className="user-trigger"
+                <NeonButton
+                    className="wallet-trigger-btn"
                     onClick={() => setIsOpen(!isOpen)}
+                    tone="azure"
+                    size="sm"
                 >
-                    <div className="user-info">
-                        {address && <span className="user-address">{formatAddress(address)}</span>}
-                        {solanaPublicKey && <span className="user-address">{formatAddress(solanaPublicKey.toString())}</span>}
-                    </div>
-                    <div className="dropdown-arrow">
-                        {isOpen ? '▲' : '▼'}
-                    </div>
-                </button>
+                    {address && formatAddress(address)}
+                    {solanaPublicKey && formatAddress(solanaPublicKey.toString())}
+                    {' '}
+                    {isOpen ? '▲' : '▼'}
+                </NeonButton>
 
                 {isOpen && (
                     <div className="user-dropdown-menu">
@@ -277,43 +276,55 @@ const AccountDropdown: React.FC = () => {
                             {/* Action Buttons */}
                             <div className="dropdown-actions">
                                 {!isAuthenticated ? (
-                                    <button
-                                        className="action-btn primary"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleSignAndLogin}
                                         disabled={isNonceLoading || isSigning || isVerifying}
+                                        tone="azure"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         {isNonceLoading ? 'Getting nonce...' :
                                             isSigning ? 'Please sign in MetaMask...' :
                                                 isVerifying ? 'Verifying...' : 'Sign Message & Login'}
-                                    </button>
+                                    </NeonButton>
                                 ) : (
-                                    <button
-                                        className="action-btn secondary"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleLogout}
+                                        tone="cyan"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Logout
-                                    </button>
+                                    </NeonButton>
                                 )}
 
                                 {isConnected && (
-                                    <button
-                                        className="action-btn danger"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleDisconnect}
+                                        tone="amber"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Disconnect
-                                    </button>
+                                    </NeonButton>
                                 )}
 
                                 {solanaConnected && (
-                                    <button
-                                        className="action-btn danger"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={() => {
                                             solanaDisconnect();
                                             setIsOpen(false);
                                         }}
+                                        tone="amber"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Disconnect
-                                    </button>
+                                    </NeonButton>
                                 )}
                             </div>
                         </div>

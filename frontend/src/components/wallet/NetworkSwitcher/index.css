@@ -6,6 +6,12 @@
     display: inline-block;
 }
 
+/* Ethereum trigger uses NeonButton visuals; keep only layout constraints */
+.network-trigger-neon-compact.neon-btn {
+    min-width: 120px;
+    justify-content: center;
+}
+
 /* Full Network Switcher - For Solana */
 .network-switcher {
     position: relative;
@@ -359,9 +365,7 @@
         position: static;
     }
 
-    .network-trigger-compact {
-        padding: 6px 10px;
-        font-size: 12px;
+    .network-trigger-neon-compact.neon-btn {
         min-width: 100px;
     }
 

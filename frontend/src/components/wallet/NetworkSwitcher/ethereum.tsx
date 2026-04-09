@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
 import Modal from 'react-modal';
 import { CHAINS, getChainsByType, getChainConfig } from '../../../constants/chains/ethereum';
+import NeonButton from '../../common/NeonButton/NeonButton';
 import './index.css';
 
 interface EthereumNetworkSwitcherProps {
@@ -46,20 +47,15 @@ const EthereumNetworkSwitcher: React.FC<EthereumNetworkSwitcherProps> = ({ class
                 </div>
             )}
 
-            <button
-                className="network-trigger-compact"
+            <NeonButton
+                className="network-trigger-neon-compact"
                 onClick={() => setIsOpen(true)}
                 disabled={isPending}
+                tone="azure"
+                size="sm"
             >
-                <div className="network-info-compact">
-                    <span className="network-name-compact">
-                        {isPending ? 'Switching...' : (currentChainConfig?.name || 'Unknown')}
-                    </span>
-                </div>
-                <div className="dropdown-arrow-compact">
-                    ▼
-                </div>
-            </button>
+                {isPending ? 'Switching...' : (currentChainConfig?.name || 'Unknown')} ▼
+            </NeonButton>
 
             <Modal
                 isOpen={isOpen}
