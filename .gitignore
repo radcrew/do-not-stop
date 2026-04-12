@@ -182,3 +182,5 @@ build/
 **/target/
 test-ledger
 .pnpm-store
+
+.deps/
