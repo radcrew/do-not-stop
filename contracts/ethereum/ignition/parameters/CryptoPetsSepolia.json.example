@@ -1,0 +1,8 @@
+{
+  "CryptoPetsSepolia": {
+    "vrfSubscriptionId": "YOUR_SUBSCRIPTION_ID_UINT256",
+    "vrfKeyHash": "0xYOUR_GAS_LANE_KEY_HASH",
+    "vrfCoordinator": "0xYOUR_VRF_COORDINATOR_V2_5",
+    "vrfNativePayment": false
+  }
+}

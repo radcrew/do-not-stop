@@ -111,13 +111,14 @@ export const usePetsContract = ({
         });
     };
 
-    const createPetFromDNA = (parentId1: bigint, parentId2: bigint, name: string) => {
+    /** Chainlink VRF: first tx requests randomness; fulfillment mints the child (local Hardhat uses mock + second tx). */
+    const requestBreedFromDNA = (parentId1: bigint, parentId2: bigint, name: string) => {
         return writeContract({
             address: safeAddress,
             abi,
-            functionName: 'createFromDNA',
+            functionName: 'requestCreateFromDNA',
             args: [parentId1, parentId2, name],
-            gas: 500000n,
+            gas: 800000n,
         });
     };
 
@@ -248,7 +249,7 @@ export const usePetsContract = ({
         levelUp,
         changeName,
         battlePets,
-        createPetFromDNA,
+        requestBreedFromDNA,
         attack,
         changeDna,
         transferPet,

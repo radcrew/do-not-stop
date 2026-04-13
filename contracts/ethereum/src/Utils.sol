@@ -41,12 +41,14 @@ contract Utils {
             ) % _modulus;
     }
 
-    function mixDna(
+    /// @dev `_vrfWord` must be the Chainlink VRF output (fulfillRandomWords).
+    function mixDnaWithVrfWord(
         uint256 _dna1,
-        uint256 _dna2
-    ) external view returns (uint256) {
+        uint256 _dna2,
+        uint256 _vrfWord
+    ) external pure returns (uint256) {
         uint256 rand = uint256(
-            keccak256(abi.encodePacked(block.timestamp, _dna1, _dna2))
+            keccak256(abi.encodePacked(_vrfWord, _dna1, _dna2))
         );
         return rand % DNA_MODULUS;
     }
