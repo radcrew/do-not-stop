@@ -4,6 +4,25 @@ import { execSync } from 'child_process';
 import { setTimeout } from 'timers/promises';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { createPublicClient, http } from 'viem';
+import { hardhat } from 'viem/chains';
+
+const localDeployerAbi = [
+    {
+        type: 'function',
+        name: 'cryptoPets',
+        inputs: [],
+        outputs: [{ type: 'address', name: '' }],
+        stateMutability: 'view',
+    },
+    {
+        type: 'function',
+        name: 'vrfCoordinator',
+        inputs: [],
+        outputs: [{ type: 'address', name: '' }],
+        stateMutability: 'view',
+    },
+] as const;
 
 console.log('⏳ Waiting for Hardhat node to be ready...');
 await setTimeout(10000); // Wait 5 seconds for Hardhat node to start
@@ -31,10 +50,33 @@ async function injectContractAddress(): Promise<void> {
         }
 
         const deployedAddresses = JSON.parse(readFileSync(deployedAddressesPath, 'utf8'));
-        const contractAddress = deployedAddresses['CryptoPetsModule#CryptoPets'];
+
+        let contractAddress: string | undefined;
+
+        const localDeployerAddr = (
+            deployedAddresses['CryptoPetsModule#localDeployer'] ??
+            deployedAddresses['CryptoPetsModule#LocalCryptoPetsDeployer']
+        ) as `0x${string}` | undefined;
+        const sepoliaPetsAddr = deployedAddresses['CryptoPetsSepolia#cryptoPets'] as string | undefined;
+
+        if (localDeployerAddr) {
+            const client = createPublicClient({
+                chain: hardhat,
+                transport: http('http://127.0.0.1:8545'),
+            });
+            contractAddress = await client.readContract({
+                address: localDeployerAddr,
+                abi: localDeployerAbi,
+                functionName: 'cryptoPets',
+            });
+        } else if (sepoliaPetsAddr) {
+            contractAddress = sepoliaPetsAddr;
+        }
 
         if (!contractAddress) {
-            console.error('❌ CryptoPets contract address not found');
+            console.error(
+                '❌ CryptoPets address not found (expected CryptoPetsModule#LocalCryptoPetsDeployer or CryptoPetsSepolia#cryptoPets)'
+            );
             return;
         }
 
@@ -51,7 +93,9 @@ async function injectContractAddress(): Promise<void> {
 
         // Update or add VITE_CONTRACT_ADDRESS
         const contractAddressLine = `VITE_CONTRACT_ADDRESS=${contractAddress}`;
-        const lines = envContent.split('\n');
+        const lines = envContent
+            .split('\n')
+            .filter((line) => !line.startsWith('VITE_VRF_COORDINATOR='));
         const contractAddressIndex = lines.findIndex(line => line.startsWith('VITE_CONTRACT_ADDRESS='));
 
         if (contractAddressIndex >= 0) {
