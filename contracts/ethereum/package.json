@@ -13,7 +13,8 @@
         "deploy:sepolia": "pnpm hh ignition deploy ignition/modules/CryptoPetsSepolia.ts --network sepolia",
         "deploy:status": "pnpm hh ignition status",
         "deploy:visualize": "pnpm hh ignition visualize ignition/modules/CryptoPets.ts",
-        "deploy:inject": "tsx scripts/deploy.ts"
+        "deploy:inject": "tsx scripts/deploy.ts",
+        "vrf:watch": "tsx scripts/vrf-fulfill-watcher.ts"
     },
     "devDependencies": {
         "@nomicfoundation/hardhat-ignition": "^3.0.3",

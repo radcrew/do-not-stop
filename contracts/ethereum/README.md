@@ -63,6 +63,7 @@ pnpm dev
 | `pnpm compile`   | Compile Solidity contracts                       |
 | `pnpm test`      | Run contract tests                               |
 | `pnpm node`      | Start Hardhat local network                      |
+| `pnpm vrf:watch` | Fulfill local VRF mock requests (breeding)       |
 | `pnpm clean`     | Clean build artifacts                            |
 
 
