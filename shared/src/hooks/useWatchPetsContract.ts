@@ -29,14 +29,14 @@ export function useWatchPetsContract({
     onBreedSuccess,
 }: UseWatchPetsContractParams): void {
     const pendingRef = useRef(pendingRequestId);
-    const onSuccessRef = useRef(onBreedSuccess);
+    const handleSuccessRef = useRef(onBreedSuccess);
 
     useEffect(() => {
         pendingRef.current = pendingRequestId;
     }, [pendingRequestId]);
 
     useEffect(() => {
-        onSuccessRef.current = onBreedSuccess;
+        handleSuccessRef.current = onBreedSuccess;
     }, [onBreedSuccess]);
 
     useWatchContractEvent({
@@ -67,7 +67,7 @@ export function useWatchPetsContract({
                     continue;
                 }
 
-                onSuccessRef.current?.({
+                handleSuccessRef.current?.({
                     owner,
                     childId,
                     requestId,

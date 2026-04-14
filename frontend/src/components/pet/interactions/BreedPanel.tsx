@@ -69,7 +69,7 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
         }
     }, [requestReceipt, hash, address]);
 
-    const onBreedSuccess = useCallback((_payload: BreedSuccessPayload) => {
+    const handleBreedSuccess = useCallback((_payload: BreedSuccessPayload) => {
         setSuccess(`Pet "${offspringNameRef.current}" created successfully!`);
         setSelectedPet1(null);
         setSelectedPet2(null);
@@ -85,7 +85,7 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
         abi: petsContractParams.abi,
         address: address as `0x${string}` | undefined,
         pendingRequestId,
-        onBreedSuccess,
+        onBreedSuccess: handleBreedSuccess,
     });
 
     const handleBreed = () => {

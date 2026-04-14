@@ -39,7 +39,7 @@ function AppContent() {
     const [createModalVisible, setCreateModalVisible] = useState(false);
     const insets = useSafeAreaInsets();
 
-    const onRefreshPets = useCallback(async () => {
+    const handleRefreshPets = useCallback(async () => {
         setRefreshing(true);
         try {
             await pets.refetchPetIds();
@@ -83,7 +83,7 @@ function AppContent() {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[styles.refreshBtn, refreshing && styles.refreshBtnDisabled]}
-                                    onPress={onRefreshPets}
+                                    onPress={handleRefreshPets}
                                     disabled={refreshing}
                                     activeOpacity={0.85}
                                 >
@@ -111,7 +111,7 @@ function AppContent() {
                             isLoading={pets.isLoading}
                             contractError={pets.contractError}
                             isContractConfigured={pets.isContractConfigured}
-                            onRefresh={onRefreshPets}
+                            onRefresh={handleRefreshPets}
                             refreshing={refreshing}
                             getRarityName={pets.getRarityName}
                             getRarityColor={pets.getRarityColor}

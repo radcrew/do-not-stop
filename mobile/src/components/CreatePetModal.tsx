@@ -56,7 +56,7 @@ export default function CreatePetModal({
     const busy = isWritePending || isConfirming;
     const canSubmit = isContractConfigured && name.trim().length > 0 && !busy;
 
-    const onSubmit = () => {
+    const handleSubmit = () => {
         const trimmed = name.trim();
         if (!trimmed) {
             return;
@@ -113,7 +113,7 @@ export default function CreatePetModal({
                         />
                         <TouchableOpacity
                             style={[styles.button, !canSubmit && styles.buttonDisabled]}
-                            onPress={onSubmit}
+                            onPress={handleSubmit}
                             disabled={!canSubmit}
                         >
                             {busy ? (
