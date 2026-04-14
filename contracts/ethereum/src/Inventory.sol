@@ -32,10 +32,7 @@ contract Inventory is Ownable {
     mapping(address => bool) public authorizedCallers;
 
     modifier entryExists(uint256 _petId) {
-        require(
-            _petId > 0 && _petId <= _petCount,
-            "Pet doesn't exist"
-        );
+        require(_petId > 0 && _petId <= _petCount, "Pet doesn't exist");
         _;
     }
 
@@ -99,20 +96,15 @@ contract Inventory is Ownable {
         return (p.level, p.winCount, p.lossCount, p.rarity);
     }
 
-    function isReady(uint256 _petId)
-        external
-        view
-        entryExists(_petId)
-        returns (bool)
-    {
+    function isReady(
+        uint256 _petId
+    ) external view entryExists(_petId) returns (bool) {
         return block.timestamp >= _pets[_petId].readyTime;
     }
 
-    function levelUp(uint256 _petId)
-        external
-        onlyAuthorized
-        entryExists(_petId)
-    {
+    function levelUp(
+        uint256 _petId
+    ) external onlyAuthorized entryExists(_petId) {
         _pets[_petId].level++;
         emit PetLevelUp(_petId, _pets[_petId].level);
     }
@@ -133,19 +125,16 @@ contract Inventory is Ownable {
         emit PetDnaChanged(_petId, _newDna);
     }
 
-    function triggerCooldown(uint256 _petId)
-        external
-        onlyAuthorized
-        entryExists(_petId)
-    {
+    function triggerCooldown(
+        uint256 _petId
+    ) external onlyAuthorized entryExists(_petId) {
         _pets[_petId].readyTime = uint32(block.timestamp + BATTLE_COOLDOWN);
     }
 
-    function updateBattleStats(uint256 _petId, bool won)
-        external
-        onlyAuthorized
-        entryExists(_petId)
-    {
+    function updateBattleStats(
+        uint256 _petId,
+        bool won
+    ) external onlyAuthorized entryExists(_petId) {
         if (won) {
             _pets[_petId].winCount++;
         } else {
