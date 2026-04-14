@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePetsContract } from '@shared/core';
 import { petsContractParams } from '../../petsContractParams';
 import TransactionStatus from '../ui/TransactionStatus';
+import { isValidEthAddress } from '../../utils/isValidEthAddress';
 import './SendPetModal.css';
 
 interface SendPetModalProps {
@@ -28,10 +29,6 @@ const SendPetModal: React.FC<SendPetModalProps> = ({
     const [txHash, setTxHash] = useState<string | undefined>(undefined);
     const { transferPet, isPending, writeError, refetchPetIds, hash } = usePetsContract(petsContractParams);
 
-    const validateAddress = (address: string): boolean => {
-        return /^0x[a-fA-F0-9]{40}$/.test(address);
-    };
-
     const handleSend = async () => {
         setError(null);
 
@@ -40,7 +37,7 @@ const SendPetModal: React.FC<SendPetModalProps> = ({
             return;
         }
 
-        if (!validateAddress(recipientAddress)) {
+        if (!isValidEthAddress(recipientAddress)) {
             setError('Please enter a valid Ethereum address');
             return;
         }
