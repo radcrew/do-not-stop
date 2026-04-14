@@ -1,7 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAccount, useWaitForTransactionReceipt } from 'wagmi';
+import { parseEventLogs } from 'viem';
 import TransactionStatus from '../../ui/TransactionStatus';
-import { usePetsContract } from '@shared/core';
+import {
+    usePetsContract,
+    useWatchPetsContract,
+    type BreedSuccessPayload,
+} from '@shared/core';
 import { petsContractParams } from '../../../petsContractParams';
 import { DASHBOARD_HOME } from '../../../constants/interactionRoutes';
 import { getReadyPets } from '../../../utils/readyPets';
@@ -14,8 +20,19 @@ export type BreedPanelProps = {
 
 const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
     const navigate = useNavigate();
-    const { createPetFromDNA, petIds, pets, isReady, hash, isPending, writeError, refetchPetIds } =
-        usePetsContract(petsContractParams);
+    const { address } = useAccount();
+
+    const {
+        requestBreedFromDNA,
+        petIds,
+        pets,
+        isReady,
+        hash,
+        isPending,
+        writeError,
+        refetchPetIds,
+    } = usePetsContract(petsContractParams);
+
     const readyPets = useMemo(() => getReadyPets(petIds, pets, isReady), [petIds, pets, isReady]);
     const { error, setError, isUserRejection, isContractError, resetError } = useWriteContractErrorState(writeError);
 
@@ -23,8 +40,55 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
     const [selectedPet2, setSelectedPet2] = useState<bigint | null>(null);
     const [newPetName, setNewPetName] = useState('');
     const [success, setSuccess] = useState<string | null>(null);
+    const [pendingRequestId, setPendingRequestId] = useState<bigint | null>(null);
 
-    const handleBreed = async () => {
+    const offspringNameRef = useRef('');
+
+    const { data: requestReceipt } = useWaitForTransactionReceipt({
+        hash: hash as `0x${string}` | undefined,
+    });
+
+    useEffect(() => {
+        if (!requestReceipt || !hash || !address) return;
+        try {
+            const logs = parseEventLogs({
+                abi: petsContractParams.abi,
+                logs: requestReceipt.logs,
+                eventName: 'BreedRandomnessRequested',
+                strict: false,
+            }) as unknown as {
+                args: { owner?: string; requestId?: bigint };
+            }[];
+            const mine = logs.find(
+                (l) => l.args.owner?.toLowerCase() === address.toLowerCase()
+            );
+            const rid = mine?.args.requestId;
+            if (rid != null) setPendingRequestId(rid);
+        } catch {
+            /* not a breed tx or ABI mismatch */
+        }
+    }, [requestReceipt, hash, address]);
+
+    const onBreedSuccess = useCallback((_payload: BreedSuccessPayload) => {
+        setSuccess(`Pet "${offspringNameRef.current}" created successfully!`);
+        setSelectedPet1(null);
+        setSelectedPet2(null);
+        setNewPetName('');
+        resetError();
+        setPendingRequestId(null);
+        navigate(DASHBOARD_HOME);
+        void refetchPetIds();
+    }, [navigate, refetchPetIds, resetError]);
+
+    useWatchPetsContract({
+        contractAddress: petsContractParams.contractAddress,
+        abi: petsContractParams.abi,
+        address: address as `0x${string}` | undefined,
+        pendingRequestId,
+        onBreedSuccess,
+    });
+
+    const handleBreed = () => {
         if (!selectedPet1 || !selectedPet2 || !newPetName.trim()) {
             setError('Please select two pets and enter a name for the offspring');
             return;
@@ -32,9 +96,11 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
 
         resetError();
         setSuccess(null);
+        setPendingRequestId(null);
+        offspringNameRef.current = newPetName.trim();
 
         try {
-            await createPetFromDNA(selectedPet1, selectedPet2, newPetName.trim());
+            requestBreedFromDNA(selectedPet1, selectedPet2, newPetName.trim());
         } catch (err) {
             setError('Failed to breed pets. Please try again.');
             console.error('Error breeding pets:', err);
@@ -43,17 +109,12 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
 
     const handleCancel = () => {
         setSuccess(null);
+        setPendingRequestId(null);
         navigate(DASHBOARD_HOME);
     };
 
     const handleTransactionComplete = () => {
-        setSuccess(`Pet "${newPetName}" created successfully!`);
-        setSelectedPet1(null);
-        setSelectedPet2(null);
-        setNewPetName('');
-        resetError();
-        navigate(DASHBOARD_HOME);
-        refetchPetIds();
+        /* VRF: navigation happens on BreedFulfilled, not when the request tx confirms */
     };
 
     return (
@@ -112,17 +173,35 @@ const BreedPanel: React.FC<BreedPanelProps> = ({ isStandaloneView = true }) => {
                 </div>
 
                 <div className="action-controls">
-                    <button type="button" onClick={handleBreed} disabled={isPending || !selectedPet1 || !selectedPet2 || !newPetName.trim()}>
-                        {isPending ? 'Breeding...' : 'Breed Pets'}
+                    <button
+                        type="button"
+                        onClick={handleBreed}
+                        disabled={
+                            isPending ||
+                            !selectedPet1 ||
+                            !selectedPet2 ||
+                            !newPetName.trim() ||
+                            pendingRequestId != null
+                        }
+                    >
+                        {isPending ? 'Submitting…' : pendingRequestId != null ? 'Creating…' : 'Breed Pets'}
                     </button>
                     <button type="button" onClick={handleCancel} className="cancel-button">
                         Cancel
                     </button>
                 </div>
+
+                {pendingRequestId != null && (
+                    <p className="breed-pending-hint" style={{ marginTop: '0.75rem', fontSize: '0.9rem', opacity: 0.85 }}>
+                        Hang tight—your new pet will show up in a moment.
+                    </p>
+                )}
             </div>
 
             {error && (
-                <div className={`error-message ${isUserRejection ? 'user-rejection' : ''} ${isContractError ? 'contract-error' : ''}`}>
+                <div
+                    className={`error-message ${isUserRejection ? 'user-rejection' : ''} ${isContractError ? 'contract-error' : ''}`}
+                >
                     {isUserRejection ? '⏸️' : isContractError ? '⚠️' : '❌'} {error}
                 </div>
             )}

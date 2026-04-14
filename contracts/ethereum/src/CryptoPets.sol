@@ -2,7 +2,8 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
+import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 
 import "./Inventory.sol";
 import "./Battle.sol";
@@ -11,10 +12,28 @@ import "./Utils.sol";
 
 /**
  * @title CryptoPets
- * @dev ERC-721 facade over Inventory, Battle, Breeding, Utils
+ * @dev ERC-721 facade over Inventory, Battle, Breeding, Utils. Breeding DNA uses Chainlink VRF.
  */
-contract CryptoPets is ERC721, Ownable {
+contract CryptoPets is ERC721, VRFConsumerBaseV2Plus {
+    event BreedRandomnessRequested(
+        address indexed owner,
+        uint256 indexed requestId,
+        uint256 petId1,
+        uint256 petId2
+    );
+    event BreedFulfilled(
+        address indexed owner,
+        uint256 indexed childId,
+        uint256 indexed requestId
+    );
     event PetTransferred(uint256 tokenId, address from, address to);
+
+    struct PendingBreed {
+        address owner;
+        uint256 petId1;
+        uint256 petId2;
+        string name;
+    }
 
     Inventory public inventory;
     Battle public battleLogic;
@@ -22,15 +41,40 @@ contract CryptoPets is ERC721, Ownable {
     Utils public utils;
 
     mapping(address => uint256) public ownerPetCount;
+    mapping(uint256 => PendingBreed) private s_breedRequests;
+    /// @dev Non-zero while a VRF request including this pet is pending
+    mapping(uint256 => uint256) public petBreedRequestId;
+
+    uint256 private immutable i_vrfSubscriptionId;
+    bytes32 private immutable i_vrfKeyHash;
+    bool private immutable i_vrfNativePayment;
+
+    uint32 private constant VRF_CALLBACK_GAS_LIMIT = 500_000;
+    uint16 private constant VRF_REQUEST_CONFIRMATIONS = 3;
+    uint32 private constant VRF_NUM_WORDS = 1;
+
     uint256 public constant LEVEL_UP_FEE = 0.001 ether;
     uint256 public constant NAME_CHANGE_LEVEL = 2;
     uint256 public constant DNA_CHANGE_LEVEL = 20;
 
-    constructor() ERC721("CryptoPets", "PETS") Ownable(msg.sender) {
+    constructor(
+        uint256 vrfSubscriptionId,
+        bytes32 vrfKeyHash,
+        address vrfCoordinator,
+        bool vrfNativePayment
+    ) ERC721("CryptoPets", "PETS") VRFConsumerBaseV2Plus(vrfCoordinator) {
+        i_vrfSubscriptionId = vrfSubscriptionId;
+        i_vrfKeyHash = vrfKeyHash;
+        i_vrfNativePayment = vrfNativePayment;
+
         inventory = new Inventory();
         utils = new Utils();
         battleLogic = new Battle(address(inventory), address(utils));
-        breeding = new Breeding(address(inventory), address(utils));
+        breeding = new Breeding(
+            address(inventory),
+            address(utils),
+            address(this)
+        );
 
         inventory.authorizeCaller(address(breeding));
         inventory.authorizeCaller(address(battleLogic));
@@ -94,21 +138,80 @@ contract CryptoPets is ERC721, Ownable {
         ownerPetCount[msg.sender]++;
     }
 
-    function attack(uint256 _petId, uint256 _targetId) public {
-        battleLogic.attack(_petId, _targetId);
-    }
-
-    function createFromDNA(
+    /**
+     * @notice Request verifiable randomness to breed two pets. Fulfills asynchronously via VRF.
+     * @dev Fund the VRF subscription (LINK or native per `i_vrfNativePayment`) before calling.
+     */
+    function requestCreateFromDNA(
         uint256 _petId1,
         uint256 _petId2,
-        string memory _name
-    ) public {
-        breeding.breed(_petId1, _petId2, _name);
+        string calldata _name
+    ) external returns (uint256 requestId) {
+        require(bytes(_name).length > 0, "Empty name");
+        breeding.assertCanBreed(_petId1, _petId2);
+        require(
+            petBreedRequestId[_petId1] == 0 && petBreedRequestId[_petId2] == 0,
+            "Breed pending for parent"
+        );
 
-        uint256 newId = inventory.totalPets();
+        VRFV2PlusClient.ExtraArgsV1 memory extraArgs = VRFV2PlusClient.ExtraArgsV1({
+            nativePayment: i_vrfNativePayment
+        });
 
-        _safeMint(msg.sender, newId);
-        ownerPetCount[msg.sender]++;
+        requestId = s_vrfCoordinator.requestRandomWords(
+            VRFV2PlusClient.RandomWordsRequest({
+                keyHash: i_vrfKeyHash,
+                subId: i_vrfSubscriptionId,
+                requestConfirmations: VRF_REQUEST_CONFIRMATIONS,
+                callbackGasLimit: VRF_CALLBACK_GAS_LIMIT,
+                numWords: VRF_NUM_WORDS,
+                extraArgs: VRFV2PlusClient._argsToBytes(extraArgs)
+            })
+        );
+
+        petBreedRequestId[_petId1] = requestId;
+        petBreedRequestId[_petId2] = requestId;
+        s_breedRequests[requestId] = PendingBreed({
+            owner: msg.sender,
+            petId1: _petId1,
+            petId2: _petId2,
+            name: _name
+        });
+
+        emit BreedRandomnessRequested(msg.sender, requestId, _petId1, _petId2);
+    }
+
+    /// @notice VRF *callback* (consumer side). The coordinator calls this with `randomWords`.
+    /// @dev Not the same as `VRFCoordinatorV2_5Mock.fulfillRandomWords(uint256,address)`:
+    ///      that coordinator method takes `(requestId, consumer)` and then invokes this callback.
+    function fulfillRandomWords(
+        uint256 requestId,
+        uint256[] calldata randomWords
+    ) internal override {
+        PendingBreed memory pending = s_breedRequests[requestId];
+        require(pending.owner != address(0), "No pending breed");
+        require(randomWords.length > 0, "No random words");
+
+        breeding.completeBreedWithVrf(
+            pending.petId1,
+            pending.petId2,
+            pending.name,
+            randomWords[0]
+        );
+
+        uint256 childId = inventory.totalPets();
+        _safeMint(pending.owner, childId);
+        ownerPetCount[pending.owner]++;
+
+        petBreedRequestId[pending.petId1] = 0;
+        petBreedRequestId[pending.petId2] = 0;
+        delete s_breedRequests[requestId];
+
+        emit BreedFulfilled(pending.owner, childId, requestId);
+    }
+
+    function attack(uint256 _petId, uint256 _targetId) public {
+        battleLogic.attack(_petId, _targetId);
     }
 
     function levelUp(uint256 _tokenId)

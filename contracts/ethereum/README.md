@@ -27,7 +27,9 @@ contracts/
 ## 🚀 Quick Start
 
 ### Automated (Recommended)
+
 From the project root:
+
 ```bash
 # Install all dependencies and start everything
 pnpm install
@@ -35,6 +37,7 @@ pnpm dev
 ```
 
 ### Manual Setup
+
 ```bash
 # Install dependencies
 pnpm install
@@ -54,12 +57,15 @@ pnpm dev
 
 ## 📋 Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm compile` | Compile Solidity contracts |
-| `pnpm test` | Run contract tests |
-| `pnpm node` | Start Hardhat local network |
-| `pnpm clean` | Clean build artifacts |
+
+| Command          | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `pnpm compile`   | Compile Solidity contracts                       |
+| `pnpm test`      | Run contract tests                               |
+| `pnpm node`      | Start Hardhat local network                      |
+| `pnpm vrf:watch` | Fulfill local VRF mock requests (breeding)       |
+| `pnpm clean`     | Clean build artifacts                            |
+
 
 ## CryptoPets contract
 
@@ -77,7 +83,7 @@ The main contract implements pet collection and gameplay with the following feat
 - `createRandom(string memory _name)` - Create starter pet
 - `battle(uint256 _id1, uint256 _id2)` - Battle two pets
 - `attack(uint256 _petId, uint256 _targetId)` - Attack another pet
-- `createFromDNA(...)` - Breed
+- `requestCreateFromDNA(...)` - Request breeding (Chainlink VRF fulfills asynchronously on testnet/mainnet; locally run `pnpm vrf:watch` or use `fe:eth:local`, which runs `scripts/vrf-fulfill-watcher.ts` to call the VRF mock)
 - `levelUp(uint256 _tokenId)` - Level up (fee)
 - `changeName` / `changeDna` - Cosmetic upgrades above level thresholds
 - `getById` - Full on-chain struct
@@ -88,21 +94,26 @@ The main contract implements pet collection and gameplay with the following feat
 ## 🌐 Networks
 
 ### Local Development
+
 - **Network**: Hardhat Local
-- **RPC URL**: http://localhost:8545
+- **RPC URL**: [http://localhost:8545](http://localhost:8545)
 - **Chain ID**: 31337
 - **Deploy Command**: `pnpm dev` (from root)
+- **VRF mock**: Breeding needs `pnpm vrf:watch` (from `contracts/ethereum`) or root `pnpm eth:vrf:watch` so `BreedRandomnessRequested` is fulfilled on the coordinator mock. This is started for you in `pnpm fe:eth:local` / `pnpm mobile:eth:local`.
 
 ## 🔧 Configuration
 
 ### Hardhat Config
+
 - **Solidity Version**: 0.8.24
 - **Optimizer**: Enabled for production
 - **Networks**: Hardhat, localhost, sepolia
 - **Plugins**: Hardhat Toolbox with Viem
 
 ### Environment Variables
+
 Create `.env` file in the `contracts/ethereum/` directory:
+
 ```bash
 # Optional: For testnet deployment
 SEPOLIA_URL=https://sepolia.infura.io/v3/YOUR_PROJECT_ID
@@ -125,6 +136,7 @@ pnpm hh test test/CryptoPets.test.ts
 ## 📦 Deployment
 
 ### Local Network
+
 ```bash
 # Start everything including deployment (from root)
 pnpm dev
@@ -137,6 +149,7 @@ pnpm node
 ## 🔍 Contract Addresses
 
 After deployment, contract addresses are stored in:
+
 - `ignition/deployments/chain-31337/deployed_addresses.json` (local; key `CryptoPetsModule#CryptoPets`)
 - Contract address is automatically injected into `frontend/.env.local`
 
@@ -146,3 +159,4 @@ After deployment, contract addresses are stored in:
 - [Solidity Documentation](https://docs.soliditylang.org/)
 - [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts)
 - [Hardhat Ignition](https://hardhat.org/ignition)
+
