@@ -3,3 +3,5 @@ export { useVerifySignature, setTokenSuccessCallback } from './useVerifySignatur
 export { useUserProfile } from './useUserProfile';
 export { usePetsContract } from './usePetsContract';
 export type { Pet } from './usePetsContract';
+export { useWatchPetsContract } from './useWatchPetsContract';
+export type { BreedSuccessPayload } from './useWatchPetsContract';
