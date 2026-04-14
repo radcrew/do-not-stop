@@ -184,3 +184,4 @@ test-ledger
 .pnpm-store
 
 .deps/
+contracts/ethereum/remix-slither-report.json
