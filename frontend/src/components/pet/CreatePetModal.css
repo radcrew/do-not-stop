@@ -2,7 +2,8 @@
 
 .modal-overlay {
     --modal-max-width: min(500px, 100%);
-    --modal-max-height: 90vh;
+    /* Respect fixed app header; token from :root (variables.css) */
+    --modal-max-height: min(90vh, calc(100dvh - var(--main-header-offset) - 2 * var(--spacing-lg)));
     --close-button-size: 32px;
     --modal-backdrop: rgb(0 0 0 / 0.5);
     --modal-elevated-shadow: 0 20px 40px rgb(0 0 0 / 0.3);

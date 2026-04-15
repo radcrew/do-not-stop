@@ -18,28 +18,14 @@
 
 /* Connect Wallet Button (when not connected) */
 .connect-wallet-btn {
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-width: 140px;
     white-space: nowrap;
+}
 
-    &:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+/* Keep NeonButton visual style and inner glow for wallet trigger */
+.connect-wallet-btn.neon-btn {
+    min-width: 140px;
+    justify-content: center;
 }
 
 /* Wallet Options */
@@ -156,30 +142,10 @@
     border-color: #ccc;
 }
 
-/* User Trigger Button (when connected) */
-.user-trigger {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* User trigger uses NeonButton visuals; keep only layout constraints */
+.wallet-trigger-btn.neon-btn {
     min-width: 140px;
-
-    &:hover {
-        border-color: #007bff;
-        background-color: #f8f9ff;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
-
-        .dropdown-arrow {
-            transform: translateY(1px);
-        }
-    }
+    justify-content: center;
 }
 
 .user-info {
@@ -220,18 +186,21 @@
     top: 100%;
     right: 0;
     margin-top: 8px;
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: linear-gradient(180deg, rgb(5 13 30 / 96%), rgb(4 8 22 / 98%));
+    border: 1px solid rgb(30 157 255 / 45%);
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow:
+        inset 0 0 16px rgb(30 157 255 / 14%),
+        0 0 20px rgb(30 157 255 / 22%),
+        0 16px 40px rgb(0 0 0 / 38%);
     min-width: 280px;
     overflow: hidden;
     animation: dropdownSlideIn 0.2s ease-out;
 
     .dropdown-header {
         padding: 16px 20px;
-        border-bottom: 1px solid #f0f0f0;
-        background: #f8f9fa;
+        border-bottom: 1px solid rgb(30 157 255 / 30%);
+        background: linear-gradient(180deg, rgb(10 24 52 / 56%), rgb(8 18 40 / 35%));
 
         .user-details {
             display: flex;
@@ -247,7 +216,7 @@
 .user-address-full {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
+    color: #8ed1ff;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     word-break: break-all;
 }
@@ -264,8 +233,8 @@
     gap: 8px;
 
     &:hover {
-        background-color: #f0f0f0;
-        color: #007bff;
+        background-color: rgb(30 157 255 / 12%);
+        color: #b7e4ff;
 
         .copy-icon {
             opacity: 1;
@@ -273,13 +242,13 @@
     }
 
     &.copied .copy-icon {
-        color: #4caf50;
+        color: #9effd4;
         font-weight: bold;
         opacity: 1;
     }
 
     &:active {
-        background-color: #e0e0e0;
+        background-color: rgb(30 157 255 / 18%);
         transform: scale(0.98);
     }
 }
@@ -291,7 +260,7 @@
 
 .copy-icon {
     font-size: 12px;
-    opacity: 0.6;
+    opacity: 0.72;
     transition: all 0.2s ease;
     flex-shrink: 0;
 }
@@ -300,13 +269,13 @@
 .balance-section {
     margin-bottom: 16px;
     padding: 12px;
-    background: #f8f9ff;
+    background: linear-gradient(180deg, rgb(7 18 40 / 88%), rgb(5 13 28 / 92%));
     border-radius: 8px;
-    border: 1px solid #e3f2fd;
+    border: 1px solid rgb(30 157 255 / 35%);
 
     .balance-label {
         font-size: 12px;
-        color: #666;
+        color: #8ed1ff;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 8px;
@@ -361,10 +330,14 @@
 /* Tokens Section */
 .tokens-section {
     margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid rgb(30 157 255 / 35%);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgb(7 18 40 / 88%), rgb(5 13 28 / 92%));
 
     .tokens-label {
         font-size: 12px;
-        color: #666;
+        color: #8ed1ff;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 12px;
@@ -385,17 +358,17 @@
         }
 
         &::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: rgb(9 20 42 / 85%);
             border-radius: 2px;
         }
 
         &::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
+            background: rgb(30 157 255 / 50%);
             border-radius: 2px;
         }
 
         &::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
+            background: rgb(30 157 255 / 66%);
         }
     }
 }
@@ -413,11 +386,12 @@
 /* No Tokens Message */
 .no-tokens-message {
     text-align: center;
-    color: #666;
+    color: #8ed1ff;
     font-size: 12px;
     font-style: italic;
     padding: 12px;
-    background: #f8f9fa;
+    background: rgb(8 20 42 / 78%);
+    border: 1px solid rgb(30 157 255 / 25%);
     border-radius: 4px;
     margin: 4px 0;
 }
@@ -427,55 +401,10 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
 
-    .action-btn {
-        padding: 12px 16px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-align: center;
-
-        &.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-
-            &:hover:not(:disabled) {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-            }
-        }
-
-        &.secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #e0e0e0;
-
-            &:hover {
-                background: #e9ecef;
-                border-color: #ccc;
-            }
-        }
-
-        &.danger {
-            background: #fff5f5;
-            color: #dc3545;
-            border: 1px solid #fecaca;
-
-            &:hover {
-                background: #fee;
-                border-color: #fca5a5;
-            }
-        }
-
-        &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-    }
+.dropdown-actions .dropdown-neon-btn.neon-btn {
+    justify-content: center;
 }
 
 /* Responsive Design */
@@ -486,13 +415,8 @@
         gap: 8px;
     }
 
-    .user-trigger {
-        padding: 6px 10px;
+    .wallet-trigger-btn.neon-btn {
         min-width: 120px;
-
-        .user-address {
-            font-size: 12px;
-        }
     }
 
     .user-dropdown-menu {
@@ -510,8 +434,7 @@
         font-size: 16px;
     }
 
-    .dropdown-actions .action-btn {
-        padding: 10px 14px;
+    .dropdown-actions .dropdown-neon-btn.neon-btn {
         font-size: 13px;
     }
 }
@@ -540,7 +463,7 @@
         min-width: 140px;
     }
 
-    .user-trigger {
+    .wallet-trigger-btn.neon-btn {
         width: auto;
         min-width: 120px;
         justify-content: center;
@@ -602,7 +525,7 @@
         flex-shrink: 0;
     }
 
-    .user-trigger {
+    .wallet-trigger-btn.neon-btn {
         flex-shrink: 0;
     }
 }

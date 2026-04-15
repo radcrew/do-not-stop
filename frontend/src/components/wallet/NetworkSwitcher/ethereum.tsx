@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAccount, useSwitchChain } from 'wagmi';
-import Modal from 'react-modal';
 import { CHAINS, getChainsByType, getChainConfig } from '../../../constants/chains/ethereum';
+import { NeonButton, NeonModal } from '../../common';
 import './index.css';
 
 interface EthereumNetworkSwitcherProps {
@@ -18,11 +18,6 @@ const EthereumNetworkSwitcher: React.FC<EthereumNetworkSwitcherProps> = ({ class
             chainConfig => chainConfig.chain.id === chain.id && chainConfig.isTestnet
         );
     });
-
-    // Set the app element for react-modal accessibility
-    useEffect(() => {
-        Modal.setAppElement('#root');
-    }, []);
 
     if (!chain) return null;
 
@@ -46,71 +41,56 @@ const EthereumNetworkSwitcher: React.FC<EthereumNetworkSwitcherProps> = ({ class
                 </div>
             )}
 
-            <button
-                className="network-trigger-compact"
+            <NeonButton
+                className="network-trigger-neon-compact"
                 onClick={() => setIsOpen(true)}
                 disabled={isPending}
+                tone="azure"
+                size="sm"
             >
-                <div className="network-info-compact">
-                    <span className="network-name-compact">
-                        {isPending ? 'Switching...' : (currentChainConfig?.name || 'Unknown')}
-                    </span>
-                </div>
-                <div className="dropdown-arrow-compact">
-                    ▼
-                </div>
-            </button>
+                {isPending ? 'Switching...' : (currentChainConfig?.name || 'Unknown')} ▼
+            </NeonButton>
 
-            <Modal
+            <NeonModal
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
-                className="network-modal"
-                overlayClassName="network-modal-overlay"
-                shouldCloseOnOverlayClick={true}
-                shouldCloseOnEsc={true}
+                title="Select Network"
+                className="network-neon-modal"
+                contentClassName="network-neon-modal-content"
+                headerActions={(
+                    <label className="testnet-toggle">
+                        <input
+                            type="checkbox"
+                            checked={showTestnets}
+                            onChange={(e) => handleTestnetToggle(e.target.checked)}
+                            disabled={isPending}
+                        />
+                        <span>Testnets</span>
+                    </label>
+                )}
             >
-                <div className="network-modal-header">
-                    <h3>Select Network</h3>
-                    <div className="network-modal-controls">
-                        <label className="testnet-toggle">
-                            <input
-                                type="checkbox"
-                                checked={showTestnets}
-                                onChange={(e) => handleTestnetToggle(e.target.checked)}
-                                disabled={isPending}
-                            />
-                            <span>Testnets</span>
-                        </label>
-                        <button
-                            className="network-modal-close"
-                            onClick={() => setIsOpen(false)}
+                <div className="network-list">
+                    {visibleChains.map(({ chain: chainConfig, name, symbol, isTestnet }) => (
+                        <NeonButton
+                            key={chainConfig.id}
+                            className={`network-option ${chain.id === chainConfig.id ? 'active' : ''} ${isTestnet ? 'testnet' : ''}`}
+                            onClick={() => handleNetworkSelect(chainConfig.id)}
+                            disabled={isPending}
+                            tone="azure"
+                            size="sm"
+                            fullWidth
                         >
-                            ×
-                        </button>
-                    </div>
+                            <span className="network-option-info">
+                                <span className="network-option-name">{name}</span>
+                                <span className="network-option-symbol">{symbol}</span>
+                            </span>
+                            {chain.id === chainConfig.id && (
+                                <span className="network-check">✓</span>
+                            )}
+                        </NeonButton>
+                    ))}
                 </div>
-
-                <div className="network-modal-content">
-                    <div className="network-list">
-                        {visibleChains.map(({ chain: chainConfig, name, symbol, isTestnet }) => (
-                            <button
-                                key={chainConfig.id}
-                                className={`network-option ${chain.id === chainConfig.id ? 'active' : ''} ${isTestnet ? 'testnet' : ''}`}
-                                onClick={() => handleNetworkSelect(chainConfig.id)}
-                                disabled={isPending}
-                            >
-                                <div className="network-option-info">
-                                    <span className="network-option-name">{name}</span>
-                                    <span className="network-option-symbol">{symbol}</span>
-                                </div>
-                                {chain.id === chainConfig.id && (
-                                    <div className="network-check">✓</div>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </Modal>
+            </NeonModal>
         </div>
     );
 };

@@ -10,7 +10,6 @@ import { API_URL } from './config';
 import { CHAINS } from './constants/chains';
 import { SolanaWalletProvider } from './contexts';
 import { DynamicProvider } from './contexts/dynamic';
-import { ThemeProvider } from './contexts/theme';
 import { WalletAwareRoutes } from './router';
 import './App.css';
 
@@ -25,23 +24,21 @@ const config = createConfig({
 
 const App: React.FC = () => {
     return (
-        <ThemeProvider>
-            <WagmiProvider config={config}>
-                <QueryClientProvider client={queryClient}>
-                    <DynamicProvider>
-                        <SolanaWalletProvider network="Solana Local">
-                            <ApiClientProvider baseURL={API_URL}>
-                                <AuthProvider>
-                                    <BrowserRouter>
-                                        <WalletAwareRoutes />
-                                    </BrowserRouter>
-                                </AuthProvider>
-                            </ApiClientProvider>
-                        </SolanaWalletProvider>
-                    </DynamicProvider>
-                </QueryClientProvider>
-            </WagmiProvider>
-        </ThemeProvider>
+        <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+                <DynamicProvider>
+                    <SolanaWalletProvider network="Solana Local">
+                        <ApiClientProvider baseURL={API_URL}>
+                            <AuthProvider>
+                                <BrowserRouter>
+                                    <WalletAwareRoutes />
+                                </BrowserRouter>
+                            </AuthProvider>
+                        </ApiClientProvider>
+                    </SolanaWalletProvider>
+                </DynamicProvider>
+            </QueryClientProvider>
+        </WagmiProvider>
     );
 };
 

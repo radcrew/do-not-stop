@@ -6,6 +6,12 @@
     display: inline-block;
 }
 
+/* Ethereum trigger uses NeonButton visuals; keep only layout constraints */
+.network-trigger-neon-compact.neon-btn {
+    min-width: 120px;
+    justify-content: center;
+}
+
 /* Full Network Switcher - For Solana */
 .network-switcher {
     position: relative;
@@ -172,65 +178,13 @@
     }
 }
 
-/* Modal Overlay */
-.network-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 20px;
+/* Neon modal adjustments for network switcher */
+.network-neon-modal {
+    width: min(100%, 430px);
 }
 
-/* Modal */
-.network-modal {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-    max-height: 80vh;
-    overflow: hidden;
-    animation: modalSlideIn 0.2s ease-out;
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-.network-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #f8f9fa;
-}
-
-.network-modal-controls {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.network-modal-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+.network-neon-modal-content {
+    padding-top: 12px;
 }
 
 .testnet-toggle {
@@ -238,40 +192,14 @@
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #666;
+    color: #8ed1ff;
     cursor: pointer;
 }
 
 .testnet-toggle input[type="checkbox"] {
     margin: 0;
     cursor: pointer;
-}
-
-.network-modal-close {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #666;
-    cursor: pointer;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.network-modal-close:hover {
-    background-color: #e9ecef;
-    color: #333;
-}
-
-.network-modal-content {
-    padding: 16px;
-    max-height: 60vh;
-    overflow-y: auto;
+    accent-color: #1e9dff;
 }
 
 .network-list {
@@ -282,57 +210,49 @@
 
 .network-option {
     width: 100%;
-    padding: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: white;
-    color: #333;
     font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: left;
+    text-transform: none;
 }
 
-.network-option:hover {
-    border-color: #9945ff;
-    background-color: #f8f9ff;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(153, 69, 255, 0.1);
+.network-option.neon-btn {
+    border-radius: 8px;
+    padding: 12px 14px;
+    letter-spacing: 0.25px;
+}
+
+.network-option.neon-btn .label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .network-option.active {
-    border-color: #9945ff;
-    background-color: #e3f2fd;
-    color: #1976d2;
+    box-shadow:
+        inset 0 0 18px rgb(0 255 157 / 18%),
+        0 0 18px rgb(0 255 157 / 26%);
 }
 
 .network-option.testnet {
-    border-color: #ff9800;
-    color: #e65100;
-}
-
-.network-option.testnet:hover {
-    border-color: #ff9800;
-    background-color: #fff3e0;
-}
-
-.network-option.testnet.active {
-    background-color: #fff3e0;
-    color: #e65100;
+    opacity: 0.96;
 }
 
 .network-option-info {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex: 1;
+    min-width: 0;
 }
 
 .network-option-name {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 16px;
+    line-height: 1.2;
 }
 
 .network-option-status {
@@ -348,9 +268,10 @@
 }
 
 .network-check {
-    color: #4caf50;
+    color: #9effd4;
     font-weight: bold;
     font-size: 18px;
+    margin-left: 10px;
 }
 
 /* Responsive */
@@ -359,9 +280,7 @@
         position: static;
     }
 
-    .network-trigger-compact {
-        padding: 6px 10px;
-        font-size: 12px;
+    .network-trigger-neon-compact.neon-btn {
         min-width: 100px;
     }
 
@@ -395,17 +314,8 @@
         padding: 4px 8px;
     }
 
-    .network-modal {
-        margin: 10px;
-        max-width: none;
-    }
-
-    .network-modal-header {
-        padding: 16px 20px;
-    }
-
-    .network-modal-content {
-        padding: 12px;
+    .network-neon-modal {
+        width: 100%;
     }
 
     .network-option {

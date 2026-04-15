@@ -3,8 +3,8 @@ import { useAccount, usePublicClient } from 'wagmi';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { useAuth } from '@shared/core';
-import { useTheme } from '../../contexts/theme';
 import { getPopularTokens } from '../../constants/tokens';
+import { NeonButton, NeonCard } from '../common';
 import { EthereumNetworkSwitcher, SolanaNetworkSwitcher } from './NetworkSwitcher';
 import TokenBalance from './TokenBalance';
 import NativeBalance from './NativeBalance';
@@ -29,9 +29,6 @@ const AccountDropdown: React.FC = () => {
         isVerifying,
         isNonceLoading
     } = useAuth();
-    const { theme, toggleTheme } = useTheme();
-    const isDark = theme === 'dark';
-
     // Memoize popular tokens to prevent infinite re-renders
     const popularTokens = useMemo(() => getPopularTokens(chain?.id), [chain?.id]);
 
@@ -173,27 +170,9 @@ const AccountDropdown: React.FC = () => {
     if (!isConnected) {
         return (
             <div className="account-dropdown-container">
-                <button
-                    type="button"
-                    onClick={toggleTheme}
-                    className={`theme-switch ${isDark ? 'dark' : ''}`}
-                    role="switch"
-                    aria-checked={isDark}
-                    aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-                >
-                    <span className="label" aria-hidden="true">
-                        {isDark ? 'Dark' : 'Light'}
-                    </span>
-                    <span className="track" aria-hidden="true">
-                        <span className="thumb" />
-                    </span>
-                </button>
-                <button
-                    className="connect-wallet-btn"
-                    onClick={() => setShowAuthFlow(true)}
-                >
+                <NeonButton tone="azure" className="connect-wallet-btn" onClick={() => setShowAuthFlow(true)}>
                     Connect Wallet
-                </button>
+                </NeonButton>
             </div>
         );
     }
@@ -201,39 +180,23 @@ const AccountDropdown: React.FC = () => {
 
     return (
         <div className="account-dropdown-container">
-            <button
-                type="button"
-                onClick={toggleTheme}
-                className={`theme-switch ${isDark ? 'dark' : ''}`}
-                role="switch"
-                aria-checked={isDark}
-                aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-            >
-                <span className="label" aria-hidden="true">
-                    {isDark ? 'Dark' : 'Light'}
-                </span>
-                <span className="track" aria-hidden="true">
-                    <span className="thumb" />
-                </span>
-            </button>
             {isConnected && <EthereumNetworkSwitcher />}
             {solanaConnected && <SolanaNetworkSwitcher />}
             <div className="account-dropdown" ref={dropdownRef}>
-                <button
-                    className="user-trigger"
+                <NeonButton
+                    className="wallet-trigger-btn"
                     onClick={() => setIsOpen(!isOpen)}
+                    tone="azure"
+                    size="sm"
                 >
-                    <div className="user-info">
-                        {address && <span className="user-address">{formatAddress(address)}</span>}
-                        {solanaPublicKey && <span className="user-address">{formatAddress(solanaPublicKey.toString())}</span>}
-                    </div>
-                    <div className="dropdown-arrow">
-                        {isOpen ? '▲' : '▼'}
-                    </div>
-                </button>
+                    {address && formatAddress(address)}
+                    {solanaPublicKey && formatAddress(solanaPublicKey.toString())}
+                    {' '}
+                    {isOpen ? '▲' : '▼'}
+                </NeonButton>
 
                 {isOpen && (
-                    <div className="user-dropdown-menu">
+                    <NeonCard as="section" className="user-dropdown-menu">
                         <div className="dropdown-header">
                             <div className="user-details">
                                 {address && (
@@ -270,23 +233,23 @@ const AccountDropdown: React.FC = () => {
                         <div className="dropdown-content">
                             {/* Ethereum/EVM Balance Section */}
                             {isConnected && address && (
-                                <div className="balance-section">
+                                <NeonCard as="div" className="balance-section">
                                     <div className="balance-label">Ethereum Balance</div>
                                     <NativeBalance type="ethereum" />
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* Solana Balance Section */}
                             {solanaConnected && solanaPublicKey && (
-                                <div className="balance-section">
+                                <NeonCard as="div" className="balance-section">
                                     <div className="balance-label">Solana Balance</div>
                                     <NativeBalance type="solana" />
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* ERC-20 Tokens Section */}
                             {popularTokens.length > 0 && (
-                                <div className="tokens-section">
+                                <NeonCard as="div" className="tokens-section">
                                     <div className="tokens-label">Token Balances</div>
                                     <div className="tokens-list">
                                         {popularTokens.map((token) => (
@@ -307,53 +270,65 @@ const AccountDropdown: React.FC = () => {
                                                 </div>
                                             )}
                                     </div>
-                                </div>
+                                </NeonCard>
                             )}
 
                             {/* Action Buttons */}
                             <div className="dropdown-actions">
                                 {!isAuthenticated ? (
-                                    <button
-                                        className="action-btn primary"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleSignAndLogin}
                                         disabled={isNonceLoading || isSigning || isVerifying}
+                                        tone="azure"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         {isNonceLoading ? 'Getting nonce...' :
                                             isSigning ? 'Please sign in MetaMask...' :
                                                 isVerifying ? 'Verifying...' : 'Sign Message & Login'}
-                                    </button>
+                                    </NeonButton>
                                 ) : (
-                                    <button
-                                        className="action-btn secondary"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleLogout}
+                                        tone="cyan"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Logout
-                                    </button>
+                                    </NeonButton>
                                 )}
 
                                 {isConnected && (
-                                    <button
-                                        className="action-btn danger"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={handleDisconnect}
+                                        tone="amber"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Disconnect
-                                    </button>
+                                    </NeonButton>
                                 )}
 
                                 {solanaConnected && (
-                                    <button
-                                        className="action-btn danger"
+                                    <NeonButton
+                                        className="dropdown-neon-btn"
                                         onClick={() => {
                                             solanaDisconnect();
                                             setIsOpen(false);
                                         }}
+                                        tone="amber"
+                                        size="sm"
+                                        fullWidth
                                     >
                                         Disconnect
-                                    </button>
+                                    </NeonButton>
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </NeonCard>
                 )}
             </div>
         </div>
