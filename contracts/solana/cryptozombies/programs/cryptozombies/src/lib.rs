@@ -4,12 +4,12 @@ pub mod state;
 
 use anchor_lang::prelude::*;
 use instructions::{
-    create_starter_zombie::*,
-    initialize::*,
-    level_up::*,
-    rename_zombie::*,
-    pause::*,
-    unpause::*,
+    create_starter_zombie,
+    initialize,
+    level_up,
+    rename_zombie,
+    pause,
+    unpause,
 };
 
 declare_id!("DVqmS2WV2epdEncuweNryuqyhbzLXtEQhnxDgQt7ccC6");
