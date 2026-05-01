@@ -1,4 +1,5 @@
 import React from 'react';
+import "@walletconnect/react-native-compat";
 import { AppKitProvider } from '@reown/appkit-react-native';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider } from '@tanstack/react-query';
