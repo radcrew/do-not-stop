@@ -1,5 +1,3 @@
-import "@walletconnect/react-native-compat";
-
 import { createAppKit, solana } from '@reown/appkit-react-native';
 import { WagmiAdapter } from '@reown/appkit-wagmi-react-native';
 import { SolanaAdapter } from '@reown/appkit-solana-react-native';

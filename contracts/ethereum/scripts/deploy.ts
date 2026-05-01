@@ -115,6 +115,27 @@ async function injectContractAddress(): Promise<void> {
         console.log('✅ Contract address injected into frontend .env.local');
         console.log(`🔗 Frontend will use contract: ${contractAddress}`);
 
+        const mobileEnvPath = join(process.cwd(), '..', '..', 'mobile', '.env');
+        let mobileEnvContent = '';
+        if (existsSync(mobileEnvPath)) {
+            mobileEnvContent = readFileSync(mobileEnvPath, 'utf8');
+        }
+        const mobileContractLine = `CONTRACT_ADDRESS=${contractAddress}`;
+        const mobileLines = mobileEnvContent.split('\n');
+        const mobileContractIdx = mobileLines.findIndex((line) =>
+            line.startsWith('CONTRACT_ADDRESS=')
+        );
+        if (mobileContractIdx >= 0) {
+            mobileLines[mobileContractIdx] = mobileContractLine;
+        } else {
+            mobileLines.push(mobileContractLine);
+        }
+        const mobileUpdated = mobileLines.filter((line) => line.trim()).join('\n');
+        writeFileSync(mobileEnvPath, mobileUpdated);
+
+        console.log('✅ Contract address injected into mobile .env');
+        console.log(`🔗 Mobile will use contract: ${contractAddress}`);
+
     } catch (error) {
         console.error('❌ Failed to inject contract address:', error instanceof Error ? error.message : 'Unknown error');
     }
