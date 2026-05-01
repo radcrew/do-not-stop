@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import { defineChain } from 'viem';
 import { HARDHAT_RPC_URL } from '@env';
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { useAppKit } from '@reown/appkit-react-native';
 import { useAccount } from 'wagmi';
 import { useAuth } from '@shared/core';
+import { neon, neonGlow } from '../theme/neon';
 
 interface ConnectButtonProps {
     compact?: boolean;
@@ -69,7 +70,7 @@ export default function ConnectButton({ compact = false }: ConnectButtonProps = 
                         style={[styles.button, styles.disconnectButton]}
                         onPress={() => disconnect()}
                     >
-                        <Text style={styles.buttonText}>Disconnect Wallet</Text>
+                        <Text style={styles.disconnectButtonText}>Disconnect Wallet</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -85,7 +86,7 @@ export default function ConnectButton({ compact = false }: ConnectButtonProps = 
                     >
                         {isLoading ? (
                             <View style={styles.loadingContainer}>
-                                <ActivityIndicator size="small" color="white" style={{ marginRight: 8 }} />
+                                <ActivityIndicator size="small" color={neon.bgDeep} style={styles.spinnerMargin} />
                                 <Text style={styles.buttonText}>
                                     {isSigning ? 'Signing...' : isVerifying ? 'Verifying...' : 'Loading...'}
                                 </Text>
@@ -108,58 +109,60 @@ export default function ConnectButton({ compact = false }: ConnectButtonProps = 
 
 const styles = StyleSheet.create({
     connectButton: {
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        backgroundColor: '#667eea',
-        borderRadius: 12,
-        minWidth: 140,
+        paddingHorizontal: 22,
+        paddingVertical: 14,
+        backgroundColor: neon.bgCard,
+        borderRadius: 14,
+        minWidth: 160,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        borderWidth: 1,
+        borderColor: neon.cyan,
+        ...neonGlow(neon.cyan, 14, 0.5),
     },
     connectButtonText: {
-        color: '#ffffff',
-        fontSize: 14,
-        fontWeight: '600',
+        color: neon.cyan,
+        fontSize: 15,
+        fontWeight: '800',
+        letterSpacing: 1,
     },
     compactButton: {
         paddingHorizontal: 12,
-        paddingVertical: 6,
-        backgroundColor: '#667eea',
+        paddingVertical: 8,
+        backgroundColor: neon.bgCard,
         borderRadius: 12,
         minWidth: 120,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        borderWidth: 1,
+        borderColor: neon.magenta,
+        ...neonGlow(neon.magenta, 10, 0.35),
     },
     compactButtonText: {
-        color: '#ffffff',
+        color: neon.magenta,
         fontSize: 12,
-        fontWeight: '600',
+        fontWeight: '700',
     },
     container: {
         padding: 16,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 8,
+        backgroundColor: neon.bgPanel,
+        borderRadius: 14,
         margin: 16,
+        borderWidth: 1,
+        borderColor: neon.border,
+        ...neonGlow(neon.purple, 8, 0.2),
     },
     text: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '800',
         marginBottom: 8,
+        color: neon.text,
     },
     address: {
-        fontSize: 14,
-        color: '#666',
+        fontSize: 13,
+        color: neon.textMuted,
         marginBottom: 16,
+        fontFamily: Platform.select({ ios: 'Menlo', android: 'monospace' }),
     },
     authSection: {
         marginTop: 8,
@@ -173,59 +176,75 @@ const styles = StyleSheet.create({
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: '#34C759',
+        backgroundColor: neon.success,
         marginRight: 8,
+        ...neonGlow(neon.success, 6, 0.8),
     },
     unauthenticatedBadge: {
         width: 12,
         height: 12,
         borderRadius: 6,
-        backgroundColor: '#FF9500',
+        backgroundColor: neon.magenta,
         marginRight: 8,
+        ...neonGlow(neon.magenta, 6, 0.6),
     },
     authText: {
         fontSize: 14,
-        fontWeight: '600',
-        color: '#333',
+        fontWeight: '700',
+        color: neon.text,
     },
     userInfo: {
         fontSize: 12,
-        color: '#666',
+        color: neon.textMuted,
         marginBottom: 12,
     },
     button: {
-        backgroundColor: '#007AFF',
+        backgroundColor: neon.bgCard,
         paddingHorizontal: 24,
         paddingVertical: 12,
-        borderRadius: 8,
+        borderRadius: 10,
         alignItems: 'center',
         marginTop: 8,
+        borderWidth: 1,
+        borderColor: neon.cyan,
+        ...neonGlow(neon.cyan, 8, 0.35),
     },
     buttonDisabled: {
-        backgroundColor: '#999',
-        opacity: 0.6,
+        opacity: 0.45,
     },
     buttonText: {
-        color: 'white',
+        color: neon.cyan,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '800',
     },
     secondaryButton: {
         backgroundColor: 'transparent',
         borderWidth: 1,
-        borderColor: '#007AFF',
+        borderColor: neon.purple,
+        ...neonGlow(neon.purple, 6, 0.15),
     },
     secondaryButtonText: {
-        color: '#007AFF',
+        color: neon.purple,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
     disconnectButton: {
-        backgroundColor: '#FF3B30',
+        backgroundColor: neon.bgCard,
+        borderWidth: 1,
+        borderColor: neon.danger,
         marginTop: 8,
+        ...neonGlow(neon.danger, 8, 0.3),
+    },
+    disconnectButtonText: {
+        color: neon.danger,
+        fontSize: 16,
+        fontWeight: '800',
     },
     loadingContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    spinnerMargin: {
+        marginRight: 8,
     },
 });
