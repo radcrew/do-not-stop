@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { getEvmNetworkMeta, getEvmSwitcherChains, EVM_SWITCHER_CHAINS } from '../constants/ethereumNetworks';
+import { neon, neonGlow } from '../theme/neon';
 
 /**
  * Mirrors the web `EthereumNetworkSwitcher` (compact trigger + “Select Network” modal,
@@ -86,8 +87,17 @@ export default function EthereumNetworkSwitcher() {
                                         value={showTestnets}
                                         onValueChange={setShowTestnets}
                                         disabled={isPending}
-                                        trackColor={{ false: '#e0e0e0', true: '#ffb74d' }}
-                                        thumbColor={Platform.OS === 'android' ? (showTestnets ? '#e65100' : '#f4f3f4') : undefined}
+                                        trackColor={{
+                                            false: neon.bgInput,
+                                            true: 'rgba(255, 45, 166, 0.45)',
+                                        }}
+                                        thumbColor={
+                                            Platform.OS === 'android'
+                                                ? showTestnets
+                                                    ? neon.magenta
+                                                    : neon.textDim
+                                                : undefined
+                                        }
                                     />
                                     <Text style={styles.testnetLabel}>Testnets</Text>
                                 </View>
@@ -151,16 +161,17 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         maxWidth: 280,
         marginBottom: 8,
-        backgroundColor: '#fee',
+        backgroundColor: 'rgba(255, 77, 109, 0.12)',
         borderWidth: 1,
-        borderColor: '#fcc',
-        borderRadius: 6,
+        borderColor: 'rgba(255, 77, 109, 0.45)',
+        borderRadius: 8,
         paddingHorizontal: 10,
         paddingVertical: 6,
+        ...neonGlow(neon.danger, 6, 0.25),
     },
     errorText: {
         fontSize: 11,
-        color: '#c33',
+        color: neon.danger,
     },
     trigger: {
         flexDirection: 'row',
@@ -170,34 +181,30 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 12,
         borderWidth: 1,
-        borderColor: '#e0e0e0',
+        borderColor: neon.border,
         borderRadius: 12,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        backgroundColor: neon.bgCard,
+        ...neonGlow(neon.cyan, 8, 0.25),
     },
     triggerPressed: {
-        borderColor: '#007bff',
-        backgroundColor: '#f8f9ff',
+        borderColor: neon.cyan,
+        backgroundColor: neon.bgInput,
     },
     triggerDisabled: {
-        opacity: 0.6,
-        backgroundColor: '#f5f5f5',
+        opacity: 0.55,
+        backgroundColor: neon.bgPanel,
     },
     triggerInfo: {
         flexShrink: 1,
     },
     triggerName: {
         fontSize: 14,
-        fontWeight: '500',
-        color: '#333',
+        fontWeight: '700',
+        color: neon.text,
     },
     triggerArrow: {
         fontSize: 10,
-        color: '#666',
+        color: neon.cyan,
         marginLeft: 8,
     },
     modalRoot: {
@@ -206,19 +213,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalBackdrop: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(5, 5, 13, 0.88)',
     },
     modalCard: {
         zIndex: 2,
         maxHeight: '80%',
-        backgroundColor: '#fff',
-        borderRadius: 12,
+        backgroundColor: neon.bgPanel,
+        borderRadius: 16,
         overflow: 'hidden',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 25,
-        elevation: 12,
+        borderWidth: 1,
+        borderColor: neon.border,
+        ...neonGlow(neon.purple, 14, 0.35),
     },
     modalHeader: {
         flexDirection: 'row',
@@ -227,14 +232,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0',
-        backgroundColor: '#f8f9fa',
+        borderBottomColor: 'rgba(0, 245, 255, 0.2)',
+        backgroundColor: neon.bgDeep,
     },
     modalTitle: {
         fontSize: 18,
-        fontWeight: '600',
-        color: '#333',
+        fontWeight: '800',
+        color: neon.text,
         flex: 1,
+        letterSpacing: 0.3,
     },
     modalHeaderRight: {
         flexDirection: 'row',
@@ -247,7 +253,7 @@ const styles = StyleSheet.create({
     },
     testnetLabel: {
         fontSize: 12,
-        color: '#666',
+        color: neon.textMuted,
         marginLeft: 6,
     },
     closeBtn: {
@@ -259,12 +265,13 @@ const styles = StyleSheet.create({
     },
     closeBtnText: {
         fontSize: 24,
-        color: '#666',
+        color: neon.magenta,
         lineHeight: Platform.OS === 'ios' ? 28 : 24,
     },
     modalBody: {
         padding: 16,
         maxHeight: 360,
+        backgroundColor: neon.bgDeep,
     },
     option: {
         flexDirection: 'row',
@@ -274,19 +281,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         marginBottom: 8,
         borderWidth: 1,
-        borderColor: '#e0e0e0',
-        borderRadius: 8,
-        backgroundColor: '#fff',
+        borderColor: 'rgba(0, 245, 255, 0.2)',
+        borderRadius: 12,
+        backgroundColor: neon.bgCard,
     },
     optionTestnet: {
-        borderColor: '#ff9800',
+        borderColor: 'rgba(255, 152, 0, 0.55)',
     },
     optionActive: {
-        borderColor: '#9945ff',
-        backgroundColor: '#e3f2fd',
+        borderColor: neon.purple,
+        backgroundColor: 'rgba(124, 58, 237, 0.2)',
+        ...neonGlow(neon.purple, 10, 0.3),
     },
     optionTestnetActive: {
-        backgroundColor: '#fff3e0',
+        backgroundColor: 'rgba(255, 152, 0, 0.12)',
         borderColor: '#ff9800',
     },
     optionPressed: {
@@ -298,25 +306,28 @@ const styles = StyleSheet.create({
     },
     optionName: {
         fontSize: 16,
-        fontWeight: '500',
-        color: '#333',
+        fontWeight: '600',
+        color: neon.text,
     },
     optionNameActive: {
-        color: '#1976d2',
+        color: neon.cyan,
     },
     optionNameTestnet: {
-        color: '#e65100',
+        color: '#ffb74d',
     },
     optionSymbol: {
         fontSize: 14,
-        color: '#666',
+        color: neon.textMuted,
         fontWeight: '400',
         marginTop: 4,
     },
     check: {
         fontSize: 18,
-        fontWeight: '700',
-        color: '#4caf50',
+        fontWeight: '800',
+        color: neon.success,
         marginLeft: 8,
+        textShadowColor: neon.success,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 6,
     },
 });
