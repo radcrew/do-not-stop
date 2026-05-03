@@ -51,6 +51,7 @@ This starts:
 ```
 do-not-stop/
 ├── frontend/           # React + Vite frontend
+├── mobile/             # React Native app (`mobile/.env` for RPC, contract, API)
 ├── backend/            # Node.js + Express + TypeScript
 ├── contracts/
 │   ├── ethereum/       # Hardhat + Solidity contracts
@@ -105,6 +106,19 @@ VITE_CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3
 ```
 
 > The contract address is automatically injected when you run `pnpm dev`
+
+### Mobile (`mobile/.env`)
+
+Variables such as `HARDHAT_RPC_URL`, `CONTRACT_ADDRESS`, and `API_URL` are inlined at bundle time via `react-native-dotenv`.
+
+**After changing `HARDHAT_RPC_URL` (or any mobile `.env` value),** restart Metro with a clean cache so the app picks up the new URL:
+
+```bash
+cd mobile
+pnpm start -- --reset-cache
+```
+
+Equivalent: `npx react-native start --reset-cache`. Then reload the app. If Metro was already running, stop it first, then run the command above.
 
 ## Solana Development
 
