@@ -12,6 +12,7 @@ import {
     useWindowDimensions,
     View,
 } from 'react-native';
+import { neon, neonGlow } from '../theme/neon';
 
 type Props = {
     visible: boolean;
@@ -105,7 +106,7 @@ export default function CreatePetModal({
                             value={name}
                             onChangeText={setName}
                             placeholder="Pet name"
-                            placeholderTextColor="#999"
+                            placeholderTextColor={neon.textDim}
                             maxLength={20}
                             editable={!busy}
                             autoCapitalize="words"
@@ -118,7 +119,7 @@ export default function CreatePetModal({
                         >
                             {busy ? (
                                 <View style={styles.buttonInner}>
-                                    <ActivityIndicator color="#fff" size="small" style={styles.spinner} />
+                                    <ActivityIndicator color={neon.cyan} size="small" style={styles.spinner} />
                                     <Text style={styles.buttonText}>
                                         {isWritePending ? 'Confirm in wallet…' : 'Confirming…'}
                                     </Text>
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     backdrop: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(5, 5, 13, 0.88)',
     },
     sheetOuter: {
         zIndex: 2,
@@ -160,15 +161,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
     },
     sheet: {
-        backgroundColor: '#fff',
-        borderRadius: 12,
+        backgroundColor: neon.bgPanel,
+        borderRadius: 16,
         padding: 20,
         maxWidth: 400,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 25,
-        elevation: 12,
+        borderWidth: 1,
+        borderColor: neon.border,
+        ...neonGlow(neon.cyan, 16, 0.45),
     },
     sheetHeader: {
         flexDirection: 'row',
@@ -178,9 +177,10 @@ const styles = StyleSheet.create({
     },
     sheetTitle: {
         fontSize: 18,
-        fontWeight: '700',
-        color: '#333',
+        fontWeight: '800',
+        color: neon.text,
         flex: 1,
+        letterSpacing: 0.5,
     },
     closeBtn: {
         width: 36,
@@ -191,32 +191,35 @@ const styles = StyleSheet.create({
     },
     closeBtnText: {
         fontSize: 26,
-        color: '#666',
+        color: neon.magenta,
         lineHeight: Platform.OS === 'ios' ? 30 : 26,
     },
     subtitle: {
         fontSize: 14,
-        color: '#666',
+        color: neon.textMuted,
         marginBottom: 12,
         lineHeight: 20,
     },
     input: {
         borderWidth: 1,
-        borderColor: '#e0e0e0',
-        borderRadius: 10,
+        borderColor: 'rgba(0, 245, 255, 0.35)',
+        borderRadius: 12,
         paddingHorizontal: 12,
         paddingVertical: 10,
         fontSize: 16,
-        color: '#222',
-        backgroundColor: '#fafafa',
+        color: neon.text,
+        backgroundColor: neon.bgInput,
         marginBottom: 12,
     },
     button: {
-        backgroundColor: '#667eea',
+        backgroundColor: neon.bgCard,
         borderRadius: 12,
         paddingVertical: 12,
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: neon.cyan,
+        ...neonGlow(neon.cyan, 10, 0.4),
     },
     buttonDisabled: {
         opacity: 0.55,
@@ -229,18 +232,18 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     buttonText: {
-        color: '#fff',
+        color: neon.cyan,
         fontSize: 16,
-        fontWeight: '600',
+        fontWeight: '800',
     },
     error: {
         marginTop: 10,
         fontSize: 13,
-        color: '#c0392b',
+        color: neon.danger,
     },
     txHint: {
         marginTop: 8,
         fontSize: 12,
-        color: '#666',
+        color: neon.textMuted,
     },
 });

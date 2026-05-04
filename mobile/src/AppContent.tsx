@@ -3,7 +3,6 @@ import {
     ActivityIndicator,
     StatusBar,
     StyleSheet,
-    useColorScheme,
     ScrollView,
     View,
     Text,
@@ -18,14 +17,12 @@ import EthereumNetworkSwitcher from './components/EthereumNetworkSwitcher';
 import CreatePetModal from './components/CreatePetModal';
 import PetList from './components/PetList';
 import { petsContractParams } from './petsContractParams';
-import { isContractConfigured } from './contractConfig';
+import { neon, neonGlow } from './theme/neon';
 
 function AppRoot() {
-    const isDarkMode = useColorScheme() === 'dark';
-
     return (
         <SafeAreaProvider>
-            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <StatusBar barStyle="light-content" backgroundColor={neon.bgDeep} />
             <AppContent />
         </SafeAreaProvider>
     );
@@ -46,7 +43,7 @@ function AppContent() {
         } finally {
             setRefreshing(false);
         }
-    }, [pets.refetchPetIds]);
+    }, [pets]);
 
     const closeCreateModal = useCallback(() => {
         setCreateModalVisible(false);
@@ -88,7 +85,7 @@ function AppContent() {
                                     activeOpacity={0.85}
                                 >
                                     {refreshing ? (
-                                        <ActivityIndicator size="small" color="#667eea" />
+                                        <ActivityIndicator size="small" color={neon.cyan} />
                                     ) : (
                                         <Text style={styles.refreshBtnText}>Refresh</Text>
                                     )}
@@ -134,18 +131,25 @@ function AppContent() {
                     showsVerticalScrollIndicator={false}
                 >
                     <View style={styles.welcomeSection}>
+                        <Text style={styles.heroKicker}>ON-CHAIN COLLECTION</Text>
+                        <Text style={styles.heroTitle}>Do Not Stop</Text>
+                        <View style={styles.heroGlowLine} />
                         <Text style={styles.welcomeText}>
-                            Connect your wallet to start creating and managing your CryptoPets collection!
+                            Connect your wallet to mint, battle, and breed — same universe as the web app, in your
+                            pocket.
                         </Text>
                         <View style={styles.features}>
-                            <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>🐾 Create pets</Text>
+                            <View style={[styles.feature, styles.featureCyan]}>
+                                <Text style={styles.featureTitle}>Create pets</Text>
+                                <Text style={styles.featureSub}>Mint unique companions on-chain.</Text>
                             </View>
-                            <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>⚔️ Battles</Text>
+                            <View style={[styles.feature, styles.featureMagenta]}>
+                                <Text style={styles.featureTitle}>Battles</Text>
+                                <Text style={styles.featureSub}>Prove strength in the arena.</Text>
                             </View>
-                            <View style={styles.feature}>
-                                <Text style={styles.featureTitle}>🧬 Breeding</Text>
+                            <View style={[styles.feature, styles.featurePurple]}>
+                                <Text style={styles.featureTitle}>Breeding</Text>
+                                <Text style={styles.featureSub}>Combine traits for the next gen.</Text>
                             </View>
                         </View>
                         <View style={styles.connectButtonContainer}>
@@ -164,25 +168,25 @@ function AppContent() {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: neon.bgDeep,
     },
     header: {
-        backgroundColor: '#ffffff',
+        backgroundColor: neon.bgPanel,
         borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0',
+        borderBottomColor: neon.border,
         paddingHorizontal: 16,
         paddingBottom: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 2,
+        ...neonGlow(neon.cyan, 8, 0.2),
     },
     headerTitle: {
         fontSize: 28,
-        fontWeight: '700',
+        fontWeight: '800',
         textAlign: 'center',
-        color: '#667eea',
+        color: neon.text,
+        letterSpacing: 2,
+        textShadowColor: neon.cyan,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 12,
     },
     walletSection: {
         marginTop: 12,
@@ -205,11 +209,40 @@ const styles = StyleSheet.create({
     welcomeSection: {
         alignItems: 'center',
     },
+    heroKicker: {
+        fontSize: 11,
+        fontWeight: '700',
+        letterSpacing: 4,
+        color: neon.magenta,
+        marginBottom: 8,
+        textShadowColor: neon.magenta,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
+    },
+    heroTitle: {
+        fontSize: 36,
+        fontWeight: '900',
+        color: neon.text,
+        letterSpacing: 1,
+        marginBottom: 4,
+        textShadowColor: neon.cyan,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 16,
+    },
+    heroGlowLine: {
+        width: 120,
+        height: 3,
+        backgroundColor: neon.cyan,
+        marginBottom: 20,
+        borderRadius: 2,
+        opacity: 0.95,
+        ...neonGlow(neon.cyan, 8, 0.75),
+    },
     welcomeText: {
-        fontSize: 18,
-        color: '#666',
+        fontSize: 16,
+        color: neon.textMuted,
         textAlign: 'center',
-        marginBottom: 32,
+        marginBottom: 28,
         maxWidth: 600,
         lineHeight: 24,
     },
@@ -218,22 +251,35 @@ const styles = StyleSheet.create({
         maxWidth: 900,
     },
     feature: {
-        backgroundColor: '#ffffff',
+        backgroundColor: neon.bgCard,
         borderRadius: 16,
-        padding: 24,
-        marginBottom: 24,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 4,
+        padding: 20,
+        marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#e0e0e0',
+    },
+    featureCyan: {
+        borderColor: 'rgba(0, 245, 255, 0.45)',
+        ...neonGlow(neon.cyan, 12, 0.25),
+    },
+    featureMagenta: {
+        borderColor: 'rgba(255, 45, 166, 0.45)',
+        ...neonGlow(neon.magenta, 12, 0.25),
+    },
+    featurePurple: {
+        borderColor: 'rgba(192, 132, 252, 0.45)',
+        ...neonGlow(neon.purple, 12, 0.22),
     },
     featureTitle: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: '#333',
+        fontSize: 18,
+        fontWeight: '800',
+        color: neon.text,
+        letterSpacing: 0.5,
+        marginBottom: 6,
+    },
+    featureSub: {
+        fontSize: 14,
+        color: neon.textDim,
+        lineHeight: 20,
     },
     connectButtonContainer: {
         alignItems: 'center',
@@ -249,13 +295,16 @@ const styles = StyleSheet.create({
     walletHint: {
         marginTop: 16,
         fontSize: 16,
-        color: '#666',
+        color: neon.textMuted,
         textAlign: 'center',
     },
     authenticatedText: {
         fontSize: 24,
-        fontWeight: '600',
-        color: '#333',
+        fontWeight: '700',
+        color: neon.text,
+        textShadowColor: neon.purple,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 10,
     },
     actionsRow: {
         flexDirection: 'row',
@@ -265,7 +314,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     createBtn: {
-        backgroundColor: '#667eea',
+        backgroundColor: neon.bgCard,
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 12,
@@ -273,16 +322,20 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         minWidth: 100,
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: neon.cyan,
+        ...neonGlow(neon.cyan, 10, 0.4),
     },
     createBtnText: {
-        color: '#fff',
+        color: neon.cyan,
         fontSize: 16,
-        fontWeight: '600',
+        fontWeight: '700',
+        letterSpacing: 0.5,
     },
     refreshBtn: {
         borderWidth: 1,
-        borderColor: '#667eea',
-        backgroundColor: '#fff',
+        borderColor: neon.magenta,
+        backgroundColor: neon.bgPanel,
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 12,
@@ -291,14 +344,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: 42,
+        ...neonGlow(neon.magenta, 8, 0.25),
     },
     refreshBtnDisabled: {
-        opacity: 0.6,
+        opacity: 0.5,
     },
     refreshBtnText: {
-        color: '#667eea',
+        color: neon.magenta,
         fontSize: 16,
-        fontWeight: '600',
+        fontWeight: '700',
     },
 });
 

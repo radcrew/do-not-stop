@@ -8,6 +8,7 @@ import {
     View,
 } from 'react-native';
 import type { Pet } from '@shared/core';
+import { neon, neonGlow } from '../theme/neon';
 
 type Props = {
     pets: Pet[];
@@ -61,7 +62,7 @@ export default function PetList({
     if (isLoading && pets.length === 0) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#667eea" />
+                <ActivityIndicator size="large" color={neon.cyan} />
                 <Text style={styles.loadingText}>Loading your pets…</Text>
             </View>
         );
@@ -71,7 +72,14 @@ export default function PetList({
         return (
             <ScrollView
                 contentContainerStyle={styles.centered}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor={neon.cyan}
+                        colors={[neon.cyan]}
+                    />
+                }
             >
                 <Text style={styles.emptyTitle}>No pets yet</Text>
                 <Text style={styles.hintBody}>
@@ -84,7 +92,14 @@ export default function PetList({
     return (
         <ScrollView
             style={styles.list}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor={neon.cyan}
+                    colors={[neon.cyan]}
+                />
+            }
         >
             <Text style={styles.sectionTitle}>Your pets</Text>
             {pets.map((pet, index) => {
@@ -127,19 +142,24 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 18,
-        fontWeight: '700',
-        color: '#333',
+        fontWeight: '800',
+        color: neon.text,
         marginBottom: 16,
         alignSelf: 'flex-start',
+        letterSpacing: 0.5,
+        textShadowColor: neon.cyan,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
     },
     card: {
-        backgroundColor: '#fafafa',
-        borderRadius: 12,
+        backgroundColor: neon.bgCard,
+        borderRadius: 14,
         padding: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: '#e8e8e8',
+        borderColor: 'rgba(0, 245, 255, 0.22)',
         width: '100%',
+        ...neonGlow(neon.cyan, 8, 0.2),
     },
     cardHeader: {
         flexDirection: 'row',
@@ -149,8 +169,8 @@ const styles = StyleSheet.create({
     },
     petName: {
         fontSize: 20,
-        fontWeight: '700',
-        color: '#222',
+        fontWeight: '800',
+        color: neon.text,
         flex: 1,
     },
     rarityBadge: {
@@ -165,43 +185,49 @@ const styles = StyleSheet.create({
     },
     meta: {
         fontSize: 14,
-        color: '#555',
+        color: neon.textMuted,
         marginTop: 4,
     },
     loadingText: {
         marginTop: 12,
         fontSize: 16,
-        color: '#666',
+        color: neon.textMuted,
     },
     emptyTitle: {
         fontSize: 20,
-        fontWeight: '600',
-        color: '#333',
+        fontWeight: '800',
+        color: neon.text,
         marginBottom: 8,
+        textShadowColor: neon.magenta,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 10,
     },
     hintTitle: {
         fontSize: 18,
-        fontWeight: '700',
-        color: '#333',
+        fontWeight: '800',
+        color: neon.text,
         marginBottom: 8,
         textAlign: 'center',
     },
     hintBody: {
         fontSize: 15,
-        color: '#666',
+        color: neon.textMuted,
         textAlign: 'center',
         lineHeight: 22,
     },
     errorTitle: {
         fontSize: 18,
-        fontWeight: '700',
-        color: '#c0392b',
+        fontWeight: '800',
+        color: neon.danger,
         marginBottom: 8,
         textAlign: 'center',
+        textShadowColor: neon.danger,
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 8,
     },
     errorBody: {
         fontSize: 14,
-        color: '#555',
+        color: neon.textMuted,
         textAlign: 'center',
         marginBottom: 8,
     },
